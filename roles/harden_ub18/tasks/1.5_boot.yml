@@ -1,0 +1,30 @@
+- name: 1.5 boot cis hardening
+  file:
+   path: /boot/grub/grub.cfg
+   owner: root
+   group: root
+   mode: '0600'
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: 1.5 boot cis hardening2
+  file:
+   path: /boot/grub/grub.cfg
+   owner: root
+   group: root
+   mode: '0600'
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: 1.5 boot grub password
+  copy:
+   src: grub/user.cfg
+   dest: /boot/grub/user.cfg
+   owner: root
+   group: root
+   mode: '0600'
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: 1.5 update grub on ubuntu
+  shell: /usr/sbin/update-grub2
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+

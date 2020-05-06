@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#INF="$1" # your current interface name such as eth0, wlp4s0 and so on
+#STA="$2" # status such as UP or DOWN
+
+# Send message to /var/log/messages
+#logger "$0 called for interface named $INF with $STA ..."
+
+/usr/local/sbin/firewall-up
+exit 0

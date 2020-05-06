@@ -1,0 +1,16 @@
+---
+# tasks file for roles/install_2d-firewall
+- name: install exim4
+  include: ub_install_exim4.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: install mailx
+  include: ce_install_mailx.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS'
+
+- name: install mailx
+  include: ce_install_mailx.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat'

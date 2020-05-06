@@ -1,0 +1,7 @@
+#Cmnd alias specification
+Cmnd_Alias ALLOWED_SOFTWARE_RABBITMQ=/usr/sbin/rabbitmqctl list_queues,/usr/sbin/rabbitmqctl stop_app,/usr/sbin/rabbitmqctl reset,/usr/sbin/rabbitmqctl start_app,/usr/sbin/rabbitmqctl set_policy *
+Cmnd_Alias ALLOWED_SOFTWARE_MONGODB=/usr/sbin/service mongodb restart
+
+
+%Servers.Dev\@staff.snap.net.nz ALL= ALLOWED_SOFTWARE_MONGODB
+%Servers.Dev\@staff.snap.net.nz ALL= ALLOWED_SOFTWARE_RABBITMQ

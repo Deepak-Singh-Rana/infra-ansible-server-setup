@@ -1,0 +1,6 @@
+##We have chosen "DEFAULT" instaed of the recommended "FUTURE" as freeipa does not work with "FUTURE"
+##Note, "DEFAULT" stops freeipa ad auth from working, so turn it down to "LEGACY"
+
+#1.11 Ensure system-wide crypto policy is FUTURE or FIPS (Scored)
+- name: 1.11 systemwide crypto policy
+  shell: update-crypto-policies --set DEFAULT

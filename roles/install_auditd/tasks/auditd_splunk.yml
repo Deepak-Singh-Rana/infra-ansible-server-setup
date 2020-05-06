@@ -1,0 +1,4 @@
+- name: make sure splunk group exists
+  group:
+    name: auditdlogsplunk
+    state: present

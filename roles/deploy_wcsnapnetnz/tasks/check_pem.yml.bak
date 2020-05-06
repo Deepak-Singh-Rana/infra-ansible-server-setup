@@ -1,0 +1,9 @@
+- name: check if snap.net.nz certificate exists
+  stat:
+   path: /etc/ssl/private/snap.net.nz.pem
+  register: pem_exists
+
+- fail:
+   msg: "/etc/ssl/private/snap.net.nz.pem doens't exist"
+  when: pem_exists.stat.exists == false
+  ignore_errors: yes

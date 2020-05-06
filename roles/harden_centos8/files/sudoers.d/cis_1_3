@@ -1,0 +1,6 @@
+##1.3.2 Ensure sudo commands use pty (Scored)
+##Verify that sudo can only run other commands from a psuedo-pty
+Defaults use_pty
+
+##Verify that sudo has a custom log file configured
+Defaults logfile="/var/log/sudo.log"

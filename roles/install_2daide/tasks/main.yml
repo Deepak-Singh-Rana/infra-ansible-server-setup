@@ -1,0 +1,11 @@
+---
+# tasks file for install_2d-home
+- name: install 2daide
+  include: install_2daide.yml
+
+- name: enable 2d aide
+  include: enable_2daide.yml
+
+- name: selinux config for 2d aide
+  include: selinux_2daide.yml
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'

@@ -1,0 +1,4 @@
+---
+# tasks file for deploy_splunkforwarder
+- import_tasks: install_2d-splunkforwarder.yml
+- import_tasks:install_splunkforwarder.yml  main.yml

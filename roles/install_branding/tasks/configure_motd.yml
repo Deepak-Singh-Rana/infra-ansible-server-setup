@@ -1,0 +1,38 @@
+- name: link centos version for motd
+  file:
+    src: /etc/centos-release
+    dest: /etc/motd.d/10_centos_release
+    state: link
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS'
+
+- name: link centos version for motd
+  file:
+    src: /etc/redhat-release
+    dest: /etc/motd.d/10_redhat_release
+    state: link
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: remove cockpit motd
+  file:
+   path: /etc/motd.d/cockpit
+   state: absent
+
+- name: motd.2d centos
+  copy:
+    src: motd.2d
+    dest: /etc/motd.d/05_motd.2d
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: motd ubuntu
+  apt:
+    name: 2d-branding
+    state: latest
+    update_cache: yes
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'

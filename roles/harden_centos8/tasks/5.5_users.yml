@@ -1,0 +1,7 @@
+- name: 5.5.5 profile.d$ mv cis-hardening.sh cis-hardening_5_5.sh
+  copy:
+    src: profile.d/cis-hardening_5_5.sh
+    dest: /etc/profile.d/cis-hardening_5_5.sh
+    owner: root
+    group: root
+    mode: '0644'

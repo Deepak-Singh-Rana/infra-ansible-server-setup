@@ -1,0 +1,17 @@
+---
+# tasks file for install-2dlogging
+- name: add default permissions config file
+  copy:
+    src: rsyslog_04-default-ownership.conf
+    dest: /etc/rsyslog.d/04-default-ownership.conf
+    group: root
+    owner: root
+    mode: 0640
+
+- name: restart rsyslog
+  systemd:
+    state: restarted
+    name: rsyslog
+
+- name: logroate syslog so files get new adm permissions
+  command: logrotate -f /etc/logrotate.d/syslog

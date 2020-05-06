@@ -1,0 +1,7 @@
+---
+# tasks file for install_autoupdates
+- include: install_autoupdates.yml
+- include: configure_autoupdates.yml
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
+- include: enable_autoupdates.yml
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")

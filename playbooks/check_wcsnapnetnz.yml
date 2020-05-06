@@ -1,0 +1,18 @@
+- name: install auditd
+  hosts: netbox_platform_server-ubuntu-16
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  serial:
+  - 1
+  - 2
+  - 5
+  roles:
+    - deploy_wcsnapnetnz
+
+
+

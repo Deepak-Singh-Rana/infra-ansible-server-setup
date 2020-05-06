@@ -1,0 +1,27 @@
+- name: 1.5 boot cis hardening
+  file:
+   path: /boot/grub2/grub.cfg
+   owner: root
+   group: root
+   mode: '0600'
+
+- name: 1.5 boot cis hardening2
+  file:
+   path: /boot/grub2/grubenv
+   owner: root
+   group: root
+   mode: '0600'
+
+- name: 1.5 boot grub password
+  copy:
+   src: grub/user.cfg
+   dest: /boot/grub2/user.cfg
+   owner: root
+   group: root
+   mode: '0600'
+
+- name: 1.5 update grub on centos
+  shell: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+

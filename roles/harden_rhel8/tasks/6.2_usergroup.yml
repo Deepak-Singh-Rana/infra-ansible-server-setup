@@ -1,0 +1,9 @@
+##create a /root/bin folder and make sure root is the owner as this path is in roots $PATH var
+- name: 6.2.3 Ensure root PATH Integrity (Scored)
+  file:
+   path: /root/bin
+   owner: root
+   group: root
+   mode: '0700'
+   state: directory
+

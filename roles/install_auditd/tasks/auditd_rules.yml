@@ -1,0 +1,113 @@
+- name: copy 01_customisable_intitial.rules
+  copy:
+   src: rules/01_customisable_intitial.rules
+   dest: /etc/audit/rules.d/01_customisable_intitial.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy 05_selfauditing.rules
+  copy:
+   src: rules/05_selfauditing.rules
+   dest: /etc/audit/rules.d/05_selfauditing.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy 10_filters.rules
+  copy:
+   src: rules/10_filters.rules
+   dest: /etc/audit/rules.d/10_filters.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy 30_base.rules
+  copy:
+   src: rules/30_base.rules
+   dest: /etc/audit/rules.d/30_base.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy 35_special.rules
+  copy:
+   src: rules/35_special.rules
+   dest: /etc/audit/rules.d/35_special.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy 40_ubuntu16.rules
+  copy:
+   src: rules/40_ubuntu16.rules
+   dest: /etc/audit/rules.d/40_ubuntu16.rules
+   owner: root
+   group: root
+   mode: 0640
+  ignore_errors: yes
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "16")
+
+- name: copy 41_ubuntu18.rules
+  copy:
+   src: rules/41_ubuntu18.rules
+   dest: /etc/audit/rules.d/41_ubuntu18.rules
+   owner: root
+   group: root
+   mode: 0640
+  ignore_errors: yes
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18")
+
+- name: copy 45_centos7.rules
+  copy:
+   src: rules/45_centos7.rules
+   dest: /etc/audit/rules.d/45_centos7.rules
+   owner: root
+   group: root
+   mode: 0640
+  ignore_errors: yes
+  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "7")
+
+- name: copy 46_centos8.rules
+  copy:
+   src: rules/46_centos8.rules
+   dest: /etc/audit/rules.d/46_centos8.rules
+   owner: root
+   group: root
+   mode: 0640
+  ignore_errors: yes
+  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+
+- name: copy 46_redhat8.rules
+  copy:
+   src: rules/46_redhat8.rules
+   dest: /etc/audit/rules.d/46_redhat8.rules
+   owner: root
+   group: root
+   mode: 0640
+  ignore_errors: yes
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
+
+- name: copy 60_software.rules
+  copy:
+   src: rules/60_software.rules
+   dest: /etc/audit/rules.d/60_software.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy 65_customisable_highvolume.rules
+  copy:
+   src: rules/65_customisable_highvolume.rules
+   dest: /etc/audit/rules.d/65_customisable_highvolume.rules
+   owner: root
+   group: root
+   mode: 0640
+
+- name: copy zz_immutable.rules
+  copy:
+   src: rules/zz_immutable.rules
+   dest: /etc/audit/rules.d/zz_immutable.rules
+   owner: root
+   group: root
+   mode: 0640

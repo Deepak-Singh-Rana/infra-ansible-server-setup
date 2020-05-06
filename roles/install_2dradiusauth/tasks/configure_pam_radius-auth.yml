@@ -1,0 +1,21 @@
+- name: nsswitch.conf passwd mysql
+  lineinfile:
+   path: /etc/nsswitch.conf
+   regex: '^(passwd:.*compat systemd)'
+   line: '\1 mysql'
+   backrefs: yes
+
+- name: nsswitch.conf group mysql
+  lineinfile:
+   path: /etc/nsswitch.conf
+   regex: '^(group:.*compat systemd)'
+   line: '\1 mysql'
+   backrefs: yes
+
+- name: nsswitch.conf shadow mysql
+  lineinfile:
+   path: /etc/nsswitch.conf
+   regex: '^(shadow:.*compat)'
+   line: '\1 mysql'
+   backrefs: yes
+

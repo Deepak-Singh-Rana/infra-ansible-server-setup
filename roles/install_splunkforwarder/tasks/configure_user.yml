@@ -1,0 +1,26 @@
+- name: delete splunk user password
+  shell: /usr/bin/passwd -d splunk
+
+- name: add splunk to adm and syslog group
+  user:
+   name: splunk
+   groups: adm,syslog
+   append: yes
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: add splunk to adm group
+  user:
+   name: splunk
+   groups: adm
+   append: yes
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: add splunk to auditlogsplunk
+  user:
+   name: splunk
+   groups: auditdlogsplunk
+   append: yes
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'

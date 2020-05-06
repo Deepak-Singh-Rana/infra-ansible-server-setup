@@ -1,0 +1,45 @@
+- name: include sites-enabled into the /etc/httpd/conf/httpd.conf file
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    line: IncludeOptional sites-enabled/*.conf
+    create: yes
+
+- name: create sites-enabled folder
+  file:
+   path: /etc/httpd/sites-enabled
+   owner: root
+   group: root
+   mode: '0755'
+   state: directory
+
+- name: create sites-available folder
+  file:
+   path: /etc/httpd/sites-available
+   owner: root
+   group: root
+   mode: '0755'
+   state: directory
+- name: copy default 2d hardening conf
+  copy:
+   src: conf-available/zz-hardening-options.conf
+   dest: /etc/httpd/conf.d/zz-hardening-options.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: copy default 2d default site
+  copy:
+   src: sites-available/000-2d-default.conf
+   dest: /etc/httpd/sites-available/000-2d-default.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: enable 2d default site
+  file:
+   src: /etc/httpd/sites-available/000-2d-default.conf
+   dest: /etc/httpd/sites-enabled/000-2d-default.conf
+   owner: apache
+   group: apache
+   state: link
+

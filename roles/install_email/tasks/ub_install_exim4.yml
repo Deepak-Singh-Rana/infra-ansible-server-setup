@@ -1,0 +1,16 @@
+- name: install exim4
+  package: name=exim4 state=latest
+
+- name: copy updates-exim4.conf.conf file
+  copy:
+   src: update-exim4.conf.conf
+   dest: /etc/exim4.update-exim4.conf.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: configure exim4 hostname
+  lineinfile:
+   path: /etc/exim4/update-exim4.conf.conf
+   line: dc_readhost='{{ ansible_hostname }}'
+   create: yes

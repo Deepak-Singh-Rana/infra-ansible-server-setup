@@ -1,0 +1,35 @@
+- name: make sure perl is installed
+  package: 
+    name: perl
+    state: present
+
+- name: make sure binutils is installed(to extract the deb pacakge)
+  package:
+    name: binutils
+    state: present
+
+- name: make sure iptables is installed
+  package: 
+    name: iptables
+    state: present
+
+- name: make sure ipset is installed
+  package:
+    name: ipset
+    state: present
+
+- name: Download the firewall package
+  get_url:
+    url: http://odin.snap.net.nz/2d-packages/public/pool/main/2/2d-firewall-hardened/2d-firewall-hardened_20190917.01_all.deb
+    dest: /tmp/2d-firewall.deb
+
+- name: Extract the deb with ar
+  shell: /usr/bin/ar x /tmp/2d-firewall.deb
+  args:
+    chdir: /tmp
+
+- name: extract the data tar into the OS filsystem
+  unarchive:
+    src: /tmp/data.tar
+    dest: /
+    remote_src: yes

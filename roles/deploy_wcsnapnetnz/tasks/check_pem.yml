@@ -1,0 +1,10 @@
+- name: check if snap.net.nz certificate exists
+  stat:
+   path: /etc/ssl/private/snap.net.nz.pem
+  register: pem_exists
+
+- name: generate report
+  become: no
+  local_action: template src=pem_report.j2 dest=/tmp/pem_report
+  run_once: True
+  changed_when: False

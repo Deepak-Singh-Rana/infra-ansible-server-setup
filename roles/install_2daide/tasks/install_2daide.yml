@@ -1,0 +1,82 @@
+- name: install aide
+  package:
+    name:
+    - aide
+    state: present
+
+- name: make sure /var/lib/aide exists
+  file:
+    path: /var/lib/aide
+    state: directory
+    mode: '0750'
+
+- name: make sure /etc/aide exists
+  file:
+    path: /etc/aide
+    state: directory
+    mode: '0750'
+
+- name: make sure /etc/aide/aide.conf.d exists
+  file:
+    path: /etc/aide/aide.conf.d
+    state: directory
+    mode: '0750'
+
+- name: install 2d-aide
+  copy:
+    src: sbin/2d-aide.sh
+    dest: /usr/local/sbin/2d-aide.sh
+    owner: root
+    group: root
+    mode: '0740'
+
+- name: install 2d-aide 2d_base
+  copy:
+    src: aide.conf.d/70_2d_base
+    dest: /etc/aide/aide.conf.d/70_2d_base
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: install 2d-aide 2d_ispdb
+  copy:
+    src: aide.conf.d/70_2d_ispdb
+    dest: /etc/aide/aide.conf.d/70_2d_ispdb
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: move redhat default aide.conf to /etc/aide/aide.conf.d/10_redhat_defaults
+  copy:
+    remote_src: yes
+    src: /etc/aide.conf
+    dest: /etc/aide/aide.conf.d/10_redhat_defaults
+    owner: root
+    group: root
+    mode: '0640'
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: install 2d-aide 2d-aide.service
+  copy:
+    src: systemd/2d-aide.service
+    dest: /etc/systemd/system/2d-aide.service
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: install 2d-aide 2d-aide.timer
+  copy:
+    src: systemd/2d-aide.timer
+    dest: /etc/systemd/system/2d-aide.timer
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: install update-aide.conf onto redhat which we got from ubuntu
+  copy:
+   src: sbin/update-aide.conf
+   dest: /usr/sbin/update-aide.conf
+   owner: root
+   group: root
+   mode: '0655'
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'

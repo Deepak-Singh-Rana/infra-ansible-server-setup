@@ -1,0 +1,6 @@
+Name: 2d radius Create home directory on login
+Default: yes
+Priority: 0
+Session-Type: Additional
+Session:
+	optional	pam_mkhomedir.so umask=076

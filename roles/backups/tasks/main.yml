@@ -1,0 +1,4 @@
+---
+# tasks file for roles/backups
+-name: setup file backups
+  import_tasks: backupconf.yml

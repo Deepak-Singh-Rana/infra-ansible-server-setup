@@ -1,0 +1,50 @@
+- name: sshd_config.d
+  file:
+    path: /etc/ssh/sshd_config.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0740'
+- name: 2dsshd_config
+  copy:
+    src: 2d.sshd_config-legacy
+    dest: /etc/ssh/2d.sshd_config
+    owner: root
+    group: root
+    mode: '0640'
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == '16'
+
+- name: 2dsshd_config
+  copy:
+    src: 2d.sshd_config-rhel8
+    dest: /etc/ssh/2d.sshd_config
+    owner: root
+    group: root
+    mode: '0640'
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
+       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: 2dsshd_config
+  copy:
+    src: 2d.sshd_config-ub18
+    dest: /etc/ssh/2d.sshd_config
+    owner: root
+    group: root
+    mode: '0640'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
+
+- name: apply_ssh.sh
+  copy:
+    src: apply_ssh.sh
+    dest: /usr/local/sbin/apply_ssh.sh
+    owner: root
+    group: root
+    mode: '0740'
+
+- name: matches.example
+  copy:
+    src: matches.example
+    dest: /etc/ssh/sshd_config.d/matches.example
+    owner: root
+    group: root
+    mode: '0640'

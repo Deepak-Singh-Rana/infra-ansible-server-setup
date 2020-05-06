@@ -1,0 +1,37 @@
+- name: create ssl-cert group
+  group:
+   name: ssl-cert
+   state: present
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: mkdir /etc/ssl/private
+  file:
+   path: /etc/ssl/private
+   owner: root
+   group: ssl-cert
+   mode: '0710'
+   state: directory
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: generate snakoil key for centos
+  openssl_privatekey:
+   path: /etc/ssl/private/ssl-cert-snakeoil.key
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: generate snakeoil csr
+  openssl_csr:
+   path: /tmp/ssl-cert-snakeoil.csr
+   privatekey_path: /etc/ssl/private/ssl-cert-snakeoil.key
+   common_name: "{{ ansible_hostname }}"
+
+- name: generate snakeoil cert for centos
+  openssl_certificate:
+    path: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    privatekey_path: /etc/ssl/private/ssl-cert-snakeoil.key
+    csr_path: /tmp/ssl-cert-snakeoil.csr
+    provider: selfsigned
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'

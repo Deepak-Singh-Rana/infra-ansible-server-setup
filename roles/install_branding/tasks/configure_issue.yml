@@ -1,0 +1,7 @@
+- name: setup unauthorised access banner
+  copy:
+   src: issue.net.2d
+   dest: /etc/issue.net.2d
+   owner: root
+   group: root
+   mode: '0644'

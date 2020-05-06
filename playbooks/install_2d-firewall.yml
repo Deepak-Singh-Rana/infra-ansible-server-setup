@@ -1,0 +1,17 @@
+- name: Install 2d-firewall
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  gather_facts: true
+  ignore_unreachable: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  #how many to run at once
+  serial:
+  - 1
+  - 2
+  - 5
+  roles:
+    - base_role
+    - install_2d-firewall

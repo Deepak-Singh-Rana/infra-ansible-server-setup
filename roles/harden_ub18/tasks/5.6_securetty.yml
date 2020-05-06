@@ -1,0 +1,9 @@
+##Disable virtual and serial consoles
+- name: 5.6 Ensure root login is restricted to system console (Not Scored)
+  lineinfile:
+    dest: /etc/securetty
+    regexp: "{{ item }}"
+    state: absent
+  with_items:
+    - ^ttyS0
+    - ^vc

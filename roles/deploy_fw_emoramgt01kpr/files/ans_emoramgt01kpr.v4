@@ -1,0 +1,16 @@
+#######################################################################################
+###           I have been deployed by ansible, do not manually modify me            ###
+###Any changes you make here will be overwritten next time the ansible script is run###
+###             if you need to add a rule, then add one as a man_* file             ###
+#######################################################################################
+
+#icmp incase the default icmp allowed is not enabled
+Raw: -A INPUT -p icmp -j ACCEPT
+Raw: -A OUTPUT -p icmp -j ACCEPT
+
+#OEM agent software
+Accept: 3872/tcp from 172.21.200.193
+Accept: 1830:1849/tcp from 172.21.200.193
+
+#postgres
+Accept: 5432/tcp from 172.21.200.193

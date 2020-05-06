@@ -1,0 +1,7 @@
+- name: unauthorised access banner
+  copy:
+   src: root.bash_aliases
+   dest: /root/.bash_aliases
+   owner: root
+   group: root
+   mode: '0644'

@@ -1,0 +1,7 @@
+[Unit]
+Description= Check system to see which server hardening checks PASS and which checks WARN
+
+[Timer]
+OnCalendar=*-*-* 04:30:00
+#allow for a random delay of up to 2 and a half hours, so we don't bog down the host from all servers running aide at the same time
+RandomizedDelaySec=9000

@@ -1,0 +1,42 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name: Setup a new Redhat 8 server
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+#    ansible_python_interpreter: /usr/bin/python3
+    ansible_python_interpreter: /usr/libexec/platform-python3.6
+  vars_prompt:
+    - name: new_hostname
+      prompt: "what will the hostname of this server be?"
+      private: no
+
+  roles:
+    - configure_hostname
+    - clean_serverscript
+    - install_2dlogging
+    - configure_rhel_subscription
+    - base_role
+    - deploy_certs
+    - install_2d-firewall
+    - install_email
+    - install_auditd
+    - install_clamav
+    - install_2dhome
+    - install_2dssh
+    - install_splunkforwarder
+    - install_branding
+    - install_2dutils
+    - install_rkhunter
+    - harden_rhel8
+    - configure_bgaccounts
+    - permissions_sudo-sysadmin
+    - permissions_sudo-techm
+#install aide late so we don't have heaps of changes for the next scan because we are setting up the os
+    - install_2daide
+#Auto updates come at the end so it doens't start updating while we are setting up the vm
+    - install_autoupdates

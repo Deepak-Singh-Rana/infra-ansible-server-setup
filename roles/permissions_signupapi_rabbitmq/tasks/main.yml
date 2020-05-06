@@ -1,0 +1,6 @@
+---
+# tasks file for permissions_signupapi_rabbitmq
+- name: rabbitmq permissions
+  copy:
+   src: ans-dev-rabbitmq
+   dest: /etc/sudoers.d/ans-dev-rabbitmq

@@ -1,0 +1,11 @@
+- name: Allow rsync to run as a client
+  seboolean:
+    name:  rsync_client
+    state: yes
+    persistent: yes
+
+- name: Allow rsync to export files to another server
+  seboolean:
+    name:  rsync_export_all_ro
+    state: yes
+    persistent: yes

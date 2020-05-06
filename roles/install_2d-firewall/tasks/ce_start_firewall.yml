@@ -1,0 +1,22 @@
+- name: addusrlocalsbin into root $PATH
+  lineinfile:
+    path: /root/.bashrc
+    insertafter: '^# User specific aliases and functions'
+    line: export PATH='/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
+
+- name: disable firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: copy ifup firewall script
+  copy:
+    src: 05-firewall-up
+    dest: /etc/NetworkManager/dispatcher.d/05-firewall-up
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: enable the firewall
+  shell: /usr/local/sbin/firewall-up

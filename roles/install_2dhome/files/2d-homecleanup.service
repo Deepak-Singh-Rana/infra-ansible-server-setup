@@ -1,0 +1,12 @@
+[Unit]
+Description=Remove old unused home folders
+Wants=2d-homecleanup.timer
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/perl /usr/local/sbin/2d-homecleanup.pl
+#we set the kill mode to process so systemd doesn't kill the email the script sends
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

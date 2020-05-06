@@ -1,0 +1,34 @@
+#learn what packages are installed
+- name: Make sure splunk server package is not installed
+  package_facts:
+    manager: auto
+
+#learn if splunk binary exists
+- name: Check if the splunk binary exists
+  stat:
+    path: /opt/splunkforwarder/bin/splunk
+  register: splunk_file_check_result
+
+
+- name: Stop the splunk service
+  command: /bin/systemctl stop splunk.service
+  when:
+   - splunk_file_check_result.stat.exists == True
+
+#when the package "splunk" is not installed and the os is debian based
+- name: Install the latest splunkforwarder package
+  apt:
+    deb: https://odin.snap.net.nz/3rdparty-packages/splunkforwarder_latest.deb
+  when:
+    - "'splunk' not in ansible_facts.packages"
+    - ansible_os_family == "Debian"
+
+- name: Re-Accept the splunk licence
+  command: /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt -user splunk
+  when:
+   - splunk_file_check_result.stat.exists == True
+
+- name: Start the splunk service
+  command: /bin/systemctl start splunk.service
+  when:
+   - splunk_file_check_result.stat.exists == True

@@ -1,0 +1,12 @@
+[Unit]
+Description=Audit the system for modified files
+Wants=2d-aide.timer
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /usr/local/sbin/2d-aide.sh
+#we set the kill mode to process so systemd doesn't kill the email the script sends
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

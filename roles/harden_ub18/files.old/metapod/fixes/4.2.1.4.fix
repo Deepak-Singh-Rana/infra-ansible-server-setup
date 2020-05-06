@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#manual variables
+TABSPACING="\t"
+
+LOGFILE=/var/log/metapod/metapod.log
+
+WHERE="/etc/rsyslog.d"
+FILE="60-2d-central-rsyslog.conf"
+
+#automatically set variables
+LOCKFOLDER="/etc/metapod/lock"
+SCRIPTNAME=`basename $BASH_SOURCE | sed 's/.fix//'`
+
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+RESET=`tput sgr0`
+
+if [ "$1" == "--help" ] || [ "$1" == "-h" ]
+then
+        echo "Arguments Avalible"
+        echo "-h --help       Show this help"
+        echo "-d --debug      Show debugging information for Passes and Fails"
+        exit 0;
+fi
+if [ "$1" == "--debug" ] || [ "$1" == "-d" ]; then
+        SHOWDEBUG=true
+fi
+
+if [ $SHOWDEBUG ]; then
+        echo "-----------------"
+        echo -e "$SCRIPTNAME:"
+fi
+echo -e "\n$SCRIPTNAME" >> $LOGFILE
+date -u >> $LOGFILE
+#check for lock file and don't run if it exists
+if [ -f "$LOCKFOLDER/$SCRIPTNAME.lock" ]
+then
+        echo "$LOCKFOLDER/$SCRIPTNAME.lock"
+        echo "lock file exists, therefore not running" >> $LOGFILE
+else
+##################
+#Start Pre Checks#
+##################
+CHECK1=`cat $WHERE/* | grep "*.* @loghost01.snap.net.nz:514"`
+if [[ "$CHECK1" == "" ]]
+then
+	echo "Nothing found, inputing rsync forwarding into $FILE"
+	echo "*.* @loghost01.snap.net.nz:514" > $WHERE/$FILE
+else
+	echo "found a loging server. Uncommenting and making sure it's the correct log server"
+	sed -i 's/\(#\)\(*.* @loghost01.snap.net.nz:514\)/\2/' $WHERE/$FILE
+	echo -e "echo \"*.* @loghost01.snap.net.nz:514\" > $WHERE" >> $LOGFILE/$FILE
+fi
+
+#create a lock file to make sure packages updates can't replace unhardend things
+touch "$LOCKFOLDER/$SCRIPTNAME.lock"
+fi

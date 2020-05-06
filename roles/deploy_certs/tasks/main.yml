@@ -1,0 +1,5 @@
+---
+# tasks file for deploy_certs
+- include: install_cacerts.yml
+- include: 2dcerts.yml
+- include: generate_snakeoilcert.yml

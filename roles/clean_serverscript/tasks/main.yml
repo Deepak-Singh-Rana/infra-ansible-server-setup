@@ -1,0 +1,12 @@
+---
+# tasks file for configure_newserver
+- name: deploy systemclean script
+  copy:
+   src: system-clean.sh
+   dest: /usr/local/sbin/system-clean.sh
+   owner: root
+   group: root
+   mode: '0700'
+
+- name: cleanup the newserver to be ready for use
+  command: /usr/local/sbin/system-clean.sh y

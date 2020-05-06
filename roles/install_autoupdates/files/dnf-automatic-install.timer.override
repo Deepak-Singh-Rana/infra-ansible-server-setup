@@ -1,0 +1,15 @@
+[Unit]
+Description=dnf-automatic-install timer
+# See comment in dnf-makecache.service
+ConditionPathExists=!/run/ostree-booted
+Wants=network-online.target
+
+[Timer]
+#every wednesday at 6am with a possible delay of 3 hours
+OnCalendar=Wed 6:00
+RandomizedDelaySec=3h
+AccuracySec=1m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

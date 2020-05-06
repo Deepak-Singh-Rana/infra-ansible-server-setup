@@ -1,0 +1,41 @@
+- name: Check OS is Ubuntu 14.04
+  when: "ansible_distribution|string == 'Ubuntu' or ansible_distribution_version|string == '14.04'"
+  register: os_check_ubuntu14
+  register: os_check_ubuntu
+  ignore_errors: yes
+
+- name: Check OS is Ubuntu 16.04
+  when: "ansible_distribution|string == 'Ubuntu' or ansible_distribution_version|string == '16.04'"
+  register: os_check_ubuntu16
+  register: os_check_ubuntu
+  ignore_errors: yes
+
+- name: Check OS is Ubuntu 18.04
+  when: "ansible_distribution|string == 'Ubuntu' or ansible_distribution_version|string == '18.04'"
+  register: os_check_ubuntu18
+  register: os_check_ubuntu
+  ignore_errors: yes
+
+- name: Check OS is Centos 6
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'"
+  register: os_check_centos6
+  register: os_check_centos
+  ignore_errors: yes
+
+- name: Check OS is Centos 7
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'"
+  register: os_check_centos7
+  register: os_check_centos
+  ignore_errors: yes
+
+- name: Check OS is Centos 8
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version == '8'"
+  register: os_check_centos8
+  register: os_check_centos
+  ignore_errors: yes
+
+- name: Check OS is Redhat 8
+  when: "ansible_distribution == 'RedHat' and ansible_distribution_major_version == '8'"
+  register: os_check_rhel8
+  register: os_check_rhel
+  ignore_errors: yes

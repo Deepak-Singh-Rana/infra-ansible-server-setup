@@ -1,0 +1,7 @@
+- name: 3.2 Ensure source routed packets are not accepted
+  copy:
+   src: sysctl.d/41-cis_3_2.conf
+   dest: /etc/sysctl.d/41-cis_3_2.conf
+   owner: root
+   group: root
+   mode: '0600'

@@ -1,0 +1,5 @@
+---
+# tasks file for deploy_certs
+- import_tasks: 2dcerts.yml
+- import_tasks: snap-pem.yml
+- import_tasks: 2degreesbroadband-pem.yml

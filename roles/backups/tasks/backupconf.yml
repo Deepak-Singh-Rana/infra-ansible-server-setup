@@ -1,0 +1,8 @@
+- name: set the file backup password for backups to mrhat
+  replace:
+    path: /etc/backup/backup.conf
+    after: 'set -x'
+    before: 'CONFDIR=/etc/backup'
+    regex:'(^export RSYNC_PASSWORD=).*'
+    replace: '\1ks#DCab0'
+    

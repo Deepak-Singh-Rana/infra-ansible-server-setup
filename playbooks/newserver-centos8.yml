@@ -1,0 +1,34 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name: Setup a new Centos 8 server
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  roles:
+    - configure_hostname
+    - clean_serverscript
+    - install_2dlogging
+    - configure_rhel_subscription
+    - base_role
+    - deploy_certs
+    - install_2d-firewall
+    - install_email
+    - install_auditd
+    - install_autoupdates
+    - install_clamav
+    - install_2dhome
+    - install_2dssh
+    - install_splunkforwarder
+    - install_branding
+    - install_2dutils
+    - install_rkhunter
+    - harden_rhel8
+    - configure_bgaccounts
+    - permissions_sudo-sysadmin
+    - permissions_sudo-techm

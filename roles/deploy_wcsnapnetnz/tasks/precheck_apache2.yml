@@ -1,0 +1,8 @@
+- name: Apache | check the apache configuration
+  command: apachectl configtest
+  register: precheck_result
+  ignore_errors: yes
+
+- fail:
+   msg: "Something is wrong with the apache configuration"
+  when_failed: $precheck_results

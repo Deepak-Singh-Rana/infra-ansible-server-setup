@@ -1,0 +1,8 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name: Deploy 2degreesbroadband.co.nz.pem cert
+  copy:
+    src: 2degreesbroadband.co.nz.pem
+    dest: /etc/ssl/private/2degreesbroadband.co.nz.pem
+    owner: root
+    group: ssl-cert
+    mode: '640'

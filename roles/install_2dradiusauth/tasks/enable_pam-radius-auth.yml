@@ -1,0 +1,5 @@
+- name: enable 2d-radisuauth with pam auth update
+  command: pam-auth-update --enable 2d-radiusauth
+
+- name: enable 2d-radiusmkhome with pam auth update
+  command: pam-auth-update --enable 2d-radiusmkhome

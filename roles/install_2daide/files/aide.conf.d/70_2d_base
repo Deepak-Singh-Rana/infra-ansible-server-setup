@@ -1,0 +1,30 @@
+##Containers.
+!/var/lib/lxcfs$
+
+##Collectd RRDs
+!/var/lib/collectd$
+
+##NSCD host cache
+/var/cache/nscd/hosts$ VarFile
+
+##Systemd journals
+!/run/log/journal$
+
+##Systemd streams
+/run/systemd/journal/streams$ VarDir
+
+##Auditd logging
+/var/log/audit/audit\.log$ Log
+/var/log/audit/audit\.log\.1$ LowLog
+/var/log/audit/audit\.log\.([2-9]|[1-3][0-9])$ SerMemberLog
+/var/log/audit/audit\.log\.40$ HiSerMemberLog
+
+##Auto Upgrade lock files
+/var/lib/systemd/timers/(stamp-apt-daily.timer|stamp-apt-daily-upgrade.timer)$ VarFile
+/var/lib/apt/daily_lock$ VarFile
+
+##Postgresql Databases
+!/var/lib/postgresql/.*
+
+##DB Backups
+!/backups$

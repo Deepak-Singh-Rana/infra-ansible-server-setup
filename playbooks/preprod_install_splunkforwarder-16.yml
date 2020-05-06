@@ -1,0 +1,13 @@
+- name: Install splunkforwarder on ubuntu 16.04 servers and newer
+  hosts: preprod-16
+  gather_facts: true
+  ignore_unreachable: true
+  #how many to run at once
+  serial:
+  - 1
+  - 2
+  - 5
+
+  tasks:
+  - import_tasks: /opt/ansible/tasks/software/install_splunkforwarder.yml
+  - import_tasks: /opt/ansible/tasks/software/install_2d-splunkforwarder.yml

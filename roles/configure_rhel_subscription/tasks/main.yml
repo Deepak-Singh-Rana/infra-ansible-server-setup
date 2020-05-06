@@ -1,0 +1,73 @@
+---
+# tasks file for configure_rhel_subscription
+
+- name: Install Satellite key
+  yum:
+    name: https://snzclakl173.nzc.co.nz/pub/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
+    state: present
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version <= "7"
+
+- name: copy satellite key rhel8
+  copy:
+    src: rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
+    dest: /tmp/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name: Install Satellite key rhel8
+  dnf:
+    name: /tmp/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
+    state: present
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name: Configure Satellite in /etc/sysconfig/rhn/up2date
+  lineinfile:
+    dest: /etc/sysconfig/rhn/up2date
+    regexp: '^serverURL='
+    line: 'serverURL=https://snzclakl173.nzc.co.nz/XMLRPC'
+    state: present
+  when: ansible_distribution == "RedHat"
+
+- name: Change certificate in /etc/sysconfig/rhn/up2date in RHEL 6
+  lineinfile:
+    dest: /etc/sysconfig/rhn/up2date
+    regexp: '^sslCACert'
+    line: 'sslCACert=/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
+    state: present
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "6"
+
+#Register the servers
+- name: Register in Satellite for RHEL 8
+  command: rhnreg_ks --activationkey=1-c315eaa3a0c87cd743e162cb665a7f46
+  args:
+    creates: /etc/sysconfig/rhn/systemid
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name: Register in Satellite for RHEL 7
+  command: rhnreg_ks --activationkey=1-6b0abaa0647f3f36c26d230165942acb
+  args:
+    creates: /etc/sysconfig/rhn/systemid
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "7"
+
+- name: Register in Satellite for RHEL 6
+  command: rhnreg_ks --activationkey=1-f532bd570e2b14a1e045732dae8d3597
+  args:
+    creates: /etc/sysconfig/rhn/systemid
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "6"
+
+- name: Install EPEL 7 gpg key
+  rpm_key:
+    state: present
+    key: http://snzclakl173/pub/gpg/RPM-GPG-KEY-EPEL-7
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "7"
+
+- name: copy EPEL8 gpg key
+  copy:
+    src: RPM-GPG-KEY-EPEL-8
+    dest: /tmp/RPM-GPG-KEY-EPEL-8
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name: Install EPEL 8 gpg key locally
+  rpm_key:
+    state: present
+    key: /tmp/RPM-GPG-KEY-EPEL-8
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"

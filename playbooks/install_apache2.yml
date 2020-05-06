@@ -1,0 +1,14 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name: Setup a new Ubuntu server
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  roles:
+    - install_2d-apache2

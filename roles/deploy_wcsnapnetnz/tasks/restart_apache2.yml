@@ -1,0 +1,6 @@
+- name: Apache | check the apache configuration
+  command  apache2ctl configtest
+  register: apache_result
+  ignore_errors: yes
+
+- name: Apac

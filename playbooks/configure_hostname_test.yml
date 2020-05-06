@@ -1,0 +1,18 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name:
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+#    ansible_python_interpreter: /usr/libexec/platform-python3.6
+  vars_prompt:
+    - name: new_hostname
+      prompt: "what will the hostname of this server be?"
+      private: no
+  roles:
+    - configure_hostname

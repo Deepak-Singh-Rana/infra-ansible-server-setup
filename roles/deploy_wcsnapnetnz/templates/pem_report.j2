@@ -1,0 +1,5 @@
+{{ play_hosts }}
+
+{% for host in play_hosts %}
+{{ host }}: {{ hostvars[host]['pem_exists']['stat']['exists'] }}
+{% endfor %}

@@ -1,0 +1,17 @@
+---
+# tasks file for install_auditd
+
+- name: install auditd
+  include: auditd_install.yml
+
+- name: add common rules
+  include: auditd_rules.yml
+
+- name: create auditd splunk group
+  include: auditd_splunk.yml
+
+- name: auditd configuration
+  include: auditd_settings.yml
+
+- name: enable auditd
+  include: auditd_enable.yml

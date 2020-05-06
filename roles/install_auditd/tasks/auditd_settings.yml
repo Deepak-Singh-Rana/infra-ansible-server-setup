@@ -1,0 +1,110 @@
+##################################
+#########auditd settings##########
+##################################
+
+- name: set email adress action_mail_acct
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'action_mail_acct ='
+    line: 'action_mail_acct = infraops2degreesservers@techmahindra.com'
+
+- name: set max log size before rotation (MB)
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'max_log_file ='
+    line: 'max_log_file = 40'
+
+- name: set log file permissions so we can send it offbox
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'log_group ='
+    line: 'log_group = syslog'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: set log file permissions so we can send it offbox
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'log_group ='
+    line: 'log_group = auditdlogsplunk'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+
+- name: set amount of logs to keep
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'num_logs ='
+    line: 'num_logs = 25'
+
+- name: set space left warning (MB)
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'space_left ='
+    line: 'space_left = 2000'
+
+- name: set space left action warning
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'space_left_action ='
+    line: 'space_left_action = email'
+
+- name: set space left emergency (MB)
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'admin_space_left ='
+    line: 'admin_space_left = 1000'
+
+- name: set space left action emergency
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'admin_space_left_action ='
+    line: 'admin_space_left_action = email'
+
+#("keep logs" rorates and does nto delete, make sure they are archived after a certain time)
+- name: set filesize limit action
+  lineinfile:
+    path: /etc/audit/auditd.conf
+    regex: 'max_log_file_action ='
+    line: 'max_log_file_action = rotate'
+
+#remove the /etc/audit/rules.d/audit.rules file in centos
+- name: remove /etc/audit/rules.d/audit.rules file in centos
+  file:
+    path: /etc/audit/rules.d/audit.rules
+    state: absent
+
+#we use splunk to read the audit.log file, so let's not clog up syslog log file with audit logs
+- name: set don't send logs into the syslog file
+  lineinfile:
+    path: /etc/audisp/plugins.d/syslog.conf
+    regex: 'active ='
+    line: 'active = no'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+##################################
+#########file permissions#########
+##################################
+- name: set /var/log/audit permissions
+  file:
+    path: /var/log/audit
+    state: directory
+    owner: root
+    group: syslog
+    mode: 0750
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+##################################
+#########file permissions#########
+##################################
+- name: set /var/log/audit permissions
+  file:
+    path: /var/log/audit
+    state: directory
+    owner: root
+    group: auditdlogsplunk
+    mode: 0750
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'

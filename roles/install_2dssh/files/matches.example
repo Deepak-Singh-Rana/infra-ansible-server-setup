@@ -1,0 +1,55 @@
+###############
+#Match methods#
+###############
+
+## Copy /etc/ssh/sshd_config.d/matches.example to /etc/ssh/sshd_config.d/matches, then make your changes
+##
+## After modifying me, make sure to run the command "apply_ssh.sh" after to apply your changes to the /etc/ssh/sshd_config file
+##
+
+#------------------#
+#Specific addresses#
+#------------------#
+#start ansible-addresses#
+#end ansible-addresses#
+
+#Match Address 202.37.101.113/32
+#        AllowGroups servers.admin@staff.snap.net.nz
+#        AuthenticationMethods "password"
+
+#--------------#
+#Specific Users#
+#--------------#
+#start ansible-users#
+#end ansible-users#
+
+#Match User root
+#       AllowGroups root
+#       PermitRootLogin forced-commands-only
+#       AuthenticationMethods "publickey"
+
+#------#
+#Groups#
+#------#
+#start ansible-groups#
+#end ansible-groups#
+#Match Group servers.dev@staff.snap.net.nz
+#       AllowGroups servers.dev@staff.snap.net.nz
+
+#Match Group servers.monitoring@staff.snap.net.nz
+#       AllowGroups servers.monitoring@staff.snap.net.nz
+
+#Match Group SEC_servers.fixed.voice
+#       AllowGroups SEC_servers.fixed.voice
+
+#Match Group SEC_servers.fixed.dba.sudo
+#       AllowGroups SEC_servers.fixed.dba.sudo
+
+#Match Group SEC_apps.splunkforwarder.access
+#       AllowGroups SEC_apps.splunkforwarder.access
+
+#Match Group SEC_servers.fixed.TechM
+#        AllowGroups SEC_servers.fixed.TechM
+
+#Match Group SEC_servers.fixed.database.TechM
+#        AllowGroups SEC_servers.fixed.database.TechM

@@ -1,0 +1,12 @@
+/home
+/bin
+/sbin
+/usr/bin
+/usr/sbin
+/usr/local/bin/
+/usr/local/sbin/
+/opt
+/mnt
+/media
+/tmp
+/var/tmp

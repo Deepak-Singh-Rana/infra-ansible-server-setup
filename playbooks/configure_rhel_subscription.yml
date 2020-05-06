@@ -1,0 +1,12 @@
+- name:
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  vars:
+    ansible_python_interpreter: /usr/libexec/platform-python3.6
+  serial: 1
+  roles:
+    - configure_rhel_subscription

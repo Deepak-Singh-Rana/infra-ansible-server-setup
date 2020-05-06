@@ -1,0 +1,4 @@
+---
+# tasks file for deploy_fw_emoramgt01kpr
+- name: deploy firewall rule
+  include: enable_fw-rules.yml

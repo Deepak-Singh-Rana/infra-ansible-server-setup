@@ -1,0 +1,13 @@
+####################################
+#### 2degrees Ubuntu 16.04 repo ####
+####################################
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial main restricted
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-updates main restricted
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial universe
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-updates universe
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial multiverse
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-updates multiverse
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-backports main restricted universe multiverse
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-security main restricted
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-security universe
+deb [arch=amd64] https://odin.snap.net.nz/ubuntu xenial-security multiverse

@@ -1,0 +1,70 @@
+#we do this first so our configuration is already set
+- name: copy over pam_radius_auth.conf if it doesn't exist
+  copy:
+   src: etc/pam_radius_auth.conf
+   dest: /etc/pam_radius_auth.conf
+   owner: root
+   group: root
+   mode: '0600'
+   force: no
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: make sure useful tools are installed ubuntu
+  apt:
+    name:
+    - pwgen
+    - libmysqlclient20
+    - libpam-radius-auth
+    - nscd
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: install libnss-mysql-bg from ubuntu 16 repo
+  apt:
+    deb: http://odin.snap.net.nz/ubuntu/pool/universe/libn/libnss-mysql-bg/libnss-mysql-bg_1.5-4build1_amd64.deb
+
+- name: copy set-pam-radius.pl to server
+  copy:
+   src: sbin/set-pam-radius.sh
+   dest: /usr/local/sbin/set-pam-radius.sh
+   mode: '0700'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: copy libnss-mysql-root.cfg to server
+  copy:
+   src: etc/libnss-mysql-root.cfg
+   dest: /etc/libnss-mysql-root.cfg
+   mode: '0640'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: copy libnss-mysql.cfg to server
+  copy:
+   src: etc/libnss-mysql.cfg
+   dest: /etc/libnss-mysql.cfg
+   mode: '0640'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: pam config 2d-radius-auth radius
+  copy:
+   src: pam-configs/2d-radiusauth
+   dest: /usr/share/pam-configs/2d-radiusauth
+   mode: '0622'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: pam config 2d-radius-auth mkhome
+  copy:
+   src: pam-configs/2d-radiusmkhome
+   dest: /usr/share/pam-configs/2d-radiusmkhome
+   mode: '0622'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+

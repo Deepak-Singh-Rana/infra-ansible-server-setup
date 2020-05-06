@@ -1,0 +1,96 @@
+---
+# tasks file for tdm-rkhunter
+
+- name: install rkhunter
+  package:
+    name: "rkhunter"
+    state: present
+
+- name: rh create logrotate file if not exist
+  copy:
+    src: rh_logrotate_rkhunter
+    dest: /etc/logrotate.d/rkhunter
+    owner: root
+    group: root
+    mode: 0644
+    force: no
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
+       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: ub create logrotate file if not exist
+  copy:
+    src: rh_logrotate_rkhunter
+    dest: /etc/logrotate.d/rkhunter
+    owner: root
+    group: root
+    mode: 0644
+    force: no
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
+
+- name: rh permissions for rkhunter directory
+  file:
+    group: adm
+    owner: root
+    mode: 02750
+    path: /var/log/rkhunter
+    state: directory
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
+       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: ub permissions for rkhunter directory
+  file:
+    group: adm
+    owner: syslog
+    mode: 02750
+    path: /var/log/rkhunter
+    state: directory
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
+
+
+- name: configure logfile
+  lineinfile:
+    path: /etc/rkhunter.conf
+    regexp: ^LOGFILE=
+    line: LOGFILE=/var/log/rkhunter/rkhunter.log
+
+- name: configure append to logfile
+  lineinfile:
+    path: /etc/rkhunter.conf
+    insertafter: ^#APPEND_LOG=
+    regexp: ^APPEND_LOG=
+    line: APPEND_LOG=1
+
+- name: check for misplaced logfile
+  stat:
+    path: /var/log/rkhunter.log
+  register: rk_log_loc
+
+- name: copy log file to correct directory
+  copy:
+    dest: /var/log/rkhunter/rkhunter.log
+    remote_src: yes
+    src: /var/log/rkhunter.log
+  when: rk_log_loc.stat.exists
+  notify: cleanup
+
+- name: rh permissions for rkhunter file
+  file:
+    group: adm
+    owner: root
+    mode: 0640
+    path: /var/log/rkhunter/rkhunter.log
+    state: touch
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
+       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: ub permissions for rkhunter file
+  file:
+    group: adm
+    owner: syslog
+    mode: 0640
+    path: /var/log/rkhunter/rkhunter.log
+    state: touch
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
+
+- name: rkhunter propupd prerun
+  command: rkhunter --propupd

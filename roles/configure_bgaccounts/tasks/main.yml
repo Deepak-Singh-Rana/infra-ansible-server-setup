@@ -1,0 +1,23 @@
+---
+# tasks file for configure_bgaccounts
+- name: make sure pwgen is installed on redhat and centos
+  dnf:
+    name:
+    - pwgen
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: make sure pwgen is installed on ubuntu
+  apt:
+    name:
+    - pwgen
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: install bg accoutn password set script
+  copy:
+    src: set-bg-passwords.pl
+    dest: /usr/local/sbin/set-bg-passwords.pl
+    owner: root
+    group: root
+    mode: '0700'

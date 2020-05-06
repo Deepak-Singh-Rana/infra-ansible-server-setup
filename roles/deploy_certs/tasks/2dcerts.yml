@@ -1,0 +1,38 @@
+- name: Copy 2d cert 2degrees-internal_AKL_CHAIN.pem to server
+  copy:
+    src: 2degrees-internal_AKL_CHAIN.pem 
+    dest: /etc/ssl/certs/2degrees-internal_AKL_CHAIN.pem 
+    owner: root
+    group: root
+    mode: '0644'
+- name: Copy 2d cert 2degrees-internal_AKL_INT.crt to server
+  copy:
+    src: 2degrees-internal_AKL_INT.crt 
+    dest: /etc/ssl/certs/2degrees-internal_AKL_INT.crt 
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy 2d cert 2degrees-internal_HLZ_CHAIN.pem to server
+  copy:
+    src: 2degrees-internal_HLZ_CHAIN.pem
+    dest: /etc/ssl/certs/2degrees-internal_HLZ_CHAIN.pem
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy 2d cert 2degrees-internal_HLZ_INT.crt to server
+  copy:
+    src: 2degrees-internal_HLZ_INT.crt
+    dest: /etc/ssl/certs/2degrees-internal_HLZ_INT.crt
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy 2d cert 2degrees-internal_Root_CA.crt to server
+  copy:
+    src: 2degrees-internal_Root_CA.crt
+    dest: /etc/ssl/certs/2degrees-internal_Root_CA.crt
+    owner: root
+    group: root
+    mode: '0644'

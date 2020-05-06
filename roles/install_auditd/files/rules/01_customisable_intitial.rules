@@ -1,0 +1,18 @@
+#######################################################################
+####                   You can manually change me                  ####
+####--------Your changes will no be overwritten by ansible---------####
+#######################################################################
+
+# Remove any existing rules
+-D
+
+# Buffer Size
+-b 8192
+
+# Failure Mode
+## Possible values: 0 (silent), 1 (printk, print a failure message), 2 (panic, halt the system)
+-f 0
+
+# Ignore errors
+## e.g. caused by users or files not found in the local environment
+-i

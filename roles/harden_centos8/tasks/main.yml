@@ -1,0 +1,30 @@
+---
+# tasks file for harden_centos8
+- name: Filesystem Configuration
+  include: 1.1_filesystems.yml
+- name: Ensure system-wide crypto policy is FUTURE or FIPS
+  include: 1.11_crypto.yml
+- name: Configure sudo
+  include: 1.3_sudo.yml
+- name: Secure Boot Settings
+  include: 1.5_boot.yml
+- name: Additional Process Hardening
+  include: 1.6_proccess.yml
+- name: Network Parameters
+  include: 3.2_network.yml
+- name: Uncommon Network Protocols
+  include: 3.3_protocols.yml
+- name: Configure Logging
+  include: 4.2.2.journald.yml
+- name: Configure cron
+  include: 5.1.cron.yml
+- name: User Accounts and Environment
+  include: 5.5_users.yml
+- name: Ensure root login is restricted to system console
+  include: 5.6_securetty.yml
+- name: Ensure access to the su command is restricted
+  include: 5.7_su.yml
+- name: System File Permissions
+  include: 6.1_filepermissions.yml
+- name: User and Group Settings
+  include: 6.2_usergroup.yml

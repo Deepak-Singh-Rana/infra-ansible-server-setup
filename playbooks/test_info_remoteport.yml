@@ -1,0 +1,17 @@
+- name: check splunk port
+  hosts: netbox_platform_server-ubuntu-14:netbox_platform_server-ubuntu-16
+  gather_facts: true
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 6
+
+  tasks:
+
+  - name: check for port 9501
+    wait_for:
+      host: splunkforwarder01.snap.net.nz
+      port: 9501
+      delay: 1
+      state: started
+      timeout: 3
+    ignore_errors: yes

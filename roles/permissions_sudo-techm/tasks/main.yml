@@ -1,0 +1,9 @@
+---
+- name: techm sudo permissions
+  copy:
+   src: ans-sudo-techm
+   dest: /etc/sudoers.d/ans-sudo-techm
+   owner: root
+   group: root
+   mode: '0400'
+

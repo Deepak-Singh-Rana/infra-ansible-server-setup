@@ -1,0 +1,11 @@
+  - name: Make sure splunk server package is not installed
+    package_facts:
+      manager: auto
+
+  - name: Install the latest 2d-splunkforwarder pacakge
+    apt:
+     name: 2d-splunkforwarder
+     state: latest
+     update_cache: yes
+    when:
+      - "'splunk' not in ansible_facts.packages"

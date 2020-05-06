@@ -1,0 +1,13 @@
+[Unit]
+Description=ClamAV Service
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /usr/local/sbin/clamav.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=clamav
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

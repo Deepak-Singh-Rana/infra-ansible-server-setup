@@ -1,0 +1,6 @@
+Name: 2d radius Enable login using radius
+Default: yes
+Priority: 0
+Auth-Type: Primary
+Auth:
+	sufficient		pam_radius_auth.so

@@ -1,0 +1,21 @@
+- name: install auditd on centos
+  yum:
+   name: "{{ packages }}"
+  vars:
+   packages:
+   - audit
+   - audit-libs
+   - audispd-plugins
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: install auditd on ubuntu
+  apt:
+   name: "{{ packages }}"
+  vars:
+   packages:
+   - auditd
+   - lxc-common
+   - audispd-plugins
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'

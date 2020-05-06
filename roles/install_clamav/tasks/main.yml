@@ -1,0 +1,22 @@
+---
+# tasks file for install_clamav
+- name: ubutnu install clamav
+  include: ub_installclamav.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: centos install clamav
+  include: ce_installclamav.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: centos configure clamav
+  include: ce_configureclamav.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: centos start clamav
+  include: ce_startclamav.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+

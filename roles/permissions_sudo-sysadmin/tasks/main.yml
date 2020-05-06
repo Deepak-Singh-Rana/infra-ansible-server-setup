@@ -1,0 +1,9 @@
+---
+- name: sysadmin sudo permissions
+  copy:
+   src: ans-sudo-sysadmin
+   dest: /etc/sudoers.d/ans-sudo-sysadmin
+   owner: root
+   group: root
+   mode: '0400'
+

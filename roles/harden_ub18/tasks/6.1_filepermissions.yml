@@ -1,0 +1,13 @@
+- name: 1.6.6 passwd-
+  file:
+   path: /etc/passwd-
+   owner: root
+   group: root
+   mode: '0600'
+
+- name: 1.6.8 group-
+  file:
+   path: /etc/group-
+   owner: root
+   group: root
+   mode: '0600'

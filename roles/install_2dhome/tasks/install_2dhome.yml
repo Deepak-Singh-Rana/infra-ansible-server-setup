@@ -1,0 +1,29 @@
+- name: make sure perl is installed
+  package:
+    name: perl
+    state: present
+
+
+- name: 2d-homecleanup.timer
+  copy:
+    src: 2d-homecleanup.timer
+    dest: /etc/systemd/system/2d-homecleanup.timer
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: 2d-homecleanup.service
+  copy:
+    src: 2d-homecleanup.service
+    dest: /etc/systemd/system/2d-homecleanup.service
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: apply_ssh.sh
+  copy:
+    src: 2d-homecleanup.pl
+    dest: /usr/local/sbin/2d-homecleanup.pl
+    owner: root
+    group: root
+    mode: '0740'

@@ -1,0 +1,21 @@
+---
+# tasks file for deploy_splunkforwarder
+- name: run pam raduis auth tasks
+  import_tasks: install_pam_radius-auth.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name:  run configure_pam_radius-auth.yml task
+  import_tasks: configure_pam_radius-auth.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: run configure_libnss-mysql-encrypted.yml task
+  import_tasks: configure_libnss-mysql-encrypted.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: run enable_pam-radius-auth.yml tasks
+  import_tasks: enable_pam-radius-auth.yml
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'

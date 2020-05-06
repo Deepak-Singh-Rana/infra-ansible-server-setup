@@ -1,0 +1,12 @@
+- name: Harden Centos 8
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+    - harden_centos8

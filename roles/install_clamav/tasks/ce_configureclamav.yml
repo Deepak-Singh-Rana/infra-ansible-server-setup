@@ -1,0 +1,70 @@
+- name: Set antivirus_can_scan_system flag on and keep it persistent across reboots
+  seboolean:
+    name: antivirus_can_scan_system
+    state: yes
+    persistent: yes
+
+- name: Set antivirus_use_jit flag on and keep it persistent across reboots
+  seboolean:
+    name: antivirus_use_jit
+    state: yes
+    persistent: yes
+
+- name: create clamav folder
+  file:
+   path: /etc/clamav/
+   state: directory
+   mode: '0600'
+
+- name: create 2d-conf.d clamav folder
+  file:
+   path: /etc/clamav/2d-conf.d
+   state: directory
+   mode: '0600'
+
+- name: copy 2d-conf calmav conf
+  copy:
+   src: 10_pkg-2ddefaults.include
+   dest: /etc/clamav/2d-conf.d/10_pkg-2ddefaults.include
+   owner: root
+   group: root
+   mode: '0600'
+
+- name: copy clamav.sh
+  copy:
+   src: clamav.sh
+   dest: /usr/local/sbin/clamav.sh
+   owner: root
+   group: root
+   mode: '0700'
+
+- name: copy clamav.service
+  copy:
+   src: clamav.service
+   dest: /etc/systemd/system/clamav.service
+   owner: root
+   group: root
+   mode: '0700'
+
+- name: copy clamav.timer
+  copy:
+   src: clamav.timer
+   dest: /etc/systemd/system/clamav.timer
+   owner: root
+   group: root
+   mode: '0700'
+
+
+- name: configure private mirror
+  lineinfile:
+   path: /etc/freshclam.conf
+   regexp: '^PrivateMirror'
+   line: PrivateMirror clamav.snap.net.nz
+   create: yes
+
+- name: configure scripted updates to be no
+  lineinfile:
+   path: /etc/freshclam.conf
+   regexp: '^ScriptedUpdates'
+   line: ScriptedUpdates no
+   create: yes

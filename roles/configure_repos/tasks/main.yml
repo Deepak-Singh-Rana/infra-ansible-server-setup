@@ -1,0 +1,4 @@
+---
+# tasks file for configure_repos
+- name: configure repos
+  include: configure_repos.yml

@@ -1,0 +1,4 @@
+---
+# tasks file for deploy_wcsnapnetnz
+- name: look for snap signed cert
+  include: check_pem.yml

@@ -1,0 +1,2 @@
+- name: install 2d-firewall
+  package: name=2d-firewall-hardened state=latest

@@ -1,0 +1,5 @@
+/var/log/rkhunter/rkhunter.log {
+    weekly
+    notifempty
+    create 640 root adm
+}

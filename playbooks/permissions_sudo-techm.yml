@@ -1,0 +1,15 @@
+- name: deploy sudo rights for techm to a newly provisioned server
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+    - permissions_sudo-techm
+
+
+

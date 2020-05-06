@@ -1,0 +1,10 @@
+---
+# tasks file for install_branding
+- name: configure_bash_aliases.yml
+  import_tasks: configure_bash_aliases.yml
+
+- name: configure_issue.yml
+  import_tasks: configure_issue.yml
+
+- name: configure_motd.yml
+  import_tasks: configure_motd.yml

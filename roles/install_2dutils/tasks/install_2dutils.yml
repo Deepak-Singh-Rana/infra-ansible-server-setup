@@ -1,0 +1,37 @@
+- name: make sure useful tools are installed redhat and centos
+  yum:
+    name:
+    - nmap
+    - tree
+    - htop
+    - iotop
+    - mtr
+    - tcpdump
+    - ipcalc
+    - open-vm-tools
+    - nano
+    - python3
+    - mlocate
+    - pwgen
+    - rsync
+    state: present
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: make sure useful tools are installed ubuntu
+  apt:
+    name: 
+    - nmap
+    - tree
+    - htop
+    - iotop
+    - mtr-tiny
+    - tcpdump
+    - ipcalc
+    - open-vm-tools
+    - nano
+    - python3
+    - mlocate
+    - pwgen
+    - rsync
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'

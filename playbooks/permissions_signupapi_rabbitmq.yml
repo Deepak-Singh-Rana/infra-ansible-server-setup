@@ -1,0 +1,14 @@
+- name: deploy rabbitmq permissions to signupapi servers
+  hosts: signupapi
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+    - permissions_signupapi_rabbitmq
+
+
+
