@@ -1,5 +1,16 @@
 ---
-# tasks file for deploy_certs
+#make sure we have internal CA certs on the server
 - import_tasks: 2dcerts.yml
-- import_tasks: snap-pem.yml
-- import_tasks: 2degreesbroadband-pem.yml
+
+#- include_vars: 2degreesbroadband.co.nz.yml
+- include_vars: '{{ certname }}.yml'
+
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name: 'Deploy {{ certname }}.pem cert'
+  copy:
+    content: '{{ ssl_certificate }}'
+    dest: '/etc/ssl/private/{{ certname }}.pem'
+    owner: root
+    group: ssl-cert
+    mode: '640'
+

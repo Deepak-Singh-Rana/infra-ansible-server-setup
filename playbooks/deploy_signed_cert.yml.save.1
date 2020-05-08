@@ -1,0 +1,22 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+
+- name:
+  hosts: '{{ hosttodeploy }}'
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  vars_prompt:
+    - name: hosttodeploy
+      prompt: "what host do you want to deploy to"
+      private: no
+
+    - name: certname
+      prompt: "type fqdn of signed cert. [e.g. snap.net.nz, 2degreesbroadband.co.nz]"
+      private: no
+  roles:
+    - deploy_signed_certs

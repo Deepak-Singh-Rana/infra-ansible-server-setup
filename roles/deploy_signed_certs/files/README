@@ -1,0 +1,1 @@
+signed certs are stored in ansible-vault in the vars folder of this role
