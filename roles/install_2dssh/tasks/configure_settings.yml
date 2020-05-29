@@ -48,3 +48,11 @@
     owner: root
     group: root
     mode: '0640'
+
+- name: user_ca.pub
+  copy:
+    src: user_ca.pub
+    dest: /etc/ssh/user_ca.pub
+    owner: root
+    group: root
+    mode: '0640'

@@ -50,6 +50,15 @@
    group: root
   when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
 
+- name: pam config 2d-auth mkhome
+  copy:
+   src: pam-configs/2d-mkhome
+   dest: /usr/share/pam-configs/2d-mkhome
+   mode: '0622'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
 - name: pam config 2d-radius-auth radius
   copy:
    src: pam-configs/2d-radiusauth
@@ -59,10 +68,19 @@
    group: root
   when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
 
-- name: pam config 2d-radius-auth mkhome
+- name: pam config 2d-auth rootsecuretty
   copy:
-   src: pam-configs/2d-radiusmkhome
-   dest: /usr/share/pam-configs/2d-radiusmkhome
+   src: pam-configs/2d-rootsecuretty
+   dest: /usr/share/pam-configs/2d-rootsecuretty
+   mode: '0622'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: pam config 2d-auth shells
+  copy:
+   src: pam-configs/2d-shells
+   dest: /usr/share/pam-configs/2d-shells
    mode: '0622'
    owner: root
    group: root

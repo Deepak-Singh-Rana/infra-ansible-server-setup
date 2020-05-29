@@ -1,0 +1,6 @@
+Name: 2d Limit root login to secure TTY only listed in /etc/securetty
+Default: yes
+Priority: 10
+Auth-Type: Primary
+Auth:
+        required                pam_securetty.so

@@ -1,5 +1,7 @@
+#how to run this playbook
+#ansible-playbook playbooks/install_2dradiusauth.yml --ask-vault-pass
 - name: install 2d-utils
-  hosts: akl-mod-ec02
+  hosts: ubuntu18radius
   remote_user: zeus
   become: yes
   become_method: sudo
@@ -10,3 +12,5 @@
     ansible_python_interpreter: /usr/bin/python3
   roles:
     - install_2dradiusauth
+    - permissions_sudo-sysadmin
+    - permissions_sudo-techm

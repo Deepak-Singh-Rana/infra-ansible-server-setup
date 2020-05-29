@@ -1,5 +1,14 @@
-- name: enable 2d-radisuauth with pam auth update
-  command: pam-auth-update --enable 2d-radiusauth
+- name: enable 2d-radisuauth pam_radius_auth with pam auth update
+  command: pam-auth-update --package --enable 2d-radiusauth
 
-- name: enable 2d-radiusmkhome with pam auth update
-  command: pam-auth-update --enable 2d-radiusmkhome
+- name: enable 2d-radiusmkhome pam_mkhomedir with pam auth update
+  command: pam-auth-update --package --enable 2d-radiusmkhome
+
+- name: enable 2d-shells pam_shells using pam auth update
+  command: pam-auth-update --package --enable 2d-shells
+
+- name: enable 2d-rootsecuretty pam_securetty using pam auth update
+  command: pam-auth-update --package --enable 2d-securetty
+
+- name: disable canonical supplied pam_mkhomedir using pam auth update
+  command: pam-auth-update --package --remove mkhomedir

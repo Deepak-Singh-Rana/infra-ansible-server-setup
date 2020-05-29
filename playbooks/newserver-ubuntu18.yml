@@ -1,4 +1,6 @@
 #https://docs.ansible.com/ansible/latest/modules/copy_module.html
+#how to run this playbook
+#ansible-playbook playbooks/newserver-ubuntu18.yml --ask-vault-pass
 - name: Setup a new Ubuntu 18 server
   hosts: newserver
   remote_user: zeus

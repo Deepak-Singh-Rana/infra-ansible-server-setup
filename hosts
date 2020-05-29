@@ -15,6 +15,19 @@ mpiradius
 [certsdeploy]
 202.37.100.19
 
+[ubuntu18radius]
+#fry
+#intweb02
+misspiggy18
+#mop-stag
+#rupert
+sassette18
+#scp
+#scp-stag
+#workflow-dev
+#workflow18
+#zoidberg
+
 [ipareplicas]
 10.200.63.77
 

@@ -1,4 +1,4 @@
-Name: 2d radius Create home directory on login
+Name: 2d Create home directory on login
 Default: yes
 Priority: 0
 Session-Type: Additional
