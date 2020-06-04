@@ -1,6 +1,6 @@
 #https://docs.ansible.com/ansible/latest/modules/copy_module.html
 - name: Setup a new Ubuntu 18 server
-  hosts: akl-mod-ec02
+  hosts: chc-avo-ec02
   remote_user: zeus
   become: yes
   become_method: sudo

@@ -7,6 +7,8 @@ ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 202.37.101.219
 [waluigitest]
 waluigi
+[chc-avo-ec02]
+172.24.196.37
 
 [centos]
 202.37.101.219

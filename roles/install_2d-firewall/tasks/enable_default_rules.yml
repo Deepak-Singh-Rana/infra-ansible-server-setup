@@ -3,12 +3,14 @@
     path: /root/.bashrc
     insertafter: '^# User specific aliases and functions'
     line: export PATH='/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
 - name: disable firewalld
   systemd:
     name: firewalld
     state: stopped
     enabled: no
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
 - name: copy ifup firewall script
   copy:
