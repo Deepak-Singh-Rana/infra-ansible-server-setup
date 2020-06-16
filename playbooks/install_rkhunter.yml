@@ -1,4 +1,4 @@
-- name: Install splunkforwarder on ubuntu 16.04 servers and newer
+- name: Install rkhunter
   hosts: newserver
   remote_user: zeus
   become: yes

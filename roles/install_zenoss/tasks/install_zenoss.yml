@@ -1,0 +1,62 @@
+---
+# tasks file for install_zenoss user
+- name: copy matches file if it doesn't exist already
+  copy:
+    remote_src: yes
+    src: /etc/ssh/sshd_config.d/matches.example
+    dest: /etc/ssh/sshd_config.d/matches
+    owner: root
+    group: root
+    mode: '0644'
+    force: no
+
+- name: Add zenoss user
+  user:
+    name: zenoss
+    uid: 20000
+    comment: "Zenoss account"
+
+- name: add zenoss user into ssh.d matches file
+  blockinfile:
+    path: /etc/ssh/sshd_config.d/matches
+    insertafter: #start ansible-users#
+    block: |
+      Match User zenoss
+              AuthenticationMethods "publickey"
+              AllowGroups zenoss
+    state: present
+
+- name: Add zenoss .ssh folder
+  file:
+    path: /home/zenoss/.ssh
+    state: directory
+    owner: zenoss
+    group: zenoss
+    mode: 0700
+
+- name: Copy zenoss key
+  copy:
+    src: authorized_keys
+    dest: /home/zenoss/.ssh/authorized_keys
+    owner: zenoss
+    group: zenoss
+    mode: 0600
+
+- name: add zenoss firewall rules
+  copy:
+    src: ans_snmp-zenoss.v4
+    dest: /etc/fw-2d/rules-available/ans_snmp-zenoss.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: apply zenoss firewall rules
+  file:
+    src: /etc/fw-2d/rules-available/ans_snmp-zenoss.v4
+    dest: /etc/fw-2d/rules-enabled/45_ans_snmp-zenoss.v4
+    owner: root
+    group: root
+    state: link
+
+- name: enable the firewall
+  shell: /usr/local/sbin/firewall-up

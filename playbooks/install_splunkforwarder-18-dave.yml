@@ -1,4 +1,4 @@
-- name: Install splunkforwarder on ubuntu 16.04 servers and newer
+- name: Install splunkforwarder on ubuntu 18.04 servers and newer
   hosts: netbox_platform_server-ubuntu-18
   remote_user: dave.gardner
   become: yes

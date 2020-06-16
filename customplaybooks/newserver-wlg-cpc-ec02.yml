@@ -1,8 +1,6 @@
 #https://docs.ansible.com/ansible/latest/modules/copy_module.html
-#how to run this playbook
-#ansible-playbook playbooks/newserver-ubuntu18.yml --ask-vault-pass
 - name: Setup a new Ubuntu 18 server
-  hosts: newserver
+  hosts: wlgcpcec02
   remote_user: zeus
   become: yes
   become_method: sudo
@@ -30,13 +28,10 @@
     - install_2dhome
     - install_2dradiusauth
     - install_2dssh
-    - install_ntp
     - install_splunkforwarder
     - install_branding
     - install_2dutils
     - install_rkhunter
-    - install_2dsnmpd
-    - install_zenoss
     - harden_ub18
     - configure_bgaccounts
     - permissions_sudo-sysadmin

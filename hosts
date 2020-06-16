@@ -7,8 +7,23 @@ ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 202.37.101.219
 [waluigitest]
 waluigi
-[chc-avo-ec02]
+[cgnatdnsdocker]
+akl-for-ec02
+akl-mod-ec02
+hlz-wkt-ec02
+wlg-cpc-ec02
+chc-avo-ec02
+[chcavoec02]
 172.24.196.37
+
+[aklforec02]
+172.24.196.13
+
+[wlgcpcec02]
+172.24.196.29
+
+[hlzctrec02]
+172.24.196.21
 
 [centos]
 202.37.101.219

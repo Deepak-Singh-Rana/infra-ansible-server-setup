@@ -1,0 +1,4 @@
+---
+# tasks file for install_2dsnmpd
+- name: install zenoss
+  include: install_snmpd.yml

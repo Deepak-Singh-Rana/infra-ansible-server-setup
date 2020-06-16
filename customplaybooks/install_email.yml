@@ -1,5 +1,6 @@
-- name: install autoupdates
-  hosts: newserver
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+- name: install clamav
+  hosts: cgnatdnsdocker
   remote_user: zeus
   become: yes
   become_method: sudo
@@ -9,4 +10,4 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   roles:
-    - install_autoupdates
+    - install_email

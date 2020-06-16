@@ -1,4 +1,5 @@
-- name: install autoupdates
+---
+- name: install 2dsnmpd
   hosts: newserver
   remote_user: zeus
   become: yes
@@ -9,4 +10,4 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   roles:
-    - install_autoupdates
+    - install_2dsnmpd

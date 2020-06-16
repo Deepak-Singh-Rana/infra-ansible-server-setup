@@ -1,0 +1,62 @@
+---
+# tasks file for install_2dsnmpd
+- name: Install snmpd packages redhat
+  dnf:
+    name:
+    - net-snmp
+    - net-snmp-utils
+    - net-snmp-libs
+    - net-snmp-devel
+#   - snmp-mibs????
+    state: latest
+  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
+       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: Install snmpd packages ubuntu
+  apt:
+    name:
+    - snmp
+    - snmpd
+    - libsnmp-dev
+    - snmp-mibs-downloader
+    state: latest
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
+
+- name: copy snmp.local.conf file
+  copy:
+    src: snmp/snmp.local.conf
+    dest: /etc/snmp/snmp.local.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create snmp.local.conf.d directory if it does not exist
+  file:
+    path: /etc/snmp/snmp.local.conf.d
+    state: directory
+    mode: '0755'
+
+- name: has out the mibs line in snmp.conf
+  replace:
+    path: /etc/snmp/snmp.conf
+    regexp: 'mibs :'
+    replace: '#mibs :'
+
+- name: edit snmpd.conf to stop listening on localhost only
+  replace:
+    path: /etc/snmp/snmpd.conf
+    regexp: '^agentAddress  udp:127.0.0.1:161'
+    replace: '#agentAddress  udp:127.0.0.1:161'
+
+- name: edit snmpd.conf to listen on all interfaces ipv4/6
+  replace:
+    path: /etc/snmp/snmpd.conf
+    regexp: '#agentAddress udp:161,udp6:\[::1\]:161'
+    replace: 'agentAddress udp:161,udp6:[::1]:161'
+
+- name: make sure snmpd is enabled
+  service:
+    name: snmpd
+    state: restarted
+    enabled: yes
+

@@ -10,7 +10,36 @@
    mode: '0644'
 
 - name: configure exim4 hostname
-  lineinfile:
+  replace:
    path: /etc/exim4/update-exim4.conf.conf
-   line: dc_readhost='{{ ansible_hostname }}'
-   create: yes
+   regexp: 'dc_readhost=.*'
+   replace: dc_readhost='{{ ansible_hostname }}'
+
+- name: configure smtp url
+  replace:
+   path: /etc/exim4/update-exim4.conf.conf
+   regexp: 'dc_smarthost=.*'
+   replace: dc_smarthost='smtp.snap.net.nz'
+
+- name: configure configtype
+  replace:
+   path: /etc/exim4/update-exim4.conf.conf
+   regexp: 'dc_eximconfig_configtype=.*'
+   replace: dc_eximconfig_configtype='satellite'
+
+- name: configure hidemailname
+  replace:
+   path: /etc/exim4/update-exim4.conf.conf
+   regexp: 'dc_hide_mailname=.*'
+   replace: dc_hide_mailname='true'
+
+- name: configure use split config
+  replace:
+   path: /etc/exim4/update-exim4.conf.conf
+   regexp: 'dc_use_split_config=.*'
+   replace: dc_use_split_config='true'
+
+- name: restart exim4 service
+  systemd:
+    state: restarted
+    name: exim4

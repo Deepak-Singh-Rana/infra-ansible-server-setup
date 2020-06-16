@@ -1,0 +1,16 @@
+[Unit]
+Description=Simple Network Management Protocol (SNMP) Daemon. 2d Service modified to allow access to postfix directories.
+After=network.target
+ConditionPathExists=/etc/snmp/snmpd.conf
+
+[Service]
+Environment="MIBSDIR=/usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/usr/share/mibs/site:/usr/share/snmp/mibs:/usr/share/mibs/iana:/usr/share/mibs/ietf:/usr/share/mibs/netsnmp"
+#Environment="MIBS="
+Type=simple
+ExecStartPre=/bin/mkdir -p /var/run/agentx
+ExecStart=/usr/sbin/snmpd -Lsd -Lf /dev/null -u root -g root -I -smux -f
+#ExecStart=/usr/sbin/snmpd -Lsd -Lf /dev/null -u root -g root -I -smux -C /etc/snmp/2d-snmpd.conf -f
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

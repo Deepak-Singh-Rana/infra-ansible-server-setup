@@ -32,6 +32,8 @@
     - install_branding
     - install_2dutils
     - install_rkhunter
+    - install_2dsnmpd
+    - install_zenoss
     - harden_rhel8
     - configure_bgaccounts
     - permissions_sudo-sysadmin
