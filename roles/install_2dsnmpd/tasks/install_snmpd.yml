@@ -30,9 +30,9 @@
     group: root
     mode: '0644'
 
-- name: Create snmp.local.conf.d directory if it does not exist
+- name: Create snmpd.local.conf.d directory if it does not exist
   file:
-    path: /etc/snmp/snmp.local.conf.d
+    path: /etc/snmp/snmpd.local.conf.d
     state: directory
     mode: '0755'
 

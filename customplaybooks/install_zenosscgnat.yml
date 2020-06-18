@@ -1,6 +1,6 @@
 - name: Install zenoss on ubuntu 18.04 servers and newer
   hosts: cgnatdnsdocker
-  remote_user: zeus
+  remote_user: dave.gardner@2degrees.nz
   become: yes
   become_method: sudo
   gather_facts: true
@@ -9,4 +9,4 @@
     ansible_python_interpreter: /usr/bin/python3
   roles:
     - install_2dsnmpd
-    - install_zenoss
+#    - install_zenoss

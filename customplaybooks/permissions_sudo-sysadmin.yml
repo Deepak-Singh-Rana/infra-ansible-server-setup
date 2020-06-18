@@ -1,5 +1,5 @@
 - name: deploy sudo rights for sysadmins to a newly provisioned server
-  hosts: xenia
+  hosts: cgnatdnsdocker
   remote_user: zeus
   become: yes
   become_method: sudo
