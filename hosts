@@ -16,6 +16,8 @@ chc-avo-ec02
 [chcavoec02]
 172.24.196.37
 
+[bert-dev]
+bert-dev
 [aklforec02]
 172.24.196.13
 
@@ -33,17 +35,20 @@ mpiradius
 202.37.100.19
 
 [ubuntu18radius]
-#fry
-#intweb02
-misspiggy18
-#mop-stag
-#rupert
-sassette18
-#scp
-#scp-stag
-#workflow-dev
-#workflow18
-#zoidberg
+##misspiggy18
+##xenia
+##snoopdogg
+##frigg
+##mop-stag
+##scp-stag
+##workflow18
+##zoidberg
+##fry
+##bender
+##rupert
+##intweb02
+##scp
+#workflow-dev broken
 
 [ipareplicas]
 10.200.63.77

@@ -17,7 +17,7 @@ on bitbucket go to your settings and generate yourself an "app password" this wi
 
 ```
 
-$git clone https://<username>@bitbucket.org/dave_gardner/td-ansible-server-setup.git
+$git clone https://<username>@bitbucket.org/2dgreesdev/td-ansible-server-setup.git
 
 ```
 
@@ -35,3 +35,4 @@ $ git push
 #setting up a new server
 
 $ ansible-playbook playbooks/newserver-ubuntu18.yml --ask-vault-pass
+$ ansible-playbook playbooks/newserver-redhat8.yml
