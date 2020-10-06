@@ -5,6 +5,8 @@ ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
 [newserver]
 202.37.101.219
+[hypnotoad-stag]
+hypnotoad-stag
 [waluigitest]
 waluigi
 [cgnatdnsdocker]
@@ -26,6 +28,9 @@ bert-dev
 
 [hlzctrec02]
 172.24.196.21
+
+[hypnotoad-stag]
+hypnotoad-stag
 
 [centos]
 202.37.101.219

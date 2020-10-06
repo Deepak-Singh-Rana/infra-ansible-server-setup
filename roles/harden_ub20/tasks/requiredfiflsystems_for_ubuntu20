@@ -1,0 +1,43 @@
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02Sr4y3E0b6NzZMD8t3DlkPWLaL6yZNGIW7 / ext4 defaults 0 0
+# /tmp was on /dev/disk1/tmp during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SPlC0jtELoRO2cOi0MeCt2senx4fhPn6L /tmp ext4 defaults 0 0
+# /var was on /dev/disk1/var during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SXRlBkK0JAKaGQwu9jkyOopjpx31iSc75 /var ext4 defaults 0 0
+# /var/backups was on /dev/disk1/varbackups during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SS1qcC4btcGxeJyiUdnyRWhZIjgrwd5Kp /var/backups ext4 defaults 0 0
+# /var/log was on /dev/disk1/varlog during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SnWUxo275xGM2HNexYsptUngyvn0Jkbq1 /var/log ext4 defaults 0 0
+# /var/log/audit was on /dev/disk1/varlogaudit during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SsU1OmDM95cKkZjBUNKcBR6r9eg3Nhc3u /var/log/audit ext4 defaults 0 0
+# /var/tmp was on /dev/disk1/vartmp during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SLpSQLcbLMs8hjUFTqmKjFYHJbANl2EcS /var/tmp ext4 defaults 0 0
+# /boot was on /dev/sda2 during curtin installation
+/dev/disk/by-uuid/8b460e10-c3a9-41a9-9469-d28a8a534d89 /boot ext4 defaults 0 0
+# /home was on /dev/disk1/home during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SBZeIsatFqhwgUECYkTLLmRry8jqmjhMv /home ext4 defaults 0 0
+# /opt was on /dev/disk1/opt during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SeCWJ725QiH5DDSMd3E527hFFjBmHT9ka /opt ext4 defaults 0 0
+/swap.img       none    swap    sw      0       0
+
+
+
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02Sr4y3E0b6NzZMD8t3DlkPWLaL6yZNGIW7 / ext4 rw,nodev,relatime,data=ordered 0 1
+# /tmp was on /dev/disk1/tmp during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SPlC0jtELoRO2cOi0MeCt2senx4fhPn6L /tmp ext4 rw,nosuid,nodev,noexec,auto,nouser,async 0 2
+# /var was on /dev/disk1/var during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SXRlBkK0JAKaGQwu9jkyOopjpx31iSc75 /var ext4 defaults 0 2
+# /var/backups was on /dev/disk1/varbackups during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SS1qcC4btcGxeJyiUdnyRWhZIjgrwd5Kp /var/backups ext4 defaults 0 2
+# /var/log was on /dev/disk1/varlog during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SnWUxo275xGM2HNexYsptUngyvn0Jkbq1 /var/log ext4 defaults 0 2
+# /var/log/audit was on /dev/disk1/varlogaudit during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SsU1OmDM95cKkZjBUNKcBR6r9eg3Nhc3u /var/log/audit ext4 defaults 0 2
+# /var/tmp was on /dev/disk1/vartmp during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SLpSQLcbLMs8hjUFTqmKjFYHJbANl2EcS /var/tmp ext4 rw,nosuid,nodev,noexec,auto,nouser,async 0 2
+# /boot was on /dev/sda2 during curtin installation
+/dev/disk/by-uuid/8b460e10-c3a9-41a9-9469-d28a8a534d89 /boot ext4 defaults 0 2
+# /home was on /dev/disk1/home during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SBZeIsatFqhwgUECYkTLLmRry8jqmjhMv /home ext4 rw,nodev,relatime,data=ordered 0 2
+# /opt was on /dev/disk1/opt during curtin installation
+/dev/disk/by-id/dm-uuid-LVM-4JgSUTR1Lqkg8hB90jZ8d4KzDHYuW02SeCWJ725QiH5DDSMd3E527hFFjBmHT9ka /opt ext4 defaults 0 2
+/swap.img       none    swap    sw      0       0

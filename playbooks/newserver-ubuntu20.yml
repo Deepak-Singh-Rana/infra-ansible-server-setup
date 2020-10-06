@@ -1,0 +1,71 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+#how to run this playbook
+#ansible-playbook playbooks/newserver-ubuntu18.yml --ask-vault-pass
+- name: Setup a new Ubuntu 18 server
+  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  vars_prompt:
+    - name: new_hostname
+      prompt: "what will the hostname of this server be?"
+      private: no
+
+  roles:
+#configures the hostname of the server
+    - configure_hostname
+#cleans up the server so clones of templates become indipendant from each other
+    - clean_serverscript
+#configures the repositories that the OS uses to get updates and software
+    - configure_repos
+#sets up loging on the servers
+    - install_2dlogging
+#make sure server can reach it's set repository
+    - base_role
+#deployes required 2degrees certificates onto the servers
+    - deploy_certs
+#setups 2degrees standard firewall
+    - install_2d-firewall
+#configures the servers to allow them to email out if need be
+    - install_email
+#install and configure auditd for auditing purposes
+    - install_auditd
+#install linux virus scanner
+    - install_clamav
+#configures the home folder to 2degrees standards
+    - install_2dhome
+#configures the server to use radius for AD authentication
+    - install_2dradiusauth
+#configures ssh to 2degrees hardened standard
+    - install_2dssh
+#sets up ntp on the server
+    - install_ntp
+#sets up splunk forwarder to send logs to splunk forwarder
+    - install_splunkforwarder
+#configures the login messages to TASS/PCI/SOX standards
+    - install_branding
+#installs usefull sysadmin tools
+    - install_2dutils
+#installs rootkit detection
+    - install_rkhunter
+#configurs snmpd to allow thigns to send traps to zenoss
+    - install_2dsnmpd
+#setups zenoss user for zenoss management
+    - install_zenoss
+#Hardens ubuntu to level2 compliance
+    - harden_ub20
+#setups breakglass utils/permissions
+    - configure_bgaccounts
+#grants sudo permissions to sysadmin security group
+    - permissions_sudo-sysadmin
+#grants sudo permissions to techm security group
+    - permissions_sudo-techm
+#install aide late so we don't have heaps of changes for the next scan because we are setting up the os
+    - install_2daide
+#Auto updates come at the end so it doens't start updating while we are setting up the vm
+    - install_autoupdates

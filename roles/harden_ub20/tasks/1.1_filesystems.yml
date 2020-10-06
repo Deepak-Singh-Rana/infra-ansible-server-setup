@@ -1,0 +1,75 @@
+- name: 1.1 filessystem configuration
+  copy:
+   src: modprobe.d/cis_1_1.conf
+   dest: /etc/modprobe.d/cis_1_1.conf
+   owner: root
+   group: root
+   mode: '0644'
+
+- name: 1.1.6 Ensure /dev/shm is configured (Automated) /dev/shm
+  lineinfile:
+   path: /etc/fstab
+   regexp: '^tmpfs.*/dev/shm'
+   line: 'tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0'
+   state: present
+
+- name: 1.1 partition fstab configuration /
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/ .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>rw,nodev,relatime,data=ordered\g<3> 1'
+
+- name: 1.1 partition fstab configuration /tmp
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/tmp .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>rw,nosuid,nodev,noexec,auto,nouser,async\g<3> 2'
+
+- name: 1.1 partition fstab configuration /var
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/var .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>\g<2>\g<3> 2'
+
+- name: 1.1 partition fstab configuration /var/backups
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/var\/backups .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>\g<2>\g<3> 2'
+
+- name: 1.1 partition fstab configuration /var/log
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/var\/log .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>\g<2>\g<3> 2'
+
+- name: 1.1 partition fstab configuration /var/log/audit
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/var\/log\/audit .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>\g<2>\g<3> 2'
+
+- name: 1.1 partition fstab configuration /var/tmp
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/var\/tmp .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>rw,nosuid,nodev,noexec,auto,nouser,async\g<3> 2'
+
+- name: 1.1 partition fstab configuration /boot
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/boot .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>\g<2>\g<3> 2'
+
+- name: 1.1 partition fstab configuration /home
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/home .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>rw,nodev,relatime,data=ordered\g<3> 2'
+
+- name: 1.1 partition fstab configuration /opt
+  replace:
+    path: /etc/fstab
+    regexp: '^(.* \/opt .*)(defaults)(.*[0-2]).*([0-2])'
+    replace: '\g<1>\g<2>\g<3> 2'
+

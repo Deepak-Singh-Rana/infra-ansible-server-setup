@@ -1,0 +1,54 @@
+#!/bin/bash
+
+#manual variables
+TABSPACING="\t"
+
+LOGFILE=/var/log/metapod/metapod.log
+
+WHERE="/etc/ssh/sshd_config"
+
+#automatically set variables
+LOCKFOLDER="/etc/metapod/lock"
+SCRIPTNAME=`basename $BASH_SOURCE | sed 's/.fix//'`
+
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+RESET=`tput sgr0`
+
+if [ "$1" == "--help" ] || [ "$1" == "-h" ]
+then
+        echo "Arguments Avalible"
+        echo "-h --help       Show this help"
+        echo "-d --debug      Show debugging information for Passes and Fails"
+        exit 0;
+fi
+if [ "$1" == "--debug" ] || [ "$1" == "-d" ]; then
+        SHOWDEBUG=true
+fi
+
+if [ $SHOWDEBUG ]; then
+        echo "-----------------"
+        echo -e "$SCRIPTNAME:"
+fi
+echo -e "\n$SCRIPTNAME" >> $LOGFILE
+date -u >> $LOGFILE
+#check for lock file and don't run if it exists
+if [ -f "$LOCKFOLDER/$SCRIPTNAME.lock" ]
+then
+        echo "$LOCKFOLDER/$SCRIPTNAME.lock"
+        echo "lock file exists, therefore not running" >> $LOGFILE
+else
+##################
+#Start Pre Checks#
+##################
+#delete any current maxsize
+sed -i '/^#BANNER .*/d' $WHERE
+sed -i '/^Banner .*/d' $WHERE
+#put in the new details
+echo "#BANNER" >> $WHERE
+echo "Banner /etc/issue.net.2d" >> $WHERE
+echo -e "echo \"Banner /etc/issue.net.2d\" >> $WHERE" >> $LOGFILE
+
+#create a lock file to make sure packages updates can't replace unhardend things
+touch "$LOCKFOLDER/$SCRIPTNAME.lock"
+fi

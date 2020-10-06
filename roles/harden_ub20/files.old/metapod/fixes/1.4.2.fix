@@ -1,0 +1,116 @@
+#!/bin/bash
+
+#manual variables
+TABSPACING="\t"
+
+LOGFILE=/var/log/metapod/metapod.log
+
+WHERE="/etc/grub.d/00_header"
+WHERE2="/etc/grub.d/10_linux"
+
+#automatically set variables
+LOCKFOLDER="/etc/metapod/lock"
+SCRIPTNAME=`basename $BASH_SOURCE | sed 's/.fix//'`
+CHANGE=""
+
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+RESET=`tput sgr0`
+
+if [ "$1" == "--help" ] || [ "$1" == "-h" ]
+then
+        echo "Arguments Avalible"
+        echo "-h --help       Show this help"
+        echo "-d --debug      Show debugging information for Passes and Fails"
+        exit 0;
+fi
+if [ "$1" == "--debug" ] || [ "$1" == "-d" ]; then
+        SHOWDEBUG=true
+fi
+
+if [ $SHOWDEBUG ]; then
+        echo "-----------------"
+        echo -e "$SCRIPTNAME:"
+fi
+echo -e "\n$SCRIPTNAME" >> $LOGFILE
+date -u >> $LOGFILE
+#check for lock file and don't run if it exists
+if [ -f "$LOCKFOLDER/$SCRIPTNAME.lock" ]
+then
+        echo "$LOCKFOLDER/$SCRIPTNAME.lock"
+        echo "lock file exists, therefore not running" >> $LOGFILE
+else
+##################
+#Start Pre Checks#
+##################
+
+CHECK=`cat $WHERE | grep "set superuser"`
+CHECK2=`cat $WHERE2 | grep "menuentry" | grep "$title" | grep "unrestricted"`
+CHECK3=`cat $WHERE2 | grep "menuentry" | grep "$os" | grep "unrestricted"`
+
+if [[ "$CHECK" == "" ]]
+then
+	if [ $SHOWDEBUG ]; then
+		echo "cat <<EOF"
+		echo "set superusers=\"root\""
+		echo "password_pbkdf2 root grub.pbkdf2.sha512.10000.1B8AF40A0BE055E238659270BDBD7A601D2C800BBC72C3B4740F6AA06859B08A6F7BEC3004D337DA609198DC60C2598CE0C734790422FB2301CE74F67AFE8DB6.E2F2E3254633A5054C3394DB2F77406816B26DEF5DD994935CE1F1678A4E4D0EE8DBB697C768E1099A47775712B17E80E293299FE5C9D862ECCA2EC42B84C108"
+		echo "EOF"
+	fi
+	echo "cat <<EOF" >> $LOGFILE
+	echo "set superusers=\"root\"" >> $LOGFILE
+	echo "password_pbkdf2 root grub.pbkdf2.sha512.10000.1B8AF40A0BE055E238659270BDBD7A601D2C800BBC72C3B4740F6AA06859B08A6F7BEC3004D337DA609198DC60C2598CE0C734790422FB2301CE74F67AFE8DB6.E2F2E3254633A5054C3394DB2F77406816B26DEF5DD994935CE1F1678A4E4D0EE8DBB697C768E1099A47775712B17E80E293299FE5C9D862ECCA2EC42B84C108" >> $LOGFILE
+	echo "EOF" >> $LOGFILE
+	echo "update-grub" >> $LOGFILE
+	echo "cat <<EOF" >> $WHERE
+	echo "set superusers=\"root\"" >> $WHERE
+	echo "password_pbkdf2 root grub.pbkdf2.sha512.10000.1B8AF40A0BE055E238659270BDBD7A601D2C800BBC72C3B4740F6AA06859B08A6F7BEC3004D337DA609198DC60C2598CE0C734790422FB2301CE74F67AFE8DB6.E2F2E3254633A5054C3394DB2F77406816B26DEF5DD994935CE1F1678A4E4D0EE8DBB697C768E1099A47775712B17E80E293299FE5C9D862ECCA2EC42B84C108" >> $WHERE
+	echo "EOF" >> $WHERE
+	CHANGE="true"
+else
+	if [ $SHOWDEBUG ]; then
+		echo " set superuser already set in /etc/grub.d/00_header, not doing anything"
+	fi
+	echo " set superuser already set in /etc/grub.d/00_header, not doing anything" >> $LOGFILE
+fi
+#echo "CHECK2=$CHECK2"
+if [[ "$CHECK2" = "" ]]
+then
+	if [ $SHOWDEBUG ]; then
+		echo "sed -i 's/menuentry \(.*\)$title\(.*\) \$\{CLASS\}/menuentry \1$title\2 --unrestricted ${CLASS}/g' $WHERE2"
+	fi
+	echo "sed -i 's/menuentry \(.*\)$title\(.*\) \${CLASS}/menuentry \1$title\2 --unrestricted ${CLASS}/g'" $WHERE2 >> $LOGFILE
+	sed -i 's/menuentry \(.*\)$title\(.*\) \${CLASS}/menuentry \1$title\2 --unrestricted ${CLASS}/g' $WHERE2 
+	CHANGE="true"
+else
+	if [ $SHOWDEBUG ]; then
+		echo " --unrestriced already set in $WHERE2, not doing anything"
+	fi
+		echo " --unrestriced already set in $WHERE2, not doing anything" >> $LOGFILE
+fi
+#echo "CHECK3=$CHECK3"
+if [[ "$CHECK3" = "" ]]
+then
+	if [ $SHOWDEBUG ]; then
+		echo "sed -i 's/menuentry \(.*\)$os\(.*\) \$\{CLASS\}/menuentry \1$os\2 --unrestricted ${CLASS}/g' $WHERE2"
+	fi
+	echo "sed -i 's/menuentry \(.*\)$os\(.*\) \${CLASS}/menuentry \1$os\2 --unrestricted ${CLASS}/g'" $WHERE2 >> $LOGFILE
+	sed -i 's/menuentry \(.*\)$os\(.*\) \${CLASS}/menuentry \1$os\2 --unrestricted ${CLASS}/g' $WHERE2 
+	CHANGE="true"
+else
+	if [ $SHOWDEBUG ]; then
+		echo " --unrestriced already set in $WHERE2, not doing anything"
+	fi
+		echo " --unrestriced already set in $WHERE2, not doing anything" >> $LOGFILE
+fi
+if [[ "$CHANGE" == "true" ]]; then
+	if [ $SHOWDEBUG ]; then
+		echo "running updategrub"
+	fi
+	echo "running updategrub" >> $LOGFILE
+	update-grub
+fi
+CHANGE=""
+
+#create a lock file to make sure packages updates can't replace unhardend things
+touch "$LOCKFOLDER/$SCRIPTNAME.lock"
+fi

@@ -1,0 +1,151 @@
+#!/bin/bash
+TOREPLACE=()
+
+#manual variables
+TABSPACING="\t"
+
+LOGFILE=/var/log/metapod/metapod.log
+
+WHAT="install jffs2 /bin/true"
+WHERE="/etc/modprobe.d/CIS.conf"
+COMMENTSTYLE="#"
+POSTMATCH=""
+#TOREPLACE+=("")
+
+#automatically set variables
+LOCKFOLDER="/etc/metapod/lock"
+SCRIPTNAME=`basename $BASH_SOURCE | sed 's/.fix//'`
+COUNT=0
+CONTINUE=""
+MATCH=""
+COMMENTED=""
+INFO=""
+
+GREEN=`tput setaf 2`
+YELLOW=`tput setaf 3`
+RESET=`tput sgr0`
+
+if [ "$1" == "--help" ] || [ "$1" == "-h" ]
+then
+        echo "Arguments Avalible"
+        echo "-h --help       Show this help"
+        echo "-d --debug      Show debugging information for Passes and Fails"
+        exit 0;
+fi
+if [ "$1" == "--debug" ] || [ "$1" == "-d" ]; then
+        SHOWDEBUG=true
+fi
+
+if [ $SHOWDEBUG ]; then
+        echo "-----------------"
+        echo -e "$SCRIPTNAME:"
+fi
+echo -e "\n$SCRIPTNAME" >> $LOGFILE
+date -u >> $LOGFILE
+#check for lock file and don't run if it exists
+if [ -f "$LOCKFOLDER/$SCRIPTNAME.lock" ]
+then
+        echo "$LOCKFOLDER/$SCRIPTNAME.lock"
+        echo "lock file exists, therefore not running" >> $LOGFILE
+else
+##################
+#Start Pre Checks#
+##################
+#check to see if the file  doens't exist
+if [[ ! -f "$WHERE" ]]; then
+	if [ $SHOWDEBUG ]; then
+		echo "$WHERE: was not found"
+	fi
+	EXISTS="false"
+fi
+#check to see if the line is already in the file
+cat "$WHERE" | grep "$WHAT" | { while read LINE
+do
+#	echo "$LINE"
+#	echo "$WHAT"
+	if [[ "$LINE" == *"$WHAT"* ]]
+	then
+                if [ $SHOWDEBUG ]; then
+			echo "matched"
+			echo "Got: $LINE"
+			echo "Wanted: $WHAT"
+		fi
+		MATCH="true"
+	else
+                if [ $SHOWDEBUG ]; then
+			echo "didn't match"
+			echo "Got: $LINE"
+			echo "Wanted: $WHAT"
+		fi
+		MATCH="false"
+	fi
+	if [[ "$MATCH" == "true" ]];
+	then
+#		echo "check to see if it's commented"
+#		echo "$WHAT"
+		#check to see if it is commented out
+		if [[ "${LINE:0:1}" == "$COMMENTSTYLE" ]]
+		then
+			COMMENTED="true"
+			EXISTS="true"
+			REPLACE="true"
+			REPLACELINE="$LINE"
+	                if [ $SHOWDEBUG ]; then
+				echo "it's commented"
+			fi
+		else
+			#line already exists and is not commented out, we don't need to do anything
+	                if [ $SHOWDEBUG ]; then
+				echo "$WHAT exists and is not commented out, no need to do anything" | tee -a $LOGFILE
+			fi
+			echo -e "$WHAT exists and is not commented out, no need to do anything" >> $LOGFILE
+			EXISTS="true"
+			INFO="true"
+		fi
+		#check to see if there is an argument attached
+		#e.g. maxconnextionlimitseconds 600
+	else
+                if [ $SHOWDEBUG ]; then
+			echo "found no match"
+		fi
+		EXISTS="false"
+	fi
+        if [ $SHOWDEBUG ]; then
+		echo ""
+	fi
+done
+#Add the line if it doens't exist
+if [[ $EXISTS != "true" ]]
+then
+        if [ $SHOWDEBUG ]; then
+		echo "Did not find '$WHAT' so adding it to '$WHERE'" | tee -a $LOGFILE
+	fi
+	echo -e "$WHAT" >> $WHERE | tee -a $LOGFILE
+	echo -e "echo $WHAT >> $WHERE" >> $LOGFILE
+	PASS="true"
+fi
+#Replace the line if we find it and it's commented out
+
+if [[ "$REPLACE" == "true" ]]
+then
+#	echo "replace"
+        if [ $SHOWDEBUG ]; then
+		echo "sed -i \"'s/$REPLACELINE/$WHAT/\" $WHERE"
+	fi
+	sed -i "s|$REPLACELINE|$WHAT|" "$WHERE" | tee -a $LOGFILE
+	echo "sed -i \"s|$REPLACELINE|$WHAT|\" \"$WHERE\"" >> $LOGFILE
+	PASS="true"
+fi
+if [[ "$PASS" == "true" ]]
+then
+	echo -e "$SCRIPTNAME: $TABSPACING ${GREEN}[PASS]${RESET}"
+fi
+if [[ "$INFO" == "true" ]]
+then
+	echo -e "$SCRIPTNAME: $TABSPACING ${YELLOW}[INFO]${RESET}"
+fi
+}
+
+#create a lock file to make sure packages updates can't replace unhardend things
+touch "$LOCKFOLDER/$SCRIPTNAME.lock"
+fi
