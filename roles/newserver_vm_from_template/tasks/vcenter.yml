@@ -1,0 +1,37 @@
+---
+# tasks file for deploy_ubuntu18
+#requires sudo apt install python3-pyvmomi
+- name:  Clone a virtual machine from Linux template and customize
+  vmware_guest:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    validate_certs: no
+    datacenter: "{{ vcenter_datacenter }}"
+    datastore: "{{ vcenter_datastore }}"
+    cluster: "{{ vcenter_cluster }}"
+    #state: present
+    state: poweredon
+    folder: "{{ vcenter_folder }}"
+    template: "{{ vm_template }}"
+    name: "{{ vm_hostname }}"
+    networks:
+      - name: "{{ vcenter_vlan }}"
+        type: static
+        ip: "{{ vm_ipv4_address }}"
+        netmask: "{{ vm_ipv4_netmask }}"
+        gateway: "{{ vm_ipv4_gateway }}"
+        start_connected: true
+    wait_for_ip_address: True
+    customization:
+      domain: "2dl.nz"
+      dns_servers:
+        - "10.221.2.16"
+        - "10.221.2.17"
+        - "2406:e000:300::16"
+        - "2406:e000:300::17"
+      dns_suffix:
+        - snap.net.nz
+        - 2degrees.nz
+        - nzc.co.nz
+  delegate_to: localhost

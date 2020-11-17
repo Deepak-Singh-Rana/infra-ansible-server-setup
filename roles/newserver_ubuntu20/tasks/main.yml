@@ -1,0 +1,9 @@
+---
+# tasks file for roles/install_2d-firewall
+- name: configure ubuntu
+  include: ubuntu.yml
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+#- name: configure redhat
+#  include: redhat.yml
+#  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'

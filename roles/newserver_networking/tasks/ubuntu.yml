@@ -1,0 +1,37 @@
+---
+# tasks file for deploy_ubuntu18
+
+- name: addipv6_address
+  lineinfile:
+    path: /etc/netplan/99-netcfg-vmware.yaml
+    insertafter: 'addresses:'
+    line: '        - {{ vm_ipv6_address }}/{{ vm_ipv6_netmask }}'
+    firstmatch: yes
+
+- name: addipv6_gateway
+  lineinfile:
+    path: /etc/netplan/99-netcfg-vmware.yaml
+    insertafter: 'gateway4:*'
+    line: '      gateway6: {{ vm_ipv6_gateway }}'
+    firstmatch: yes
+
+- name: change renderer to NetworkManager
+  replace:
+    path: /etc/netplan/99-netcfg-vmware.yaml
+    regexp: '(.*renderer: ).*'
+    replace: '\1NetworkManager'
+  notify: netplan apply config
+
+- name: Remove the template ip and run handlers ubutnu 18.04
+  file:
+    path: /etc/netplan/01-netcfg.yaml
+    state: absent
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04'
+
+- name: Remove the template ip and run handlers ubuntu 20.04
+  file:
+    path: /etc/netplan/01-netcfg.yaml
+    state: absent
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04'
+#  notify: netplan generate config
+#  notify: netplan apply config

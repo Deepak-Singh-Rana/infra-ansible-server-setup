@@ -1,0 +1,13 @@
+---
+#https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#defining-variables-in-included-files-and-roles
+#this contains the variable that we use when want to deploy a template
+#vcenter to connect to
+vcenter_hostname: snzclham860.nzc.co.nz
+#datacenter name
+vcenter_datacenter: Hamilton VI
+#datastore the vm is deployed to
+vcenter_datastore: HM-SHARED-NAF5K01HAM-41
+#cluster the vm is deployed to
+vcenter_cluster: HM-FIX-01
+#folder vm is deployed to
+vcenter_folder: 2DF/vm-provisioning

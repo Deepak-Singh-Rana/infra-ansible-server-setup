@@ -18,7 +18,7 @@
 
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
-    - "../vars/newserver_ubuntu20.yml"
+    - "../vars/newserver_ubuntu18.yml"
 
   roles:
     - newserver_vm_from_template
@@ -41,7 +41,7 @@
     ansible_python_interpreter: /usr/bin/python3
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
-    - "../vars/newserver_ubuntu20.yml"
+    - "../vars/newserver_ubuntu18.yml"
 
   roles:
 #setup base connectivity
@@ -99,4 +99,4 @@
 #Auto updates come at the end so it doens't start updating while we are setting up the vm
     - install_autoupdates
 #run the postinstall cleanup role
-#    - postinstall_cleanup
+    - postinstall_cleanup

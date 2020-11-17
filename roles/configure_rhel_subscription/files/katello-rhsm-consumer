@@ -1,0 +1,287 @@
+#!/bin/bash
+set -e read -r -d '' KATELLO_DEFAULT_CA_DATA << EOM || true Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            be:d5:90:d9:f0:f5:8c:5a
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=US, ST=North Carolina, L=Raleigh, O=Katello, OU=SomeOrgUnit, 
+CN=ak01vvmpe006.2degreesmobile.co.nz
+        Validity
+            Not Before: Jun 23 08:50:30 2020 GMT
+            Not After : Jan 18 08:50:30 2038 GMT
+        Subject: C=US, ST=North Carolina, L=Raleigh, O=Katello, OU=SomeOrgUnit, 
+CN=ak01vvmpe006.2degreesmobile.co.nz
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:b3:7e:a5:c8:87:ad:51:bf:03:ac:d1:e5:10:97:
+                    b2:ff:df:9b:84:5c:5f:eb:c2:57:5e:c5:a2:3d:fa:
+                    d5:38:72:dd:11:96:69:86:10:9e:2c:5c:7c:da:c7:
+                    fe:b3:96:b4:b7:81:c8:0e:e9:b9:91:c5:a6:47:67:
+                    9c:b2:2b:48:ef:01:82:29:58:42:ff:4f:69:23:17:
+                    0c:c1:47:28:1b:83:a7:42:16:a1:38:5a:49:10:86:
+                    53:03:68:eb:37:b5:38:44:06:dc:88:58:d5:dc:b7:
+                    fb:9e:8c:3f:af:48:47:2e:81:63:16:07:e1:33:9d:
+                    00:0c:95:a8:22:c7:55:c0:8d:ba:0f:37:1e:08:59:
+                    94:4e:47:8b:e3:3b:d5:2f:79:24:8d:3a:d9:05:71:
+                    5e:4d:13:e9:54:e9:75:9a:2e:89:5d:53:57:9f:8b:
+                    d4:70:fb:88:36:9d:1b:fc:00:32:9b:6b:37:e6:07:
+                    2a:80:d7:7a:e5:5d:7d:46:e2:cb:a1:6e:5a:b3:be:
+                    e9:c5:19:08:97:6a:f5:59:5d:f3:e7:ce:8c:8d:17:
+                    20:d0:97:4d:d0:5d:d7:b8:5e:ca:2b:71:5f:1e:ce:
+                    50:00:45:b4:44:be:bb:71:4c:02:2b:e0:86:fb:43:
+                    2e:21:3d:6c:20:c5:4a:3d:8a:7e:67:0c:84:ce:2f:
+                    17:55
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints:
+                CA:TRUE
+            X509v3 Key Usage:
+                Digital Signature, Key Encipherment, Certificate Sign, CRL Sign
+            X509v3 Extended Key Usage:
+                TLS Web Server Authentication, TLS Web Client Authentication
+            Netscape Cert Type:
+                SSL Server, SSL CA
+            Netscape Comment:
+                Katello SSL Tool Generated Certificate
+            X509v3 Subject Key Identifier:
+                D1:A4:11:F6:5B:A1:90:5C:33:CB:AF:C4:B5:66:7A:8E:71:81:F9:61
+            X509v3 Authority Key Identifier:
+                keyid:D1:A4:11:F6:5B:A1:90:5C:33:CB:AF:C4:B5:66:7A:8E:71:81:F9:61
+                DirName:/C=US/ST=North 
+Carolina/L=Raleigh/O=Katello/OU=SomeOrgUnit/CN=ak01vvmpe006.2degreesmobile.co.nz
+                serial:BE:D5:90:D9:F0:F5:8C:5A
+    Signature Algorithm: sha256WithRSAEncryption
+         7b:ee:68:b3:53:94:5c:31:d5:22:4e:e4:32:b4:57:c4:e4:ec:
+         39:ae:75:46:ad:d8:57:70:b3:ac:3f:b3:30:49:1c:fa:c8:a9:
+         1f:b1:cb:46:f5:dd:b6:75:6a:70:c6:50:c9:eb:66:71:99:ea:
+         77:ab:58:11:ab:68:61:6f:ea:d1:45:1c:33:99:96:da:97:be:
+         48:76:8b:75:58:d5:7e:d4:2c:52:6d:99:cb:06:ce:d2:e4:c9:
+         75:8d:91:23:f2:b0:b8:72:25:88:b8:ef:8f:30:a8:b2:00:7d:
+         ad:7d:f0:12:16:8b:1b:41:c3:87:0d:ad:f4:ad:b3:63:dd:85:
+         35:e3:43:02:de:6e:27:9c:4f:ba:ce:b8:0c:7d:ed:92:bd:2e:
+         6d:bf:da:95:df:4e:ba:8e:bb:6c:95:32:24:58:82:57:f5:38:
+         74:59:f8:c2:5d:98:78:8f:25:a6:22:ee:61:39:18:d7:9c:82:
+         dd:79:83:2b:4b:e8:48:c2:44:47:11:2c:0e:02:77:d9:f7:56:
+         cc:be:8e:ea:2b:b7:97:04:b9:85:70:1f:73:07:de:9c:91:23:
+         b3:41:b8:d8:10:cd:60:a8:37:44:b5:fb:3a:96:a0:cd:91:60:
+         24:4f:d4:06:32:62:6e:bc:e9:ff:e0:92:5a:72:ce:57:23:70:
+         a9:dc:dc:e7 -----BEGIN CERTIFICATE----- 
+MIIFCjCCA/KgAwIBAgIJAL7VkNnw9YxaMA0GCSqGSIb3DQEBCwUAMIGMMQswCQYD 
+VQQGEwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVp 
+Z2gxEDAOBgNVBAoMB0thdGVsbG8xFDASBgNVBAsMC1NvbWVPcmdVbml0MSowKAYD 
+VQQDDCFhazAxdnZtcGUwMDYuMmRlZ3JlZXNtb2JpbGUuY28ubnowHhcNMjAwNjIz 
+MDg1MDMwWhcNMzgwMTE4MDg1MDMwWjCBjDELMAkGA1UEBhMCVVMxFzAVBgNVBAgM 
+Dk5vcnRoIENhcm9saW5hMRAwDgYDVQQHDAdSYWxlaWdoMRAwDgYDVQQKDAdLYXRl 
+bGxvMRQwEgYDVQQLDAtTb21lT3JnVW5pdDEqMCgGA1UEAwwhYWswMXZ2bXBlMDA2 
+LjJkZWdyZWVzbW9iaWxlLmNvLm56MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB 
+CgKCAQEAs36lyIetUb8DrNHlEJey/9+bhFxf68JXXsWiPfrVOHLdEZZphhCeLFx8 
+2sf+s5a0t4HIDum5kcWmR2ecsitI7wGCKVhC/09pIxcMwUcoG4OnQhahOFpJEIZT 
+A2jrN7U4RAbciFjV3Lf7now/r0hHLoFjFgfhM50ADJWoIsdVwI26DzceCFmUTkeL 
+4zvVL3kkjTrZBXFeTRPpVOl1mi6JXVNXn4vUcPuINp0b/AAym2s35gcqgNd65V19 
+RuLLoW5as77pxRkIl2r1WV3z586MjRcg0JdN0F3XuF7KK3FfHs5QAEW0RL67cUwC 
+K+CG+0MuIT1sIMVKPYp+ZwyEzi8XVQIDAQABo4IBazCCAWcwDAYDVR0TBAUwAwEB 
+/zALBgNVHQ8EBAMCAaYwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBEG 
+CWCGSAGG+EIBAQQEAwICRDA1BglghkgBhvhCAQ0EKBYmS2F0ZWxsbyBTU0wgVG9v 
+bCBHZW5lcmF0ZWQgQ2VydGlmaWNhdGUwHQYDVR0OBBYEFNGkEfZboZBcM8uvxLVm 
+eo5xgflhMIHBBgNVHSMEgbkwgbaAFNGkEfZboZBcM8uvxLVmeo5xgflhoYGSpIGP 
+MIGMMQswCQYDVQQGEwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNV 
+BAcMB1JhbGVpZ2gxEDAOBgNVBAoMB0thdGVsbG8xFDASBgNVBAsMC1NvbWVPcmdV 
+bml0MSowKAYDVQQDDCFhazAxdnZtcGUwMDYuMmRlZ3JlZXNtb2JpbGUuY28ubnqC 
+CQC+1ZDZ8PWMWjANBgkqhkiG9w0BAQsFAAOCAQEAe+5os1OUXDHVIk7kMrRXxOTs 
+Oa51Rq3YV3CzrD+zMEkc+sipH7HLRvXdtnVqcMZQyetmcZnqd6tYEatoYW/q0UUc 
+M5mW2pe+SHaLdVjVftQsUm2ZywbO0uTJdY2RI/KwuHIliLjvjzCosgB9rX3wEhaL 
+G0HDhw2t9K2zY92FNeNDAt5uJ5xPus64DH3tkr0ubb/ald9Ouo67bJUyJFiCV/U4 
+dFn4wl2YeI8lpiLuYTkY15yC3XmDK0voSMJERxEsDgJ32fdWzL6O6iu3lwS5hXAf 
+cwfenJEjs0G42BDNYKg3RLX7OpagzZFgJE/UBjJibrzp/+CSWnLOVyNwqdzc5w== -----END CERTIFICATE----- EOM read -r -d '' 
+KATELLO_SERVER_CA_DATA << EOM || true subject=/DC=nz/DC=co/DC=NZC/CN=2degrees Auckland Issuing Certificate 
+Authority issuer=/CN=2degrees Certificate Authority -----BEGIN CERTIFICATE----- 
+MIIJTzCCBzegAwIBAgITZwAAAAXCwgDMq4W9rAAAAAAABTANBgkqhkiG9w0BAQsF 
+ADApMScwJQYDVQQDEx4yZGVncmVlcyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkwHhcN 
+MTcwOTEzMDM1MzM3WhcNMjcwOTEzMDQwMzM3WjB3MRIwEAYKCZImiZPyLGQBGRYC 
+bnoxEjAQBgoJkiaJk/IsZAEZFgJjbzETMBEGCgmSJomT8ixkARkWA05aQzE4MDYG 
+A1UEAxMvMmRlZ3JlZXMgQXVja2xhbmQgSXNzdWluZyBDZXJ0aWZpY2F0ZSBBdXRo 
+b3JpdHkwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQC38VK2vwcg3o65 
+S4jid3KEixnEYS+NDi4YcKkPbiFMZt/h0mRlDM1yZP34UAJfclPzAZ0Tw43UoS2W 
+La12PFvK6zS8lni/Pqz+IvyygIzAF04kigN6aREuE6YFhCOdH/4iJRnlUfgW5Te1 
+IQJ2F5NOWRxfyAwafu6zUXzbGbNkBiqbYhx8H4+LKcFcdNW4sSbVnG/zZ+LDfo+f 
+zNJtV5vyPne4pUOzrbOdxh/uEW5xhwkFGSVYY5NBh7ooYkKjMsYlammpLpFJfu8u 
+yOknARVUkmuEEJ/N0zYQZ1AXzVDVGN752JXUM3fNmhy+VwcA3qnMFEff3vMr0wkf 
+aZHVDXa4+tatGT/D5EOS+r+msIvi9kuFBw5xBqY4XqveG1+AU76BdWInhTynEsK3 
+8kyS+J9A0kQaXuAhVlVtKeck8Tq8d8ZzbN3Ya11KIosqRpEda7I8FoybYjh2A8DG 
+lRJQGFvrEWWknqSIzGpZN2Glhm5mw5KbvQD7H//rNVsXqeYN+4VIRBvTmJ86pAN4 
+UjHi+Wi150GAXgHIiM8VcK4v8HCla7+/H6sI57QrC653Wu7b3tS2VZ41qJxv4xFN 
+ttvUnln3ajZWA8g1m+k4udWiMVIamOEY8x9EA8h7lb12+QXOVZquM6SkD4caj22f 
+A4xU4fx+2DTyaYOB4zXe6CFjKtX3eQIDAQABo4IEIDCCBBwwEAYJKwYBBAGCNxUB 
+BAMCAQAwHQYDVR0OBBYEFHZxKihg+9g4TpBnBknGlL3VYxKuMBkGCSsGAQQBgjcU 
+AgQMHgoAUwB1AGIAQwBBMAsGA1UdDwQEAwIBhjAPBgNVHRMBAf8EBTADAQH/MB8G 
+A1UdIwQYMBaAFGPD0gc9h9ZThtGw4ILSuhTWC/MbMIIBiAYDVR0fBIIBfzCCAXsw 
+ggF3oIIBc6CCAW+Ggc5sZGFwOi8vL0NOPTJkZWdyZWVzJTIwQ2VydGlmaWNhdGUl 
+MjBBdXRob3JpdHksQ049U05aQ0xBS0wzNTUsQ049Q0RQLENOPVB1YmxpYyUyMEtl 
+eSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9bnpj 
+LERDPWNvLERDPW56P2NlcnRpZmljYXRlUmV2b2NhdGlvbkxpc3Q/YmFzZT9vYmpl 
+Y3RDbGFzcz1jUkxEaXN0cmlidXRpb25Qb2ludIZNaHR0cDovL2NlcnQtYWtsLjJk 
+ZWdyZWVzLm56L2NlcnRlbnJvbGwvMmRlZ3JlZXMlMjBDZXJ0aWZpY2F0ZSUyMEF1 
+dGhvcml0eS5jcmyGTWh0dHA6Ly9jZXJ0LWhhbS4yZGVncmVlcy5uei9jZXJ0ZW5y 
+b2xsLzJkZWdyZWVzJTIwQ2VydGlmaWNhdGUlMjBBdXRob3JpdHkuY3JsMIICAQYI 
+KwYBBQUHAQEEggHzMIIB7zCBwgYIKwYBBQUHMAKGgbVsZGFwOi8vL0NOPTJkZWdy 
+ZWVzJTIwQ2VydGlmaWNhdGUlMjBBdXRob3JpdHksQ049QUlBLENOPVB1YmxpYyUy 
+MEtleSUyMFNlcnZpY2VzLENOPVNlcnZpY2VzLENOPUNvbmZpZ3VyYXRpb24sREM9 
+bnpjLERDPWNvLERDPW56P2NBQ2VydGlmaWNhdGU/YmFzZT9vYmplY3RDbGFzcz1j 
+ZXJ0aWZpY2F0aW9uQXV0aG9yaXR5MGUGCCsGAQUFBzAChllodHRwOi8vY2VydC1h 
+a2wuMmRlZ3JlZXMubnovY2VydGVucm9sbC9TTlpDTEFLTDM1NV8yZGVncmVlcyUy 
+MENlcnRpZmljYXRlJTIwQXV0aG9yaXR5LmNydDBlBggrBgEFBQcwAoZZaHR0cDov 
+L2NlcnQtaGFtLjJkZWdyZWVzLm56L2NlcnRlbnJvbGwvU05aQ0xBS0wzNTVfMmRl 
+Z3JlZXMlMjBDZXJ0aWZpY2F0ZSUyMEF1dGhvcml0eS5jcnQwLAYIKwYBBQUHMAGG 
+IGh0dHA6Ly9jZXJ0LWFrbC4yZGVncmVlcy5uei9vY3NwMCwGCCsGAQUFBzABhiBo 
+dHRwOi8vY2VydC1oYW0uMmRlZ3JlZXMubnovb2NzcDANBgkqhkiG9w0BAQsFAAOC 
+AgEAvxdGrBO0da4mIbYuCtXpZ9pzVcLqe2+jx+impKxAtb+bmFKlFuy3gZMqJigE 
+gaj/d4ATUjIqLjqVPoHIiPqq8oztVgLipPoyAu45KNimUB3doYU0xVb00psYIST1 
+CUKl72ikkU3dUyaNkdp0Th0vXdL5z1CrO0q4mepCgVcIi90ocgH3yCnGkBvo+RHd 
+/cwYBTn680hgRCZt/q3JQICikZKqLHLn9T+HjQKd2VCbyaebeNi74Ab5Ob1Ah419 
+7BAnQ8iFrvFIE7sZ+1VioBQjc8tG6+Td1XD2oKC38R14uyua+KwdWdWKUTLc0mGs 
+yB4yhraYrWpYgTvqwNsSI8UrFFIE6h1IvKgldR3dpL/x/tBmI6U1RK8iNu4efOxj 
+Hyr7TLY+SEAsso7VUSSfbFBPEfkgRzpGFHuvdCy6TLu9DyaRHitCElzI80tguyHn 
+DAaDh8x5ml6/Sy5AUjOy7VyiFyqgmPp+12YZFpgslNQjNVNW3nZIj6l4YiCVf0tM 
+9eEViLg62/PqahceGbFB76IZB681NANgmqiaiMspM1Qea8lepdgM2zDfDtDnINp6 
+X1BkDJIP0SUqvrvSM/PVUH0Ejg8Jy0FCfgvMQAFjI/Gm41tBBfobroj6sV8zlkUE 
+KC3gz5VnhQYp4yGYJOB10v/HFRvQYyubVlfKPlF5KdnNmrI= -----END CERTIFICATE----- subject=/CN=2degrees Certificate 
+Authority issuer=/CN=2degrees Certificate Authority -----BEGIN CERTIFICATE----- 
+MIIFLTCCAxWgAwIBAgIQL37gnqXHXpxAD9NcXncjgTANBgkqhkiG9w0BAQsFADAp 
+MScwJQYDVQQDEx4yZGVncmVlcyBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkwHhcNMTcw 
+OTExMDMxOTEyWhcNNDIwOTExMDMyOTA2WjApMScwJQYDVQQDEx4yZGVncmVlcyBD 
+ZXJ0aWZpY2F0ZSBBdXRob3JpdHkwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIK 
+AoICAQDbLciByNSX3z1+JpjMeD0o2B1HoWD/1iIbT+RrsTFY7FaGwlvpkOf6aKjH 
+lnwYbaKuXATc5wqnQn5PMkcpR0HInBBXdKoAhTq/ab3G152o3FfI3FHGLrS1a3hx 
+fE9Yetlg53n8zJkrEDDei3EiUtghGcejm49zzvWNXOFczAp35ILUIoq0IZRCYwWy 
+uGPMisX5IWPP4+iiWtqQpbFwecRaQH/WTj/hy/lS3dYMgJ8q3f1stLIAZ/PXt7Yl 
+FguHQBfOlL5nshoRcASDIxj7wBoHbJkcQJfg2x6sKiYyo0CambNDe7KznNGU3XKO 
+XmD9vGP3Ct6uLns082LJnrc6eoF4vayoIQZnfOzMeAae8Hz8gYJvyfkdRBvvUTov 
+IQlTOdqjNA+o9NfXYyqv+m58GpCKf3rJPXBNSg1v5V0nxqPyV43RWml1ptL1KLhy 
+b6tOaE/T24ikdaO08FJYLMJxpV//SUIyGXLJ9YlWDBRcMBK2oYhoLKIN+dZTqet+ 
+BoMMV3HCTuoJesjMsJed8mCis6WlXdQOCgbEbPChVt/zhmtv2xA+wZpRgHmNwJ9q 
+gnDidgExlDqebpksjPQfjkjyN4munXP4gEmMv7Qpxe0ffFMPcS5B2xgdwkDR0BZ5 
+AqdxmngpY1SS4bX+qTVCjs8Ii9Sf0IiRMyddEYiEBD0yG+VFYQIDAQABo1EwTzAL 
+BgNVHQ8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUY8PSBz2H1lOG 
+0bDggtK6FNYL8xswEAYJKwYBBAGCNxUBBAMCAQAwDQYJKoZIhvcNAQELBQADggIB 
+AHW1AP9jmOWZWG9Ay2nzAw+H+tfC3SA3HA80TG+9oTNiA0Hyv1/RKoMvn/G+NX3k 
+fuYbZNnlneogUPzT61yZE78Kt8+EicqdWMdhXo4+Zc9q6oCmUMNLI4OIQyf/wYdY 
+iEQCrTxmzxcowDY9ITbxriwq/TZ6e7GYVjd4Gnuu0viR0WxluCdLULePu3A3MgQS 
+MZoJo25u7jJObK9dpMspIg6vV+dXyAYUN63LQDVb0uw7lac88IjjdWC1NiUaoRgS 
+iiavVo1FJjs1k8HO1A1Z+mcqjWJcEFLHpSopRoT1uDTZMDZ8TqBlyyNASW/uP9gG 
+DYdA03PedFSlHYyBNvkgiWOrQCmJw+zWZRYPryeAxjUOqxmHLap0mMTkDwF4iHcJ 
+UA7uttGw48nmdXqSkadwwzY0xrDj3FyekWLEzWuyJiYRXHvv5yhQPQnDvZw4t9x6 
+iEVRwVIXmTkz/PzzLvGtFzVJ5+d9vJLCtW28EFbRIM9Xh3ZhrJT28jEirXesHidI 
+83x8BkXYCIGkQz4WQS0niys4Ad/F1Dz0hxXIeAW/C48+A6b8KSgrA53fCmsnqqkj 
+gPsOqsj+RVYza+nf6eR88r0ra9aBaXirWLZYeOWcwVIm0cDcTcWNTTO7235zfNxJ uSiI8UWNu65HJMlfsFgfGdARD4p38TnaMVp4Zal3uRbs 
+-----END CERTIFICATE----- EOM KATELLO_SERVER=hn02vvmpe007.2degreesmobile.co.nz 
+KATELLO_SERVER_CA_CERT=katello-server-ca.pem KATELLO_DEFAULT_CA_CERT=katello-default-ca.pem 
+KATELLO_CERT_DIR=/etc/rhsm/ca PORT=8443 PREFIX=/rhsm CFG=/etc/rhsm/rhsm.conf CFG_BACKUP=$CFG.kat-backup 
+CA_TRUST_ANCHORS=/etc/pki/ca-trust/source/anchors is_debian() {
+  if [ -r "/etc/os-release" ]
+  then
+    ID="$(sed -n -e "s/^ID\s*=\s*\(.*\)/\1/p" /etc/os-release)"
+    ID_LIKE="$(sed -n -e "s/^ID_LIKE\s*=\s*\(.*\)/\1/p" /etc/os-release)"
+    if [ "$ID" = "debian" ] || # Debian
+       [ "$ID_LIKE" = "debian" ] || # e.g Ubuntu
+       [ "$ID_LIKE" = "ubuntu" ] # e.g. Linux Mint
+    then
+      return 0
+    fi
+  fi
+  return 1
+}
+# exit on non-RHEL systems or when rhsm.conf is not found
+test -f $CFG || exit type -P subscription-manager >/dev/null || type -P subscription-manager-cli >/dev/null || 
+exit
+# backup configuration during the first run
+test -f $CFG_BACKUP || cp $CFG $CFG_BACKUP
+# create the cert
+echo "$KATELLO_SERVER_CA_DATA" > $KATELLO_CERT_DIR/$KATELLO_SERVER_CA_CERT chmod 644 
+$KATELLO_CERT_DIR/$KATELLO_SERVER_CA_CERT echo "$KATELLO_DEFAULT_CA_DATA" > 
+$KATELLO_CERT_DIR/$KATELLO_DEFAULT_CA_CERT chmod 644 $KATELLO_CERT_DIR/$KATELLO_DEFAULT_CA_CERT
+# if atomic or debian machine handle it the special way, else handle the regular rhel way
+if [ -n "${IS_ATOMIC+1}" ] || [ -e "/run/ostree-booted" ] then
+  # atomic setup
+  BASEURL=https://$KATELLO_SERVER/pulp/ostree/web/
+  # configure rhsm the config command was introduced in rhsm 0.96.6
+  subscription-manager config \
+    --server.hostname="$KATELLO_SERVER" \
+    --server.prefix="$PREFIX" \
+    --server.port="$PORT" \
+    --rhsm.repo_ca_cert="%(ca_cert_dir)s$KATELLO_SERVER_CA_CERT" \
+    --rhsm.baseurl="$BASEURL" elif is_debian then
+  # Debian setup
+  BASEURL=https://$KATELLO_SERVER/pulp/deb
+  subscription-manager config \
+    --server.hostname="$KATELLO_SERVER" \
+    --server.prefix="$PREFIX" \
+    --server.port="$PORT" \
+    --rhsm.repo_ca_cert="%(ca_cert_dir)s$KATELLO_SERVER_CA_CERT" \
+    --rhsm.baseurl="$BASEURL" else
+  # rhel setup
+  BASEURL=https://$KATELLO_SERVER/pulp/repos
+  # Get version of RHSM
+  RHSM_V="$((rpm -q --queryformat='%{VERSION}' subscription-manager 2> /dev/null || echo 0.0.0) | tail -n1 | tr 
+. ' ')"
+  declare -a RHSM_VERSION=($RHSM_V)
+  # configure rhsm the config command was introduced in rhsm 0.96.6 fallback left for older versions
+  if test ${RHSM_VERSION[0]:-0} -gt 0 -o ${RHSM_VERSION[1]:-0} -gt 96 -o \( ${RHSM_VERSION[1]:-0} -eq 96 -a 
+${RHSM_VERSION[2]:-0} -gt 6 \); then
+    subscription-manager config \
+      --server.hostname="$KATELLO_SERVER" \
+      --server.prefix="$PREFIX" \
+      --server.port="$PORT" \
+      --rhsm.repo_ca_cert="%(ca_cert_dir)s$KATELLO_SERVER_CA_CERT" \
+      --rhsm.baseurl="$BASEURL"
+    # Older versions of subscription manager may not recognize report_package_profile and 
+    # package_profile_on_trans options. So set them separately and redirect out & error to /dev/null to fail 
+    # silently.
+    subscription-manager config --rhsm.package_profile_on_trans=1 > /dev/null 2>&1 || true
+    subscription-manager config --rhsm.report_package_profile=1 > /dev/null 2>&1 || true
+  else
+    sed -i "s/^hostname\s*=.*/hostname = $KATELLO_SERVER/g" $CFG
+    sed -i "s/^port\s*=.*/port = $PORT/g" $CFG
+    sed -i "s|^prefix\s*=.*|prefix = $PREFIX|g" $CFG
+    sed -i "s|^repo_ca_cert\s*=.*|repo_ca_cert = %(ca_cert_dir)s$KATELLO_SERVER_CA_CERT|g" $CFG
+    sed -i "s|^baseurl\s*=.*|baseurl=$BASEURL|g" $CFG
+  fi
+  if grep --quiet full_refresh_on_yum $CFG; then
+    sed -i "s/full_refresh_on_yum\s*=.*$/full_refresh_on_yum = 1/g" $CFG
+  else
+    full_refresh_config="#config for on-premise management\nfull_refresh_on_yum = 1"
+    sed -i "/baseurl/a $full_refresh_config" $CFG
+  fi fi
+# also add the katello ca cert to the system wide ca cert store
+if [ -d $CA_TRUST_ANCHORS ]; then
+  update-ca-trust enable
+  cp $KATELLO_CERT_DIR/$KATELLO_SERVER_CA_CERT $CA_TRUST_ANCHORS
+  update-ca-trust
+  # reload docker if it is installed and running
+  if [ -f /usr/lib/systemd/system/docker.service ]; then
+    systemctl status docker >/dev/null && \
+    systemctl reload docker >/dev/null 2>&1
+  elif [ -f /etc/init.d/docker ]; then
+    service docker status >/dev/null && \
+    service docker reload >/dev/null 2>&1
+  fi fi
+# restart goferd if it is installed and running
+[ -f /etc/init.d/goferd ] && \
+  service goferd status >/dev/null && \
+  service goferd restart >/dev/null 2>&1 [ -f /usr/lib/systemd/system/goferd.service ] && \ [ -f /bin/systemctl 
+] && \
+  systemctl try-restart goferd >/dev/null 2>&1
+# EL5 systems and subscription-manager versions before 1.18.1-1 don't have the network.fqdn fact. For these 
+# cases, we have to update the "hostname-override" fact
+if (test -f /etc/redhat-release && grep -q -i "Red Hat Enterprise Linux Server release 5" /etc/redhat-release) 
+|| \
+   (test -f /etc/centos-release && grep -q -i "CentOS Linux release 5" /etc/centos-release) || \
+   test ${RHSM_VERSION[0]:-0} -lt 1 -o ${RHSM_VERSION[1]:-0} -lt 18 -o \( ${RHSM_VERSION[1]:-0} -eq 18 -a 
+${RHSM_VERSION[2]:-0} -lt 2 \); then
+  FQDN="$(hostname -f 2>/dev/null || echo localhost)"
+  if [ "$FQDN" != "localhost" ] && [ -d /etc/rhsm/facts/ ]; then
+    echo "{\"network.hostname-override\":\"$FQDN\"}" > /etc/rhsm/facts/katello.facts
+  fi fi exit 0
+# vim:sw=2:ts=2:et:

@@ -1,0 +1,60 @@
+#https://docs.ansible.com/ansible/latest/modules/copy_module.html
+#how to run this playbook
+#required pacakges pip3 install --user pyvmomi pyvim
+#ansible-playbook playbooks/deploy_signed_cert.yml --ask-vault-pass
+- hosts: localhost
+  gather_facts: false
+
+  vars_prompt:
+    - name: vcenter_username
+      prompt: "please enter your vcenter username"
+      private: no
+    - name: vcenter_password
+      prompt: "please enter your password"
+      private: yes
+
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  vars_files:
+    - "./vars/newserver_vcenterdetails.yml"
+    - "./vars/newserver_rhel8.yml"
+
+  roles:
+    - deploy_ubuntu18_guest
+
+  tasks:
+  - name: Add host to group abc
+    add_host:
+     name: '{{ vm_ipv4_address }}'
+     groups: abc
+     ansible_ssh_private_key_file: './ansible-deploy'
+
+- hosts: abc
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  gather_facts: false
+  vars:
+    ansible_ssh_private_key_file: "./ansible-deploy"
+    ansible_python_interpreter: /usr/bin/python3
+  vars_files:
+    - "./vars/newserver_vcenterdetails.yml"
+    - "./vars/newserver_rhel8.yml"
+
+
+  tasks:
+    - name: setup NetworkManager
+#      lineinfile:
+#        path: /etc/netplan/99-netcfg-vmware.yaml
+#        insertafter: 'addresses:'
+#        line: '        - "{{ vm_ipv6_address }}"/"{{ vm_ipv6_netmask }}"'
+#        firstmatch: yes
+#
+#    - name: addipv6_gateway
+#      lineinfile:
+#        path: /etc/netplan/99-netcfg-vmware.yaml
+#        insertafter: 'gateway4:*'
+#        line: '      gateway6: {{ vm_ipv6_gateway }}'
+#        firstmatch: yes
+

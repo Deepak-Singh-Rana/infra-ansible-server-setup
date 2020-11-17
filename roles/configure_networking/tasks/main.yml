@@ -1,0 +1,24 @@
+---
+# tasks file for configure_networking
+#https://docs.ansible.com/ansible/latest/collections/community/general/nmcli_module.html
+#configuring ip addresses
+#ubuntu template requires "apt install network-manager python3-dbus libnm-dev"
+
+- name: Optionally, at the same time specify IPv6 addresses for the device
+  community.general.nmcli:
+#    conn_name: network
+    conn_name: netplan-ens160
+    ifname: ens160
+    type: ethernet
+    ip4: 202.37.101.222/27
+    gw4: 192.0.2.1
+    ip6: 2406:e000:0:170::222/64
+    gw6: 2406:e000:0:170::1
+    state: present
+
+- name: Add host to group 'just_created'# with variable foo=42
+  add_host:
+    name: 202.37.101.222
+#    name: '{{ vm_ipv4 }}'
+    groups: just_created
+#    foo: 42
