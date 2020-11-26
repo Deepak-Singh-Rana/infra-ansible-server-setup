@@ -1,4 +1,4 @@
 - name: ubuntu install clamav
-  yum:
+  apt:
    name: 2d-clamav
    state: latest

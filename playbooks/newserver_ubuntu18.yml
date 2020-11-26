@@ -14,7 +14,7 @@
       private: yes
 
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    - ansible_python_interpreter: /usr/bin/python3
 
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
@@ -24,9 +24,30 @@
     - newserver_vm_from_template
 
   tasks:
+  - name: remove ssh_host_ed25519_key.pub from ansilbe server now
+    file:
+      path: ../files/ssh_host_ed25519_key.pub
+      state: absent
+
+  - name: remove ssh_host_ed25519_key-cert.pub from ansilbe server now
+    file:
+      path: ../files/ssh_host_ed25519_key-cert.pub
+      state: absent
+
+  - name: remove ssh_host_ed25519_key from ansilbe server now
+    file:
+      path: ../files/ssh_host_ed25519_key
+      state: absent
+
+  - name: generate a server host key
+    command: /usr/bin/ssh-keygen -t ed25519 -N "" -f ../files/ssh_host_ed25519_key
+
+  - name: sign the hostkey
+    command: /usr/bin/ssh-keygen -s ../files/server_ca -I 2degrees-server_{{ vm_hostname }} -h -n {{ vm_hostname }}.snap.net.nz,{{ vm_hostname }}.2degrees.nz,{{ vm_hostname }}.2dl.nz,{{ vm_hostname }}.nzc.co.nz -V +300w ../files/ssh_host_ed25519_key.pub
+
   - name: Add host to group deployedserver
     add_host:
-     name: '{{ vm_ipv4_address }}'
+     name: '{{ vm_fqdn }}'
      groups: deployedserver
      ansible_ssh_private_key_file: './files/ansible-deploy.key'
      ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
@@ -37,13 +58,16 @@
   become_method: sudo
   gather_facts: true
   vars:
-    ansible_ssh_private_key_file: "./files/ansible-deploy.key"
-    ansible_python_interpreter: /usr/bin/python3
+    - ansible_ssh_private_key_file: "./files/ansible-deploy.key"
+    - ansible_python_interpreter: /usr/bin/python3
+
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
     - "../vars/newserver_ubuntu18.yml"
 
   roles:
+#place signed host_keys onto the server
+    - configure_hostcerts
 #setup base connectivity
     - newserver_networking
 #configures the hostname of the server
@@ -100,3 +124,41 @@
     - install_autoupdates
 #run the postinstall cleanup role
     - postinstall_cleanup
+
+
+- hosts: localhost
+  gather_facts: false
+
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+
+  vars_files:
+    - "../vars/newserver_vcenterdetails.yml"
+    - "../vars/newserver_ubuntu18.yml"
+
+  tasks:
+  - name: remove ssh_host_ed25519_key.pub from ansilbe server now
+    file:
+      path: ../files/ssh_host_ed25519_key.pub
+      state: absent
+
+  - name: remove ssh_host_ed25519_key-cert.pub from ansilbe server now
+    file:
+      path: ../files/ssh_host_ed25519_key-cert.pub
+      state: absent
+
+  - name: remove ssh_host_ed25519_key from ansilbe server now
+    file:
+      path: ../files/ssh_host_ed25519_key
+      state: absent
+
+#  - name: reboot the vm using vmware guest
+#    community.vmware.vmware_guest_powerstate:
+#      hostname: "{{ vcenter_hostname }}"
+#      username: "{{ vcenter_username }}"
+#      password: "{{ vcenter_password }}"
+#      name: "{{ vm_hostname }}"
+#      validate_certs: no
+#      folder: "/{{ vcenter_datacenter }}/{{ vcenter_folder }}"
+#      state: reboot-guest
+#    delegate_to: localhost

@@ -1,0 +1,14 @@
+- name: postinstall_cleanup
+  hosts: ubuntu18-ansdeployment
+#  hosts: newserver
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  ignore_unreachable: true
+  #how many to run at once
+  serial: 1
+  vars:
+    ansible_ssh_private_key_file: "./files/ansible-deploy.key"
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+    - postinstall_cleanup

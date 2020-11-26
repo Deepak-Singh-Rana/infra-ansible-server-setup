@@ -40,12 +40,21 @@ function function_cleanupos () {
 
         #clean ssh keys
         echo "regenerating ssh keys"
-        rm -f /etc/ssh/ssh_host_*
-
+	#if our signed hostkey exist don't delete the ed25519 host keys
+        if [ -f /etc/ssh/ssh_host_ed25519_key-cert.pub ]; then
+	        rm -f /etc/ssh/ssh_host_rsa*
+	        rm -f /etc/ssh/ssh_host_ecdsa*
+	else
+	#remove all the host keys
+	        rm -f /etc/ssh/ssh_host_*
+        fi
         #add check for ssh keys on reboot...regenerate if neccessary
         ssh-keygen -t rsa -N "" -f /etc/ssh/ssh_host_rsa_key
         ssh-keygen -t ecdsa -N "" -f /etc/ssh/ssh_host_ecdsa_key
-        ssh-keygen -t ed25519 -N "" -f /etc/ssh/ssh_host_ed25519_key
+	#if our signed host key does not exist then generate a new ed25519 host key
+        if [ ! -f /etc/ssh/ssh_host_ed25519_key-cert.pub ]; then
+             ssh-keygen -t ed25519 -N "" -f /etc/ssh/ssh_host_ed25519_key
+        fi
 
         #clean apt
         if [ -f "/usr/bin/apt" ]; then

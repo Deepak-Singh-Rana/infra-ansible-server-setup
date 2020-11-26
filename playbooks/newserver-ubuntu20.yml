@@ -2,36 +2,7 @@
 #how to run this playbook
 #required pacakges pip3 install --user pyvmomi pyvim
 #ansible-playbook playbooks/deploy_signed_cert.yml --ask-vault-pass
-- hosts: localhost
-  gather_facts: false
-
-  vars_prompt:
-    - name: vcenter_username
-      prompt: "please enter your vcenter username"
-      private: no
-    - name: vcenter_password
-      prompt: "please enter your password"
-      private: yes
-
-  vars:
-    ansible_python_interpreter: /usr/bin/python3
-
-  vars_files:
-    - "../vars/newserver_vcenterdetails.yml"
-    - "../vars/newserver_ubuntu20.yml"
-
-  roles:
-    - newserver_vm_from_template
-
-  tasks:
-  - name: Add host to group deployedserver
-    add_host:
-     name: '{{ vm_ipv4_address }}'
-     groups: deployedserver
-     ansible_ssh_private_key_file: './files/ansible-deploy.key'
-     ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
-
-- hosts: deployedserver
+- hosts: newserver
   remote_user: zeus
   become: yes
   become_method: sudo

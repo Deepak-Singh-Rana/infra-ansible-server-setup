@@ -1,9 +1,9 @@
 ---
 # tasks file for postinstall_cleanup
 #reboot the server so hardening takes affect
-- name: Unconditionally reboot the machine waiting for 120 seconds before testing connection again
-  reboot:
-    reboot_timeout: 120
+#- name: Unconditionally reboot the machine waiting for 120 seconds before testing connection again
+#  reboot:
+#    reboot_timeout: 120
 
 #remove the .authorized_keys file for zeus so people can't ssh in without a password
 - name: Remove file /home/zeus/.ssh/authorized_keys
@@ -11,3 +11,8 @@
     path: /home/zeus/.ssh/authorized_keys
     state: absent
 
+- name: remove zeus pubkey auth
+  replace:
+    path: /etc/ssh/sshd_config.d/matches
+    regexp: '^Match User zeus\n.*Auth.*$'
+    replace: ''
