@@ -3,7 +3,7 @@
 #template we use to deploy from
 vm_template: ubuntu18-template
 #hostname the server will use
-vm_hostname: ubuntu18-ansdeployment
+vm_shortname: ubuntu18-ansdeployment
 vm_fqdn: ubuntu18-ansdeployment.snap.net.nz
 #portgroup the vm will use
 vcenter_vlan: HM-FIX-1001

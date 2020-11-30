@@ -19,11 +19,16 @@
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
     - "../vars/newserver_ubuntu18.yml"
+    - "../vars/newserver_ca_passphrase.yml"
 
   roles:
     - newserver_vm_from_template
 
   tasks:
+  - name: generate the radius secret
+    command: /usr/bin/pwgen -s -B 16 1
+    register: radius_secret
+
   - name: remove ssh_host_ed25519_key.pub from ansilbe server now
     file:
       path: ../files/ssh_host_ed25519_key.pub
@@ -43,7 +48,7 @@
     command: /usr/bin/ssh-keygen -t ed25519 -N "" -f ../files/ssh_host_ed25519_key
 
   - name: sign the hostkey
-    command: /usr/bin/ssh-keygen -s ../files/server_ca -I 2degrees-server_{{ vm_hostname }} -h -n {{ vm_hostname }}.snap.net.nz,{{ vm_hostname }}.2degrees.nz,{{ vm_hostname }}.2dl.nz,{{ vm_hostname }}.nzc.co.nz -V +300w ../files/ssh_host_ed25519_key.pub
+    command: /usr/bin/ssh-keygen -s ../files/server_ca -I 2degrees-server_{{ vm_shortname }} -h -n {{ vm_shortname }}.snap.net.nz,{{ vm_shortname }}.2degrees.nz,{{ vm_shortname }}.2dl.nz,{{ vm_shortname }}.nzc.co.nz -P {{ ca_passphrase }} -V +300w ../files/ssh_host_ed25519_key.pub
 
   - name: Add host to group deployedserver
     add_host:

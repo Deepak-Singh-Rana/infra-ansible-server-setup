@@ -14,7 +14,7 @@
     state: poweredon
     folder: "{{ vcenter_folder }}"
     template: "{{ vm_template }}"
-    name: "{{ vm_hostname }}"
+    name: "{{ vm_shortname }}"
     networks:
       - name: "{{ vcenter_vlan }}"
         type: static

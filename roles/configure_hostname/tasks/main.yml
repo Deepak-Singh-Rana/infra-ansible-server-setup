@@ -3,13 +3,13 @@
 
 
 - name: Set up a unique hostname
-  hostname: name={{ vm_hostname }}.2dl.nz
+  hostname: name={{ vm_shortname }}.2dl.nz
 
 - name: Add the server's domain to the hosts file ipv4
   lineinfile:
     dest: /etc/hosts
     regexp: '^(127\.0\.0\.1).*(localhost.*)'
-    line: '\1 {{ vm_hostname }}.2dl.nz {{ vm_hostname}} \2'
+    line: '\1 {{ vm_shortname }}.2dl.nz {{ vm_shortname}} \2'
     state: present
     backrefs: true
 
@@ -17,7 +17,7 @@
   lineinfile:
     dest: /etc/hosts
     regexp: '^(::1).*(localhost .*)'
-    line: '\1 {{ vm_hostname }}.2dl.nz {{ vm_hostname}} \2'
+    line: '\1 {{ vm_shortname }}.2dl.nz {{ vm_shortname}} \2'
     state: present
     backrefs: true
 
