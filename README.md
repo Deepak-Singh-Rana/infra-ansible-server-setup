@@ -1,7 +1,7 @@
 # td-ansible-server-setup
 2degrees linux ansible repo
-
 for all linux servers
+https://bitbucket.org/2dgreesdev/td-ansible-server-setup/src/master/README.md 
 
 ## BITBUCKET info
 

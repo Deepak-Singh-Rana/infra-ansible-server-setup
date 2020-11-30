@@ -14,6 +14,7 @@ vm_ipv4_gateway: 202.37.101.129
 vm_ipv4_dns_a: 10.221.2.16
 vm_ipv4_dns_b: 10.221.2.17
 #IPV6 address details
+ipv6: true
 vm_ipv6_address: 2406:e000:0:150::131
 vm_ipv6_netmask: 64
 vm_ipv6_gateway: 2406:e000:0:150::1
