@@ -18,18 +18,18 @@ on bitbucket go to your settings and generate yourself an "app password" this wi
 
 ```
 
-$git clone https://<username>@bitbucket.org/2dgreesdev/td-ansible-server-setup.git
+git clone https://<username>@bitbucket.org/2dgreesdev/td-ansible-server-setup.git
 
 ```
 
 ## How to push your changes
 
 ```
-$ git add .
+git add .
 
-$ git commit -m "comment about your changes here"
+git commit -m "comment about your changes here"
 
-$ git push
+git push
 
 ```
 
@@ -47,23 +47,24 @@ export https_proxy=https://frigg.snap.net.nz:3128
 ansible-galaxy collection install community.****
 ```
 ### e.g.
+```
 ansible-galaxy collection install community.vmware
-
+```
 ##### ansible-vault-passwords file
 to create/encrypt/decrypt the file, you use:
 
 for new file:
-
+```
 ansible-vault create testfile.txt --vault-password-file=ansible-vault-file
-
+```
 for encrypting existing file:
-
+```
 ansible-vault encrypt testfile.txt --vault-password-file=ansible-vault-file
-
+```
 for decrypting:
-
+```
 ansible-vault decrypt testfile.txt --vault-password-file=ansible-vault-file
-
+```
 when executing the above, you will notice it doesn't ask for password.
 
 
@@ -85,4 +86,10 @@ nano vars/newserver_rhel8.yml
 ansible-playbook playbooks/newserver_redhat8.yml --vault-password-file ./ansible-vault-file
 ```
 
+### after deployment
+reboot server, then log in using your AD account
+```
+set-root-password.pl
+```
+then put the root passwords into the breakglass folder in lastpass
 
