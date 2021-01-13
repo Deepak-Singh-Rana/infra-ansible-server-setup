@@ -1,0 +1,10 @@
+---
+  - name: Demonstrating variables in Jinja2 Loops
+    hosts: localhost
+    connection: local
+    vars_files:
+      - ../vars/multivms.yml
+    gather_facts: no
+    tasks:
+      - name: Create the Jinja2 based template
+        template: src=../templates/varsexample.j2 dest=../templatetest-output.txt

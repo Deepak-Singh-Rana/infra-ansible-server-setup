@@ -7,8 +7,13 @@
   become_method: sudo
   ignore_unreachable: true
   #how many to run at once
+  gather_facts: true
   serial: 1
   vars:
-    ansible_python_interpreter: /usr/bin/python3
+    - ansible_python_interpreter: /usr/bin/python3
+  vars_files:
+    - "../vars/newserver_ubuntu18.yml"
+    - "../vars/newserver_ca_passphrase.yml"
+
   roles:
     - install_2dradiusauth

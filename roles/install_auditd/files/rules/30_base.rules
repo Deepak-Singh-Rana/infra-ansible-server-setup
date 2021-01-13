@@ -90,11 +90,15 @@
 -a always,exit -F arch=b64 -S sethostname -S setdomainname -k network_modifications
 
 ### Changes to other files
+#### Redhat
 -w /etc/hosts -p wa -k network_modifications
 -w /etc/sysconfig/network -p wa -k network_modifications
--w /etc/network/ -p wa -k network
+-w /etc/network/ -p wa -k network_modifications
 -a always,exit -F dir=/etc/NetworkManager/ -F perm=wa -k network_modifications
 -w /etc/sysconfig/network -p wa -k network_modifications
+#### Ubuntu
+-w /etc/netplan/ -p wa -k network_modifications
+-w /etc/networkd-dispatcher/ -p wa -k network_modifications
 
 ### Changes to issue
 -w /etc/issue -p wa -k etcissue
