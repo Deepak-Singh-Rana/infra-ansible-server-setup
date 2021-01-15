@@ -1,0 +1,4 @@
+---
+- import_playbook: a-vcenter.yml
+- import_playbook: a-ubuntu18.yml
+- import_playbook: a-cleanup.yml

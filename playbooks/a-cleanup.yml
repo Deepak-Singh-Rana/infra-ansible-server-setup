@@ -1,0 +1,15 @@
+###########################
+#########cleanup###########
+###########################
+- hosts: newservers
+  gather_facts: false
+
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+
+  vars_files:
+    - "../vars/newserver_vcenterdetails.yml"
+    - "../vm_vars/{{inventory_hostname}}.yml"
+
+  roles:
+    - newserver_cleanup

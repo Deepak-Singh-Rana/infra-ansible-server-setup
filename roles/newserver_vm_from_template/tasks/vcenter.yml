@@ -2,6 +2,8 @@
 # tasks file for deploy_ubuntu18
 #requires sudo apt install python3-pyvmomi
 - name:  Clone a virtual machine from Linux template and customize
+  delegate_to: 127.0.0.1
+#  delegate_to: localhost
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_hostname }}"
     username: "{{ vcenter_username }}"
@@ -34,4 +36,5 @@
         - snap.net.nz
         - 2degrees.nz
         - nzc.co.nz
-  delegate_to: localhost
+
+#should we reboot the vm here?

@@ -7,4 +7,6 @@
     gather_facts: no
     tasks:
       - name: Create the Jinja2 based template
-        template: src=../templates/varsexample.j2 dest=../templatetest-output.txt
+#        template: src=../templates/varsexample.j2 dest=../{{vms.vm_shortname}}-templatetest-output.txt
+        template: src=../templates/varsexample.j2 dest=../output-templatetest.txt
+#        with_items: "{{ vms }}"

@@ -1,0 +1,19 @@
+---
+# tasks file for setting up access to the server
+- name: remove ssh_host_ed25519_key.pub from ansilbe server now
+  delegate_to: 127.0.0.1
+  file:
+    path: ../files/{{inventory_hostname}}ssh_host_ed25519_key.pub
+    state: absent
+
+- name: remove ssh_host_ed25519_key-cert.pub from ansilbe server now
+  delegate_to: 127.0.0.1
+  file:
+    path: ../files/{{inventory_hostname}}ssh_host_ed25519_key-cert.pub
+    state: absent
+
+- name: remove ssh_host_ed25519_key from ansilbe server now
+  delegate_to: 127.0.0.1
+  file:
+    path: ../files/{{inventory_hostname}}ssh_host_ed25519_key
+    state: absent

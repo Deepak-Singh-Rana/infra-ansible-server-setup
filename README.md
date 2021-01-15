@@ -73,21 +73,30 @@ when executing the above, you will notice it doesn't ask for password.
 ## User ssh keys
 make sure you have a rsa ssh key generated and put onto gary so you can authenticate to gary without a password, else pam_radius config will fail
 
+## DNS for servers
+put all vm dns entries fully into dns
 
 ## Fill out the vmcenter details
 ```
 nano vars/newserver_vcenterdetails.yml
 ```
 
+## Virtual machine/s details
+in vm_vars put all the details of each server you want to build into a .yml file
+The filename for each vm should be fqdn.yml
+e.g.
+ubuntu18server.snap.net.nz.yml
+redhat8server.2d.nz.yml
+
+
+
 ### Ubuntu 18
 ```
-nano vars/newserver_ubuntu18.yml
-ansible-playbook playbooks/newserver_ubuntu18.yml --vault-password-file ./ansible-vault-file
+ansible-playbook playbooks/newservers.yml --vault-password-file ./ansible-vault-file
 ```
 ### Redhat 8
 ```
-nano vars/newserver_rhel8.yml
-ansible-playbook playbooks/newserver_redhat8.yml --vault-password-file ./ansible-vault-file
+ansible-playbook playbooks/newservers.yml --vault-password-file ./ansible-vault-file
 ```
 
 ### after deployment

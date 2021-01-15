@@ -1,1 +1,7 @@
+#don't upload the ansible-vault-file as it's unecrypted
 ansible-vault-file
+#don't upload any manually created vm variable files to git
+vm_vars/*
+!vm_vars/example.file.nz.yml
+#don't include maybe sensitive information
+vars/newserver_vcenterdetails.yml

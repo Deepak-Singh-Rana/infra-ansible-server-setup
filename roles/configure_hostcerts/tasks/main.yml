@@ -2,7 +2,7 @@
 # tasks file for configure_hostcerts
 - name: Copy ssh_host_ed25519_key-cert
   copy:
-    src: ../../files/ssh_host_ed25519_key-cert.pub
+    src: ../../files/{{inventory_hostname}}ssh_host_ed25519_key-cert.pub
     dest: /etc/ssh/ssh_host_ed25519_key-cert.pub
     owner: root
     group: root
@@ -10,7 +10,7 @@
 
 - name: Copy ssh_host_ed25519_key
   copy:
-    src: ../../files/ssh_host_ed25519_key
+    src: ../../files/{{inventory_hostname}}ssh_host_ed25519_key
     dest: /etc/ssh/ssh_host_ed25519_key
     owner: root
     group: root

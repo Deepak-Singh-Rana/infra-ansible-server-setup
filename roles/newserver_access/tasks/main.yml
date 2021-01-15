@@ -1,0 +1,4 @@
+---
+# tasks file to gernerate access config
+- name: access config generation
+  include: access.yml

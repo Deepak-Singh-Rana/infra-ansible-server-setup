@@ -1,0 +1,26 @@
+######################################
+###########deploy template############
+######################################
+- hosts: newservers
+  gather_facts: false
+  serial: 1
+
+  vars_prompt:
+    - name: vcenter_username
+      prompt: "please enter your vcenter username"
+      private: no
+    - name: vcenter_password
+      prompt: "please enter your password"
+      private: yes
+
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+
+  vars_files:
+    - "../vars/newserver_vcenterdetails.yml"
+    - "../vm_vars/{{inventory_hostname}}.yml"
+    - "../vars/newserver_ca_passphrase.yml"
+
+  roles:
+    - newserver_vm_from_template
+    - newserver_access

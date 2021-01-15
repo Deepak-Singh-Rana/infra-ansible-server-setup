@@ -11,8 +11,8 @@
     path: /home/zeus/.ssh/authorized_keys
     state: absent
 
-- name: remove zeus pubkey auth
-  replace:
-    path: /etc/ssh/sshd_config.d/matches
-    regexp: '^Match User zeus\n.*Auth.*$'
-    replace: ''
+#- name: remove zeus pubkey auth
+#  replace:
+#    path: /etc/ssh/sshd_config.d/matches
+#    regexp: '^Match User zeus\n.*Auth.*$'
+#    replace: ''

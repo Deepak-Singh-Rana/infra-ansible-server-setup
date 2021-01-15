@@ -1,0 +1,6 @@
+name is ubuntu18-ansdeployment
+fqdn is ubuntu18-ansdeployment.snap.net.nz
+
+name is ubuntu18-ansdeployment2
+fqdn is ubuntu18-ansdeployment2.snap.net.nz
+

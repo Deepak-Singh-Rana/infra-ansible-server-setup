@@ -1,20 +1,24 @@
-#https://docs.ansible.com/ansible/latest/modules/copy_module.html
-#how to run this playbook
-#required pacakges pip3 install --user pyvmomi pyvim
-#ansible-playbook playbooks/deploy_signed_cert.yml --ask-vault-pass
-- hosts: newserver
+###################################
+#######configure the server########
+###################################
+
+- hosts: newservers
   remote_user: zeus
   become: yes
   become_method: sudo
   gather_facts: true
   vars:
-    ansible_ssh_private_key_file: "./files/ansible-deploy.key"
-    ansible_python_interpreter: /usr/bin/python3
+    - ansible_ssh_private_key_file: "./files/ansible-deploy.key"
+    - ansible_python_interpreter: /usr/bin/python3
+
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
-    - "../vars/newserver_ubuntu20.yml"
-
+#    - "../vm_vars/ubu18test1.yml"
+    - "../vm_vars/{{inventory_hostname}}.yml"
+#inventory_hostname
   roles:
+#place signed host_keys onto the server
+    - configure_hostcerts
 #setup base connectivity
     - newserver_networking
 #configures the hostname of the server
@@ -46,7 +50,7 @@
 #sets up ntp on the server
     - install_ntp
 #sets up splunk forwarder to send logs to splunk forwarder
-    - install_splunkforwarder
+#    - install_splunkforwarder
 #configures the login messages to TASS/PCI/SOX standards
     - install_branding
 #installs usefull sysadmin tools
@@ -56,7 +60,7 @@
 #configurs snmpd to allow thigns to send traps to zenoss
     - install_2dsnmpd
 #setups zenoss user for zenoss management
-    - install_zenoss
+#    - install_zenoss
 #Hardens ubuntu to level2 compliance
     - harden_ub18
 #setups breakglass utils/permissions
@@ -66,8 +70,8 @@
 #grants sudo permissions to techm security group
     - permissions_sudo-techm
 #install aide late so we don't have heaps of changes for the next scan because we are setting up the os
-    - install_2daide
+#    - install_2daide
 #Auto updates come at the end so it doens't start updating while we are setting up the vm
     - install_autoupdates
 #run the postinstall cleanup role
-#    - postinstall_cleanup
+    - postinstall_cleanup

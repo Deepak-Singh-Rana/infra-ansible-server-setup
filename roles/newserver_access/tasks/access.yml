@@ -1,0 +1,33 @@
+---
+# tasks file for setting up access to the server
+- name: generate the radius secret
+  delegate_to: 127.0.0.1
+  command: /usr/bin/pwgen -s -B 16 1
+  register: radius_secret
+
+- name: remove ssh_host_ed25519_key.pub from ansilbe server now
+  delegate_to: 127.0.0.1
+  file:
+    path: ../files/{{inventory_hostname}}ssh_host_ed25519_key.pub
+    state: absent
+
+- name: remove ssh_host_ed25519_key-cert.pub from ansilbe server now
+  delegate_to: 127.0.0.1
+  file:
+#    path: ../files/ssh_host_ed25519_key-cert.pub
+    path: ../files/{{inventory_hostname}}ssh_host_ed25519_key-cert.pub
+    state: absent
+
+- name: remove ssh_host_ed25519_key from ansilbe server now
+  delegate_to: 127.0.0.1
+  file:
+    path: ../files/{{inventory_hostname}}ssh_host_ed25519_key
+    state: absent
+
+- name: generate a server host key
+  delegate_to: 127.0.0.1
+  command: /usr/bin/ssh-keygen -t ed25519 -N "" -f ../files/{{inventory_hostname}}ssh_host_ed25519_key
+
+- name: sign the hostkey
+  delegate_to: 127.0.0.1
+  command: /usr/bin/ssh-keygen -s ../files/server_ca -I 2degrees-server_{{ vm_shortname }} -h -n {{ vm_shortname }}.snap.net.nz,{{ vm_shortname }}.2degrees.nz,{{ vm_shortname }}.2dl.nz,{{ vm_shortname }}.nzc.co.nz -P {{ ca_passphrase }} -V +300w ../files/{{inventory_hostname}}ssh_host_ed25519_key.pub

@@ -1,0 +1,4 @@
+---
+# tasks file to clean up after ourselfs
+- name: cleaning up after ourselfs
+  include: cleanup.yml
