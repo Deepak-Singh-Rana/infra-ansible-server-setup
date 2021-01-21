@@ -14,7 +14,7 @@
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
 #    - "../vm_vars/ubu18test1.yml"
-    - "../vm_vars/{{inventory_hostname}}.yml"
+    - "../tmp/{{inventory_hostname}}.yml"
 #inventory_hostname
   roles:
 #place signed host_keys onto the server

@@ -9,7 +9,7 @@
 
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
-    - "../vm_vars/{{inventory_hostname}}.yml"
+    - "../tmp/{{inventory_hostname}}.yml"
 
   roles:
     - newserver_cleanup

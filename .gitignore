@@ -1,7 +1,22 @@
 #don't upload the ansible-vault-file as it's unecrypted
 ansible-vault-file
+#don't upload a users personal vars
+personal.yml
 #don't upload any manually created vm variable files to git
 vm_vars/*
 !vm_vars/example.file.nz.yml
 #don't include maybe sensitive information
 vars/newserver_vcenterdetails.yml
+#don't include the inventory, as it should be built from scratch each time
+inventory/*
+!inventory/README.md
+#only include required files in the files folder
+files/*
+!files/ansible-deploy.key
+!files/ansible-deploy.key.pub
+!files/README.md
+!files/server_ca
+!files/server_ca.pub
+#don't include anytinhg from the tmp folder
+tmp/*
+!tmp/README.md

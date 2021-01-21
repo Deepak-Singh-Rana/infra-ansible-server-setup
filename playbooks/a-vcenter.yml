@@ -18,7 +18,7 @@
 
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
-    - "../vm_vars/{{inventory_hostname}}.yml"
+    - "../tmp/{{inventory_hostname}}.yml"
     - "../vars/newserver_ca_passphrase.yml"
 
   roles:
@@ -27,6 +27,11 @@
 
 - hosts: gary
   gather_facts: false
+  become: yes
+  become_method: sudo
+
+#  vars_files:
+#    - "../tmp/{{inventory_hostname}}.yml"
 
   tasks:
 ##put the copy clients.d files to gary stuff here
@@ -38,3 +43,20 @@
     - debug: var={{ item }}
       with_items:
         - uptime.stdout
+
+##copy files to gary
+    - name: copy ipv4 clients files to gary
+      ansible.builtin.copy:
+        src: ../tmp/radius/
+        dest: /tmp
+        owner: root
+        group: freerad
+        mode: '0640'
+
+#    - name: copy ipv6 clients files to gary
+#      ansible.builtin.copy:
+#        src: tmp/{{ vm_ipv6_address_underscores }}
+#        dest: /tmp/{{ vm_ipv6_address_underscores }}
+#        owner: root
+#        group: freerad
+#        mode: '0640'
