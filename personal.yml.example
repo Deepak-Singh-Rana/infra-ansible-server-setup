@@ -1,0 +1,4 @@
+abc_username: abc.first.lastname@2degrees.nz
+abc_password: fakepassword
+ansible_become_password: fakepassword
+

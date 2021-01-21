@@ -70,6 +70,13 @@ when executing the above, you will notice it doesn't ask for password.
 
 # Deploying a new server
 
+##make sure you have created a personal.yml file from personal.yml.example and then encrypted it
+```
+cp personal.yml.example personal.yml
+nano personal.yml
+ansible-vault encrypt personal.yml --vault-password-file=ansible-vault-file
+```
+
 ## User ssh keys
 make sure you have a rsa ssh key generated and put onto gary so you can authenticate to gary without a password, else pam_radius config will fail
 
