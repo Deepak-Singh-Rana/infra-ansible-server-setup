@@ -1,0 +1,26 @@
+#############################
+#setting up radius auth stuff
+#############################
+
+- hosts: gary
+  gather_facts: false
+  become: yes
+  become_method: sudo
+
+#  vars_files:
+#    - "../personal.yml"
+
+  tasks:
+##copy files to gary
+    - name: copy ipv4 clients files to gary
+      ansible.builtin.copy:
+        src: ../tmp/radius/
+        dest: /etc/freeradius/clients.d
+        owner: root
+        group: freerad
+        mode: '0640'
+
+    - name: restart radius
+      ansible.builtin.service:
+        name: freeradius
+        state: restarted

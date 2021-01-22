@@ -105,7 +105,6 @@ AcceptEnv LANG LC_*
 Subsystem sftp /usr/lib/openssh/sftp-server
 
 UsePAM yes
-AuthenticationMethods "password" "keyboard-interactive"
 TrustedUserCAKeys /etc/ssh/user_ca.pub
 MaxAuthTries 4
 PermitUserEnvironment no
@@ -120,7 +119,7 @@ ClientAliveCountMax 3
 ###################
 #Access Permission#
 ###################
-AuthenticationMethods "publickey,password" "publickey,keyboard-interactive" "password"
+AuthenticationMethods "publickey,password" "publickey,keyboard-interactive" "password" "publickey"
 
 
 ###############################

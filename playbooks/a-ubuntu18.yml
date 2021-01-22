@@ -13,7 +13,6 @@
 
   vars_files:
     - "../vars/newserver_vcenterdetails.yml"
-#    - "../vm_vars/ubu18test1.yml"
     - "../tmp/{{inventory_hostname}}.yml"
 #inventory_hostname
   roles:
@@ -50,7 +49,7 @@
 #sets up ntp on the server
     - install_ntp
 #sets up splunk forwarder to send logs to splunk forwarder
-#    - install_splunkforwarder
+    - install_splunkforwarder
 #configures the login messages to TASS/PCI/SOX standards
     - install_branding
 #installs usefull sysadmin tools
@@ -60,7 +59,7 @@
 #configurs snmpd to allow thigns to send traps to zenoss
     - install_2dsnmpd
 #setups zenoss user for zenoss management
-#    - install_zenoss
+    - install_zenoss
 #Hardens ubuntu to level2 compliance
     - harden_ub18
 #setups breakglass utils/permissions
@@ -70,7 +69,7 @@
 #grants sudo permissions to techm security group
     - permissions_sudo-techm
 #install aide late so we don't have heaps of changes for the next scan because we are setting up the os
-#    - install_2daide
+    - install_2daide
 #Auto updates come at the end so it doens't start updating while we are setting up the vm
     - install_autoupdates
 #run the postinstall cleanup role

@@ -33,23 +33,39 @@
 #------#
 #start ansible-groups#
 #end ansible-groups#
-#Match Group servers.dev@staff.snap.net.nz
-#       AllowGroups servers.dev@staff.snap.net.nz
 
+# app developers
+#Match Group SEC_servers.fixed.appdevs
+#       AllowGroups SEC_servers.fixed.appdevs
+
+# app operations
+#Match Group SEC_servers.fixed.appops
+#       AllowGroups SEC_servers.fixed.appops
+
+# database operations
+#Match Group SEC_servers.fixed.dbops
+#       AllowGroups SEC_servers.fixed.dbops
+
+# network engineers
 #Match Group servers.monitoring@staff.snap.net.nz
 #       AllowGroups servers.monitoring@staff.snap.net.nz
 
+# voice engineers
 #Match Group SEC_servers.fixed.voice
 #       AllowGroups SEC_servers.fixed.voice
 
+# techm database administrators
 #Match Group SEC_servers.fixed.dba.sudo
 #       AllowGroups SEC_servers.fixed.dba.sudo
 
+# splunk admins
 #Match Group SEC_apps.splunkforwarder.access
 #       AllowGroups SEC_apps.splunkforwarder.access
 
+# techm admins
 #Match Group SEC_servers.fixed.TechM
 #        AllowGroups SEC_servers.fixed.TechM
 
+# techm database admins
 #Match Group SEC_servers.fixed.database.TechM
 #        AllowGroups SEC_servers.fixed.database.TechM

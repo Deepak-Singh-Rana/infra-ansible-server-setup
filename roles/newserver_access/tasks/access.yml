@@ -1,9 +1,9 @@
 ---
 # tasks file for setting up access to the server
-- name: generate the radius secret
-  delegate_to: 127.0.0.1
-  command: /usr/bin/pwgen -s -B 16 1
-  register: radius_secret
+#- name: generate the radius secret
+#  delegate_to: 127.0.0.1
+#  command: /usr/bin/pwgen -s -B 16 1
+#  register: radius_secret
 
 - name: remove ssh_host_ed25519_key.pub from ansilbe server now
   delegate_to: 127.0.0.1
