@@ -1,4 +1,0 @@
-vcenter_username: abc.first.lastname@2degrees.nz
-vcenter_password: fakepassword
-ansible_become_password: fakepassword
-ansible_ssh_pass: fakepassword
