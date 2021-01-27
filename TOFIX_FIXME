@@ -1,0 +1,3 @@
+TASK [newserver_networking : addipv6_address] **************************************************************************
+fatal: [ubuntu18-ansdeployment2.snap.net.nz]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'vm_ipv6_address' is undefined\n\nThe error appears to be in '/home/dave.gardner@2degrees.nz/td-ansible-server-setup/roles/newserver_networking/tasks/ubuntu.yml': line 4, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- name: addipv6_address\n  ^ here\n"}
+changed: [ubuntu18-ansdeployment.snap.net.nz]

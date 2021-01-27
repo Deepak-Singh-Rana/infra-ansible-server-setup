@@ -1,0 +1,5 @@
+allow generate_hosts.py to also generate extra roles to load? e.g. for deploying apache
+get the py to generate a extraplays.yml that the newservers.yml mainplaybook will run?
+just get people to fill a form and export it as csv
+
+~/td-ansible-server-setup/roles/install_2daide/files/sbin$ cat 2d-aide.sh

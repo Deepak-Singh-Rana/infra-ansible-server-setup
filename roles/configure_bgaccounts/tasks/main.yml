@@ -21,3 +21,15 @@
     owner: root
     group: root
     mode: '0700'
+
+- name: Change root password
+  user:
+    name: root
+    update_password: always
+    password: "{{ vm_root_password|password_hash('sha512') }}"
+
+- name: Change zeus password
+  user:
+    name: zeus
+    update_password: always
+    password: "{{ vm_zeus_password|password_hash('sha512') }}"

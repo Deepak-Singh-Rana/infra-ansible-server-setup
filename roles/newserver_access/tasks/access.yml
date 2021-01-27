@@ -31,3 +31,13 @@
 - name: sign the hostkey
   delegate_to: 127.0.0.1
   command: /usr/bin/ssh-keygen -s ../files/server_ca -I 2degrees-server_{{ vm_shortname }} -h -n {{ vm_shortname }}.snap.net.nz,{{ vm_shortname }}.2degrees.nz,{{ vm_shortname }}.2dl.nz,{{ vm_shortname }}.nzc.co.nz -P {{ ca_passphrase }} -V +300w ../files/{{inventory_hostname}}ssh_host_ed25519_key.pub
+
+#- name: generate root password
+#  delegate_to: 127.0.0.1
+#  command: pwgen -B -N 2
+#  register: root_pass
+
+#- name: generate zeus password
+#  delegate_to: 127.0.0.1
+#  command: pwgen -B -N 2
+#  register: root_pass

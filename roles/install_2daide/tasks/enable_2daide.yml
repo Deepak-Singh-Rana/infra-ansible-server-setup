@@ -13,34 +13,34 @@
     enabled: yes
     state: started
 
-- name: init aide
-  command: /usr/sbin/aideinit -f -y
-  when: ansible_facts['distribution'] == 'Ubuntu'
+#- name: init aide
+#  command: /usr/sbin/aideinit -f -y
+#  when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: init aide redhat
-  command: /usr/sbin/aide --init
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+#- name: init aide redhat
+#  command: /usr/sbin/aide --init
+#  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
-- name: copy the generated aide db test
-  copy:
-   remote_src: yes
-   src: /var/lib/aide/aide.db.new
-   dest: /var/lib/aide/aide.db
-   owner: root
-   group: root
-   mode: '0600'
-  when: ansible_facts['distribution'] == 'Ubuntu'
+#- name: copy the generated aide db test
+#  copy:
+#   remote_src: yes
+#   src: /var/lib/aide/aide.db.new
+#   dest: /var/lib/aide/aide.db
+#   owner: root
+#   group: root
+#   mode: '0600'
+#  when: ansible_facts['distribution'] == 'Ubuntu'
 
 
-- name: copy the generated aide db test
-  copy:
-   remote_src: yes
-   src: /var/lib/aide/aide.db.new.gz
-   dest: /var/lib/aide/aide.db.gz
-   owner: root
-   group: root
-   mode: '0600'
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+#- name: copy the generated aide db test
+#  copy:
+#   remote_src: yes
+#   src: /var/lib/aide/aide.db.new.gz
+#   dest: /var/lib/aide/aide.db.gz
+#   owner: root
+#   group: root
+#   mode: '0600'
+#  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
 - name: generate the config file
   command: /usr/sbin/update-aide.conf

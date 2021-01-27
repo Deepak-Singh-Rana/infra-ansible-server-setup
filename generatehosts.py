@@ -1,9 +1,15 @@
 #!/usr/bin/python3
 import yaml,csv
-#pip3 install --user pyyaml
+#pip3 install --user pyyaml pwgen
 import random
 import string
 import os
+import subprocess
+#from ansible_vault import Vault
+from pwgen import pwgen
+
+
+ansible_vault_pass = ""
 
 #---------------what does this script do?----------------
 #cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files, generate radius secret files
@@ -15,6 +21,9 @@ def get_random_alphanumeric_string(length):
 	#print("Random alphanumeric String is:", result_str)
 	return result_str
 
+def generate_password(characters):
+	password = pwgen(characters, no_ambiguous=True)
+	return password
 
 #cleanup before our run to make sure we don't have things that we don't want
 for file in os.listdir("tmp"):
@@ -29,6 +38,13 @@ for file in os.listdir("tmp"):
 for file in os.listdir("tmp/radius"):
 	print("removing old file :"+file)
 	os.remove("tmp/radius/"+file)
+
+##read in the vault password
+with open("ansible-vault-file") as f:
+	ansible_vault_pass = f.read().rstrip("\n")
+#	vault = Vault(ansible_vault_pass)
+#	print(vault)
+	print(ansible_vault_pass)
 
 ##read in the csv
 csvfile = open('vm_list.csv', 'r')
@@ -57,11 +73,17 @@ for row_index, row in enumerate(datareader):
 		#filename = str(row_index) + '.yml'
 		#get the shortname from the first column
 		filename = row[3]
+		ymlfilepath = "tmp/"+filename+".yml"
 		print("building "+filename+".yml")
 		vm_yaml_file = open("tmp/"+filename+".yml", 'w')
 
 		# Empty string that we will fill with YAML formatted text based on data extracted from our CSV.
 		yaml_text = ""
+		lp_text = ""
+		lpr_text = ""
+		lpz_text = ""
+		zeus_data = ""
+		root_data = ""
 		# Loop through each cell in this row...
 		for cell_index, cell in enumerate(row):
 
@@ -69,6 +91,9 @@ for row_index, row in enumerate(datareader):
 			# Heading text is converted to lowercase. Spaces are converted to underscores and hyphens are removed.
 			# In the cell text, line endings are replaced with commas.
 			cell_heading = data_headings[cell_index].lower().replace(" ", "_").replace("-", "")
+			#grab the shortname for lastpass files
+			if cell_heading == "vm_shortname":
+				lp_text += "Hostname: "+cell+"\n"
 			#if we spot the fqdn then grab it so we can use it
 			if cell_heading == "vm_fqdn":
 				hosts_text += cell+"\n"
@@ -92,10 +117,66 @@ for row_index, row in enumerate(datareader):
 		# generate a random radius secret
 		yaml_text += "vm_radius_secret: "+get_random_alphanumeric_string(24)+"\n"
 
-		# Write our YAML string to the new text file and close it.
+
+	# generate a random password for root
+		root_passwd = generate_password(16)
+		yaml_text += "vm_root_password: "+root_passwd+"\n"
+
+		lpr_text += "NoteType: Server\n"
+		lpr_text += "Username: root\n"
+		lpr_text += "Password: "+root_passwd+"\n"
+
+
+	# generate a random password for zeus
+		zeus_passwd = generate_password(16)
+		yaml_text += "vm_zeus_password: "+zeus_passwd+"\n"
+
+		lpz_text += "NoteType: Server\n"
+		lpz_text += "Username: zeus\n"
+		lpz_text += "Password: "+zeus_passwd+"\n"
+
+
+	# Write our YAML string to the new text file and close it.
 		vm_yaml_file.write(yaml_text)
 		vm_yaml_file.close()
+		print(vm_yaml_file)
 
+	#ecrpyt the yml file as it contains passwords
+	#if it is commented out we are jsut encrpyint at the very end of processing everything
+#		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])
+
+	#create the lastpass files to upload
+		root_json = "tmp/"+filename+"_root.json"
+		zeus_json = "tmp/"+filename+"_zeus.json"
+		vm_root_passwd_file = open("tmp/"+filename+"_root.json", 'w')
+		vm_zeus_passwd_file = open("tmp/"+filename+"_zeus.json", 'w')
+		zeus_data += lp_text
+		zeus_data += lpz_text
+		root_data += lp_text
+		root_data += lpr_text
+#		print('-zeusdata--\n')
+#		print(zeus_data)
+#		print('-rootdata--\n')
+#		print(root_data)
+		vm_root_passwd_file.write(root_data)
+		vm_zeus_passwd_file.write(zeus_data)
+		vm_root_passwd_file.close()
+		vm_zeus_passwd_file.close()
+	#upload the root passwords
+		print("uploading to lastpass :"+root_json)
+		p1 = subprocess.Popen(["cat", root_json], stdout=subprocess.PIPE)
+		p2 = subprocess.Popen(["lpass", "edit", "--notes", "--non-interactive", "Shared-Techm/auto-bgs/[bg]"+filename+"root"], stdin=p1.stdout, stdout=subprocess.PIPE)
+		p1.stdout.close()
+		p2.communicate()[0]
+	#upload the zeus passwords
+		print("uploading to lastpass :"+zeus_json)
+		p1 = subprocess.Popen(["cat", zeus_json], stdout=subprocess.PIPE)
+		p2 = subprocess.Popen(["lpass", "edit", "--notes", "--non-interactive", "Shared-Techm/auto-bgs/[bg]"+filename+"zeus"], stdin=p1.stdout, stdout=subprocess.PIPE)
+		p1.stdout.close()
+		p2.communicate()[0]
+		subprocess.run(["lpass", "sync"])
+
+		print("------------------???????????FIX THE PYTHON TO DELETE THE JSON FILES WITH PASSWORDS IN WE DPONT NEED ANYMORE")
 
 
 hosts_text += "\n"
@@ -109,10 +190,15 @@ hosts_file.close()
 # We're done! Close the CSV file.
 csvfile.close()
 
+#exit()
+
 print("building radius files...")
 #open all yml files and generate radius secret files from them
 for file in os.listdir("tmp"):
 	if file.endswith(".yml"):
+		ymlfilepath="tmp/"+file
+		#decrypt the file
+#		subprocess.run(["ansible-vault", "decrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])
 		print("building radius file for "+file+"...")
 		yaml_file = open("tmp/"+ file, "r")
 		parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
@@ -138,3 +224,5 @@ for file in os.listdir("tmp"):
 
 
 		yaml_file.close()
+		#Re-encrpyt the file
+		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])
