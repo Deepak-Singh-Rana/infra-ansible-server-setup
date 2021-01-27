@@ -74,8 +74,8 @@ when executing the above, you will notice it doesn't ask for password.
 
 make sure you have a rsa ssh key generated and put onto gary so you can authenticate to gary without a password, else pam_radius config will failmake sure you have created a personal.yml file from personal.yml.example and then encrypted it
 ```
-$ ssh-keygen -t rsa
-$ ssh-copy-id -i ~/.shh/id_rsa.pub gary.snap.net.nz
+ssh-keygen -t rsa
+ssh-copy-id -i ~/.shh/id_rsa.pub gary.snap.net.nz
 ```
 
 # Deploying a new server
@@ -84,7 +84,7 @@ $ ssh-copy-id -i ~/.shh/id_rsa.pub gary.snap.net.nz
 
 LastPass access for adding zeus and root passwords automatically to lastpass
 ```
-$ env https_proxy="http://frigg.snap.net.nz:3128" lpass login $USER
+env https_proxy="http://frigg.snap.net.nz:3128" lpass login $USER
 ```
 
 ## DNS for servers
@@ -94,26 +94,24 @@ https://dnsdb.snap.net.nz
 
 ## Fill out the vcenter details
 ```
-$ nano vars/newserver_vcenterdetails.yml
+nano vars/newserver_vcenterdetails.yml
 ```
 copy from vars/newserver_vcenterdetails.yml.example if need be
 
 ## Virtual machine/s details
-export the spreadsheet as _vm_list.csv_
+export the spreadsheet as **vm_list.csv**
 place the vm_list.csv in the td-ansible-server-setup folder
 
-## Run Generate Hosts script
+### Generate Hosts script
+
+This creates all the needed files/variables/passwords for the ansible script
 
 ```
-$ python generatehosts.py
+python generatehosts.py
 ```
 
 
-### Ubuntu 18
-```
-ansible-playbook playbooks/newservers.yml --vault-password-file ./ansible-vault-file -K
-```
-~~### Redhat 8~~
+### Deploy the servers
 ```
 ansible-playbook playbooks/newservers.yml --vault-password-file ./ansible-vault-file -K
 ```
