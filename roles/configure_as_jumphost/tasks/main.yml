@@ -1,0 +1,21 @@
+---
+# tasks file for configure_upguardaccess
+
+- name: copy the firewall rule to the server
+  file:
+    src: ans_ssh-jumphost.v4
+    dest: /etc/fw-2d/rules-available/33_ans_ssh-jumphost.v4
+    owner: root
+    group: root
+    mode: '0400'
+
+- name: Enable firewall rule
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-jumphost.v4
+    dest: /etc/fw-2d/rules-enabled/33_ans_ssh-jumphost.v4
+    owner: root
+    group: root
+    state: link
+
+- name: enable the firewall
+  shell: /usr/local/sbin/firewall-up

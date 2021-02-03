@@ -1,0 +1,30 @@
+- name: copy splunk firewall v4
+  copy:
+   src: fw-2d/ans_splunk.v4
+   dest: /etc/fw-2d/rules-available/ans_splunk.v4
+   owner: root
+   group: root
+   mode: '0640'
+
+- name: copy splunk firewall v6
+  copy:
+   src: fw-2d/ans_splunk.v6
+   dest: /etc/fw-2d/rules-available/ans_splunk.v6
+   owner: root
+   group: root
+   mode: '0640'
+
+- name: splunk firewall v4
+  file:
+   src: /etc/fw-2d/rules-available/ans_splunk.v4
+   dest: /etc/fw-2d/rules-enabled/41_ans_splunk.v4
+   state: link
+
+- name: splunk firewall v6
+  file:
+   src: /etc/fw-2d/rules-available/ans_splunk.v6
+   dest: /etc/fw-2d/rules-enabled/41_ans_splunk.v6
+   state: link
+
+- name: activate the new rules on the firewall
+  shell: /usr/local/sbin/firewall-up

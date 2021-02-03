@@ -12,7 +12,6 @@
     - ansible_python_interpreter: /usr/bin/python3
 
   vars_files:
-    - "../vars/newserver_vcenterdetails.yml"
     - "../tmp/{{inventory_hostname}}.yml"
 #inventory_hostname
   roles:
@@ -49,7 +48,7 @@
 #sets up ntp on the server
     - install_ntp
 #sets up splunk forwarder to send logs to splunk forwarder
-    - install_splunkforwarder
+    - install_splunk
 #configures the login messages to TASS/PCI/SOX standards
     - install_branding
 #installs usefull sysadmin tools
@@ -64,6 +63,8 @@
     - harden_ub18
 #setups breakglass utils/permissions
     - configure_bgaccounts
+#setup vulnerability scanning
+    - configure_upguardaccess
 #grants sudo permissions to sysadmin security group
     - permissions_sudo-sysadmin
 #grants sudo permissions to techm security group

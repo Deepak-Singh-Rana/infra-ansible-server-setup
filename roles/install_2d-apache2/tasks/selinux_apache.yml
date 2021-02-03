@@ -1,9 +1,0 @@
-- name: allow apache to access varvirtual-hosts
-  sefcontext:
-   target: '/var/virtual-hosts(/.*)?'
-   setype: httpd_sys_content_t
-   state: present
-
-
-- name: Apply new SELinux file context to filesystem
-  command: restorecon -irv /var/virtual-hosts

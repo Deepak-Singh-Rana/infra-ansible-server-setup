@@ -1,0 +1,13 @@
+- name: install apache2
+  dnf:
+   name:
+   - httpd
+   - mod_ssl
+   state: latest
+
+- name: mkdir /var/virtual-hosts
+  file:
+   path: /var/virtual-hosts
+   owner: root
+   group: root
+   mode: '0755'

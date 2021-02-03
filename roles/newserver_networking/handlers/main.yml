@@ -7,9 +7,12 @@
   become: true
 
 - name: Applying Netplan Configuration
-  command: netplan apply --debug
+  command: netplan apply
   async: 45
   poll: 5
   listen: netplan apply config
   become: true
 #  when: netplan_apply
+
+#  notify: netplan generate config
+#  notify: netplan apply config

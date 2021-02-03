@@ -1,0 +1,5 @@
+- name: enable apache2
+  systemd:
+   name: httpd
+   state: started
+   enabled: yes

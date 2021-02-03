@@ -7,10 +7,18 @@ import os
 import subprocess
 #from ansible_vault import Vault
 from pwgen import pwgen
-
+import argparse
 
 ansible_vault_pass = ""
 
+parser = argparse.ArgumentParser(description='Tell the script what csv to load')
+#parser.add_argument('--csv', default='vm_list.csv', help='name of file to read (default: vm_list.csv)')
+parser.add_argument('-c', default='vm_list.csv', help='name of file to read (default: vm_list.csv)')
+
+csvargument=parser.parse_args()
+csvtoread=csvargument.c
+#print(csvtoread)
+#exit()
 #---------------what does this script do?----------------
 #cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files, generate radius secret files
 #--------------------------------------------------------
@@ -44,10 +52,10 @@ with open("ansible-vault-file") as f:
 	ansible_vault_pass = f.read().rstrip("\n")
 #	vault = Vault(ansible_vault_pass)
 #	print(vault)
-	print(ansible_vault_pass)
+#	print(ansible_vault_pass)
 
 ##read in the csv
-csvfile = open('vm_list.csv', 'r')
+csvfile = open(csvtoread, 'r')
 datareader = csv.reader(csvfile, delimiter=",", quotechar='"')
 data_headings = []
 
@@ -72,6 +80,7 @@ for row_index, row in enumerate(datareader):
 		# Open a new file with filename based on index number of our current row.
 		#filename = str(row_index) + '.yml'
 		#get the shortname from the first column
+		print(row[3])
 		filename = row[3]
 		ymlfilepath = "tmp/"+filename+".yml"
 		print("building "+filename+".yml")
@@ -168,6 +177,8 @@ for row_index, row in enumerate(datareader):
 		p2 = subprocess.Popen(["lpass", "edit", "--notes", "--non-interactive", "Shared-Techm/auto-bgs/[bg]"+filename+"root"], stdin=p1.stdout, stdout=subprocess.PIPE)
 		p1.stdout.close()
 		p2.communicate()[0]
+	#remove the password file
+		os.remove(root_json)
 	#upload the zeus passwords
 		print("uploading to lastpass :"+zeus_json)
 		p1 = subprocess.Popen(["cat", zeus_json], stdout=subprocess.PIPE)
@@ -175,8 +186,10 @@ for row_index, row in enumerate(datareader):
 		p1.stdout.close()
 		p2.communicate()[0]
 		subprocess.run(["lpass", "sync"])
+	#remove the password file
+		os.remove(zeus_json)
 
-		print("------------------???????????FIX THE PYTHON TO DELETE THE JSON FILES WITH PASSWORDS IN WE DPONT NEED ANYMORE")
+#		print("------------------???????????FIX THE PYTHON TO DELETE THE JSON FILES WITH PASSWORDS IN WE DPONT NEED ANYMORE")
 
 
 hosts_text += "\n"
@@ -224,5 +237,5 @@ for file in os.listdir("tmp"):
 
 
 		yaml_file.close()
-		#Re-encrpyt the file
+		#encrpyt the file
 		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])

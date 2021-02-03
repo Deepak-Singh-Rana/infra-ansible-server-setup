@@ -2,9 +2,8 @@
 ansible-vault-file
 #don't upload a users personal vars
 personal.yml
-#don't upload any manually created vm variable files to git
-vm_vars/*
-!vm_vars/example.file.nz.yml
+#don't upload any vm lists variable files to git
+vm_list.cvs
 #don't include maybe sensitive information
 vars/newserver_vcenterdetails.yml
 #don't include the inventory, as it should be built from scratch each time

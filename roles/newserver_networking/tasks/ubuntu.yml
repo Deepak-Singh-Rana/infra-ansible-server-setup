@@ -7,6 +7,7 @@
     insertafter: 'addresses:'
     line: '        - {{ vm_ipv6_address }}/{{ vm_ipv6_netmask }}'
     firstmatch: yes
+  when: ipv6 == "true"
 
 - name: addipv6_gateway
   lineinfile:
@@ -14,6 +15,11 @@
     insertafter: 'gateway4:*'
     line: '      gateway6: {{ vm_ipv6_gateway }}'
     firstmatch: yes
+  when: ipv6 == "true"
+
+- name: remove ipv6 addresses using ip
+  command: "ip -6 a del 2406:e000:0:170::219/64 dev ens160"
+  when: ipv6 != "true"
 
 - name: change renderer to NetworkManager
   replace:
@@ -27,6 +33,8 @@
     path: /etc/netplan/01-netcfg.yaml
     state: absent
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04'
+#  notify: netplan generate config
+#  notify: netplan apply config
 
 - name: Remove the template ip and run handlers ubuntu 20.04
   file:

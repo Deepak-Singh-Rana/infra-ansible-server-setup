@@ -1,0 +1,43 @@
+- name: Ensure /opt/splunkforwarder/etc/apps/all_devices/local folder exists
+  file:
+   path: /opt/splunkforwarder/etc/apps/all_devices/local
+   state: directory
+   recurse: yes
+
+
+- name: apps deploymentclient.conf
+  copy:
+   src: appsconf/deploymentclient.conf
+   dest: /opt/splunkforwarder/etc/apps/all_devices/local/deploymentclient.conf
+   owner: splunk
+   group: splunk
+   mode: '0644'
+- name: apps outputs.conf
+  copy:
+   src: appsconf/outputs.conf
+   dest: /opt/splunkforwarder/etc/apps/all_devices/local/outputs.conf
+   owner: splunk
+   group: splunk
+   mode: '0644'
+- name: apps user-seed.conf
+  copy:
+   src: systemconf/user-seed.conf
+   dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
+   owner: splunk
+   group: splunk
+   mode: '0644'
+- name: apps web.conf
+  copy:
+   src: systemconf/web.conf
+   dest: /opt/splunkforwarder/etc/system/local/web.conf
+   owner: splunk
+   group: splunk
+   mode: '0640'
+
+- name: Ensure /opt/splunkforwarder/ is owned by splunk
+  file:
+   path: /opt/splunkforwarder/
+   state: directory
+   recurse: yes
+   owner: splunk
+

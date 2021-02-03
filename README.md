@@ -80,6 +80,11 @@ ssh-copy-id -i ~/.shh/id_rsa.pub gary.snap.net.nz
 
 # Deploying a new server
 
+## DNS for servers
+
+Put all vm dns entries fully into dns else deployment will fail
+[link](https://dnsdb.snap.net.nz)
+
 ## LastPass access
 
 LastPass access for adding zeus and root passwords automatically to lastpass
@@ -87,27 +92,16 @@ LastPass access for adding zeus and root passwords automatically to lastpass
 env https_proxy="http://frigg.snap.net.nz:3128" lpass login $USER
 ```
 
-## DNS for servers
-
-Put all vm dns entries fully into dns else deployment will fail
-https://dnsdb.snap.net.nz
-
-## Fill out the vcenter details
-```
-nano vars/newserver_vcenterdetails.yml
-```
-copy from vars/newserver_vcenterdetails.yml.example if need be
-
 ## Virtual machine/s details
-export the spreadsheet as **vm_list.csv**
-place the vm_list.csv in the td-ansible-server-setup folder
+export the spreadsheet as a .csv
+place the csv in the td-ansible-server-setup folder
 
 ### Generate Hosts script
 
 This creates all the needed files/variables/passwords for the ansible script
 
 ```
-python generatehosts.py
+env https_proxy="http://frigg.snap.net.nz:3128" python generatehosts.py -c filename.csv
 ```
 
 

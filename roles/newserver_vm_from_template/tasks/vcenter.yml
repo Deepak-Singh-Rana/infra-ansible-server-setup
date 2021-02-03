@@ -5,7 +5,7 @@
   delegate_to: 127.0.0.1
 #  delegate_to: localhost
   community.vmware.vmware_guest:
-    hostname: "{{ vcenter_hostname }}"
+    hostname: "{{ vcenter_fqdn }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     validate_certs: no
@@ -28,13 +28,12 @@
     customization:
       domain: "2dl.nz"
       dns_servers:
-        - "10.221.2.16"
-        - "10.221.2.17"
-        - "2406:e000:300::16"
-        - "2406:e000:300::17"
+        - "{{ vm_ipv4_dns_a }}"
+        - "{{ vm_ipv4_dns_b }}"
+#        - "2406:e000:300::16"
+#        - "2406:e000:300::17"
       dns_suffix:
         - snap.net.nz
         - 2degrees.nz
         - nzc.co.nz
 
-#should we reboot the vm here?
