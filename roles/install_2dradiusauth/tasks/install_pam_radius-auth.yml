@@ -86,3 +86,18 @@
    group: root
   when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
 
+#- name: remove nullok_secure from unix pam config file
+#  replace:
+#    path: /etc/pam_radius_auth.conf
+#    regexp: '^(.*)nullok_secure(.*)$'
+#    replace: '\g<1>{{ vm_radius_secret }}\g<2>'
+
+- name: replace pam-configs unix
+  ansible.builtin.copy:
+   src: pam-configs/2d-unix
+   dest: /usr/share/pam-configs/unix
+   mode: '0622'
+   owner: root
+   group: root
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+

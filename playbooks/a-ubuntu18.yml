@@ -23,6 +23,8 @@
     - configure_hostname
 #cleans up the server so clones of templates become indipendant from each other
     - clean_serverscript
+#configure satellite subscription if server is redhat
+    - configure_rhel_subscription
 #configures the repositories that the OS uses to get updates and software
     - configure_repos
 #sets up loging on the servers
@@ -59,8 +61,15 @@
     - install_2dsnmpd
 #setups zenoss user for zenoss management
     - install_zenoss
-#Hardens ubuntu to level2 compliance
-    - harden_ub18
+#Hardens ubuntu 18 to level2 compliance
+    - role: harden_ub18
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")
+#Hardens ubuntu 20 to level2 compliance
+    - role: harden_ub20
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+#Hardens redhat8 to level2 compliance
+    - role: harden_rhel8
+      when: (ansible_facts['distribution'] == "Redhat" and ansible_facts['distribution_major_version'] == "8")
 #setups breakglass utils/permissions
     - configure_bgaccounts
 #setup vulnerability scanning

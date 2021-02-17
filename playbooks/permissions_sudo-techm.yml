@@ -1,6 +1,5 @@
 - name: deploy sudo rights for techm to a newly provisioned server
-  hosts: newserver
-  remote_user: zeus
+  hosts: singleserver
   become: yes
   become_method: sudo
   ignore_unreachable: true

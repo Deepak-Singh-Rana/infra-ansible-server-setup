@@ -1,3 +1,6 @@
+- name: enable 2d-unix pam_unix using pam auth update
+  command: pam-auth-update --package --enable unix
+
 - name: enable 2d-radisuauth pam_radius_auth with pam auth update
   command: pam-auth-update --package --enable 2d-radiusauth
 

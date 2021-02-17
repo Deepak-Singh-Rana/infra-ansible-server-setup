@@ -1,2 +1,0 @@
-name,vm_template,vm_shortname,vm_fqdn,vcenter_fqdn,vcenter_vlan,vcenter_datacenter,vcenter_datastore,vcenter_cluster,vcenter_folder,vm_ipv4_address,vm_ipv4_netmask,vm_ipv4_gateway,vm_ipv4_dns_a,vm_ipv4_dns_b,ipv6,vm_ipv6_address,vm_ipv6_netmask,vm_ipv6_gateway,vm_ipv6_dns_a,vm_ipv6_dns_b
-redhat8-ansdeployment,rhel8-template,redhat8-ansdeployment,redhat8-ansdeployment.snap.net.nz,snzclham860.nzc.co.nz,HM-FIX-1015,Hamilton VI,HM-FIXNAF5K01HAM-410,HM-FIX-01,vm_provisioning,202.37.101.222,255.255.255.224,202.37.101.193,10.221.2.16,10.221.2.17,false,,,,,

@@ -104,7 +104,6 @@ AcceptEnv LANG LC_*
 Subsystem sftp /usr/libexec/openssh/sftp-server
 
 UsePAM yes
-AuthenticationMethods "password" "keyboard-interactive"
 TrustedUserCAKeys /etc/ssh/user_ca.pub
 MaxAuthTries 4
 PermitUserEnvironment no
@@ -119,7 +118,7 @@ ClientAliveCountMax 3
 ###################
 #Access Permission#
 ###################
-AuthenticationMethods "publickey,password" "publickey,keyboard-interactive" "password"
+AuthenticationMethods "publickey,password" "publickey,keyboard-interactive" "password" "publickey"
 
 
 ###############################
@@ -136,10 +135,10 @@ AllowGroups zeus servers.admin@staff.snap.net.nz SEC_servers.fixed.TechM
 ##this is required on every server, do not modify
 ##use /etc/ssh/sshd_config.d/matches
 
-#Upguard ( file auditor )
-Match User SVC_fixed.upguard@2degrees.nz
+#upguard ( file auditor )
+Match User sec_read
         AuthenticationMethods "publickey"
-        AllowGroups SEC_fixed.servers.upguard
+        AllowGroups sec_read
 
 ##############################################
 #============================================#

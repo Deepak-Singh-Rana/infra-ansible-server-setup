@@ -61,7 +61,7 @@ data_headings = []
 
 print("building hosts file...")
 #open a hosts file for writing hosts to
-hosts_file = open("inventory/hosts", 'w')
+hosts_file = open("inventory/autogen-newservers", 'w')
 hosts_text = ""
 
 hosts_text += "[radius]\n"

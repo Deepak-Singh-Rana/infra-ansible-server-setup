@@ -24,3 +24,9 @@
   import_tasks: configure_pam_sshd_audit.yml
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
+
+#restart nscd so we can start using radius auth right away
+- name: restart nscd
+  ansible.builtin.service:
+    name: nscd
+    state: restarted

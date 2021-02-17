@@ -19,11 +19,11 @@
   ignore_errors: yes
   when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "7") 
 
-- name: Redhat satellite check repo https://snzclakl173.nzc.co.nz is accessable
-  uri:
+#- name: Redhat satellite check repo https://snzclakl173.nzc.co.nz is accessable
+#  uri:
 #    url: https://snzclakl173.nzc.co.nz/XMLRPC
-    url: https://snzclakl173.nzc.co.nz
-    timeout: 10
-    validate_certs: no
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+#    url: https://snzclakl173.nzc.co.nz
+#   timeout: 10
+#   validate_certs: no
+#  ignore_errors: yes
+#  when: ansible_facts['distribution'] == 'RedHat'

@@ -1,0 +1,73 @@
+---
+# tasks file for configure_rhel_subscription
+
+#subscription-manager] To install it use: ansible-galaxy collection install community.general
+#Katello] ansible-galaxy collection install theforeman.foreman
+
+#To use it in a playbook, specify: community.general.redhat_subscription
+
+#copy ak-katello-ca-consumer-latest.noarch.rpm over
+- name: copy katello akl file over
+  copy:
+    src: akl-katello-ca-consumer-latest.noarch.rpm
+    dest: /tmp/katello-ca-consumer-latest.noarch.rpm
+    owner: root
+    group: root
+    mode: '0444'
+  when: vcenter_datacenter|lower == "khyber pass vi"
+
+- name: copy katello hlz file over
+  copy:
+    src: hlz-katello-ca-consumer-latest.noarch.rpm
+    dest: /tmp/katello-ca-consumer-latest.noarch.rpm
+    owner: root
+    group: root
+    mode: '0444'
+  when: vcenter_datacenter|lower == "hamilton vi"
+
+- name: isntall katello file
+  dnf:
+   name: /tmp/katello-ca-consumer-latest.noarch.rpm
+   disable_gpg_check: yes
+   state: present
+
+#disable spacewalk
+- name: copy over the spacewalk conf
+  copy:
+    src: spacewalk.conf
+    dest: /etc/dnf/plugins/spacewalk.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+#subscription-manager register --org="Default_Organization" --activationkey="RHEL8_Key"
+- name: register the server
+  community.general.redhat_subscription:
+    state: present
+    activationkey: RHEL8_Key
+    auto_attach: yes
+    org_id: Default_Organization
+    force_register: yes
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name : Enable all repos
+  ansible.builtin.command: 'subscription-manager repos --enable=*'
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+#- name: Enable all repositories
+#  community.general.rhsm_repository:
+#    name: 'rhel-8-*'
+#    state: enabled
+#  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name: refresh dnf
+  ansible.builtin.command: dnf clean all
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+
+- name: install katello packages
+  dnf:
+    name:
+      - katello-host-tools
+      - katello-agent
+    state: latest
+  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"

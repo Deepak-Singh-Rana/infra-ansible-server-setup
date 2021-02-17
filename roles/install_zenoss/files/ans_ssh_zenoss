@@ -1,0 +1,3 @@
+Match User zenoss
+        AuthenticationMethods "publickey"
+        AllowGroups zenoss

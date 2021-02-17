@@ -1,0 +1,57 @@
+---
+# tasks file for configure_upguardaccess
+
+- name: restart nscd so we can get the groups
+  ansible.builtin.service:
+    name: nscd
+    state: restarted
+
+- name: copy firewall rule
+  copy:
+    src: ans_ssh-upguard.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-upguard.v4
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Enable firewall rule
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-upguard.v4
+    dest: /etc/fw-2d/rules-enabled/43_ans_ssh-upguard.v4
+    owner: root
+    group: root
+    state: link
+
+
+- name: Create svc_fixed.upguard@2degrees.nz home dir
+  file:
+    path: /home/svc_fixed.upguard@2degrees.nz
+    state: directory
+    owner: svc_fixed.upguard@2degrees.nz
+    group: users
+    mode: '0701'
+
+- name: Create svc_fixed.upguard@2degrees.nz home dir
+  file:
+    path: /home/svc_fixed.upguard@2degrees.nz/.ssh
+    state: directory
+    owner: svc_fixed.upguard@2degrees.nz
+    group: users
+    mode: '0701'
+
+- name: copy over the authorized_keys file
+  copy:
+    src: authorized_keys
+    dest: /home/svc_fixed.upguard@2degrees.nz/.ssh/authorized_keys
+    owner: svc_fixed.upguard@2degrees.nz
+    group: users
+    mode: '0644'
+
+- name: copy over the sudoers file
+  copy:
+    src: ans-upguard
+    dest: /etc/sudoers.d/ans-upguard
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s

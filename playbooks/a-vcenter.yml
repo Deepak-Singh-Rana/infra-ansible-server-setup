@@ -17,7 +17,6 @@
     - ansible_python_interpreter: /usr/bin/python3
 
   vars_files:
-#    - "../vars/newserver_vcenterdetails.yml"
     - "../tmp/{{inventory_hostname}}.yml"
     - "../vars/newserver_ca_passphrase.yml"
 

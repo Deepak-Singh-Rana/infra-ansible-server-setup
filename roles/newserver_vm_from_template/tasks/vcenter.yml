@@ -1,6 +1,6 @@
 ---
 # tasks file for deploy_ubuntu18
-#requires sudo apt install python3-pyvmomi
+# requires sudo apt install python3-pyvmomi
 - name:  Clone a virtual machine from Linux template and customize
   delegate_to: 127.0.0.1
 #  delegate_to: localhost
@@ -12,6 +12,7 @@
     datacenter: "{{ vcenter_datacenter }}"
     datastore: "{{ vcenter_datastore }}"
     cluster: "{{ vcenter_cluster }}"
+#    annotation: "{{ vcenter_notes }}"
     #state: present
     state: poweredon
     folder: "{{ vcenter_folder }}"

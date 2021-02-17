@@ -1,46 +1,5 @@
 ---
 # tasks file for configure_rhel_subscription
-
-#subscription-manager] To install it use: ansible-galaxy collection install community.general
-#Katello] ansible-galaxy collection install theforeman.foreman
-
-#To use it in a playbook, specify: community.general.redhat_subscription
-
-
-#- name: Install Satellite key
-#  yum:
-#    name: https://snzclakl173.nzc.co.nz/pub/rhn-org-trusted-ssl-cert-1.0-1.noarch.rpm
-#    state: present
-#  when: ansible_distribution == "RedHat" and ansible_distribution_major_version <= "7"
-
-- name: copy satellite key rhel8
-  copy:
-    src: katello-rhsm-consumer
-    dest: /usr/bin/katello-rhsm-consumer
-    owner: root
-    group: root
-    mode: '0766'
-  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
-
-#subscription-manager register --org="Default_Organization" --activationkey="RHEL8_Key"
-- name: register the server
-  community.general.redhat_subscription:
-    state: present
-    activationkey: RHEL8_Key
-    org_id: Default_Organization
-  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
-
-subscription-manager repos --enable=*
-- name: Enable all repositories
-  community.general.rhsm_repository:
-    name: rhel-8*
-    state: enabled
-  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
-
-- name: refresh yum
-    yum clean all
-  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
-
-- name: enable the repos
-    yum install katello-host-tools katello-agent
+- name: install apache2
+  include: rhel_subscription.yml
   when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
