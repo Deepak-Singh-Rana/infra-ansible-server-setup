@@ -3,7 +3,7 @@
 ######################################
 - hosts: newservers
   gather_facts: false
-  serial: 1
+  serial: 2
 
   vars_prompt:
     - name: vcenter_username

@@ -1,2 +1,0 @@
-name,vm_template,vm_shortname,vm_fqdn,vcenter_fqdn,vcenter_vlan,vcenter_datacenter,vcenter_datastore,vcenter_cluster,vcenter_folder,vm_ipv4_address,vm_ipv4_netmask,vm_ipv4_gateway,vm_ipv4_dns_a,vm_ipv4_dns_b,ipv6,vm_ipv6_address,vm_ipv6_netmask,vm_ipv6_gateway,vm_ipv6_dns_a,vm_ipv6_dns_b
-dez,ubuntu18-template,dez,dez.snap.net.nz,snzclakl660.nzc.co.nz,KP-MAN-255,Khyber Pass VI,KP-MAN-NAF7K01KPR-419,KP-MAN-01,vm-provisioning,172.21.255.71,255.255.255.0,172.21.255.1,172.21.255.40,172.21.255.41,0,,,,,

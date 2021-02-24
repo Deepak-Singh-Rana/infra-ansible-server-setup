@@ -6,6 +6,7 @@
   gather_facts: false
   become: yes
   become_method: sudo
+  serial: 2
 
 #  vars_files:
 #    - "../personal.yml"

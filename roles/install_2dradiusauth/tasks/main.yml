@@ -26,7 +26,16 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 #restart nscd so we can start using radius auth right away
+
+- name: set paranoia to true
+  ansible.builtin.replace:
+    path: /etc/nscd.conf
+    regexp: '(.*paranoia.*)no'
+    replace: '\1yes'
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
 - name: restart nscd
   ansible.builtin.service:
     name: nscd
     state: restarted
+  when: ansible_facts['distribution'] == 'Ubuntu'

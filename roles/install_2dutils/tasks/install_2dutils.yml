@@ -14,6 +14,7 @@
     - mlocate
     - pwgen
     - rsync
+    - bind-utils
     state: present
   when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
