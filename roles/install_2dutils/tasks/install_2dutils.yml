@@ -36,3 +36,19 @@
     - rsync
     state: present
   when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Copy apache2.nanorc
+  ansible.builtin.copy:
+    src: apache2.nanorc
+    dest: /usr/share/nano/apache2.nanorc
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy markdown.nanorc
+  ansible.builtin.copy:
+    src: markdown.nanorc
+    dest: /usr/share/nano/markdown.nanorc
+    owner: root
+    group: root
+    mode: '0644'
