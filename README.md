@@ -18,7 +18,7 @@ on bitbucket go to your settings and generate yourself an "app password" this wi
 
 ```
 
-git clone https://<username>@bitbucket.org/2dgreesdev/td-ansible-server-setup.git
+git clone https://<username>@bitbucket.org/2dgreesdev/infra-ansible-server-setup.git
 
 ```
 
@@ -94,7 +94,7 @@ env https_proxy="http://frigg.snap.net.nz:3128" lpass login $USER
 
 ## Virtual machine/s details
 export the spreadsheet as a .csv
-place the csv in the td-ansible-server-setup folder
+place the csv in the infra-ansible-server-setup folder
 
 ### Generate Hosts script
 

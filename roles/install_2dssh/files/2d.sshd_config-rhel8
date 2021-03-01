@@ -140,6 +140,11 @@ Match User sec_read
         AuthenticationMethods "publickey"
         AllowGroups sec_read
 
+#device42 scanning
+#Match User svc_d42_unix@2degrees.nz
+#        AllowGroups SEC_d42_unix
+#        AuthenticationMethods "publickey"
+
 ##############################################
 #============================================#
 ##############################################
