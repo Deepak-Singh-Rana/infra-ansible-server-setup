@@ -2,7 +2,7 @@
 # tasks file for harden_docker
 
 - name: Add the docker-ce repo key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://repo.snap.net.nz/docker-ce/key.gpg
     state: present
   when: ansible_facts['distribution'] == 'Ubuntu'

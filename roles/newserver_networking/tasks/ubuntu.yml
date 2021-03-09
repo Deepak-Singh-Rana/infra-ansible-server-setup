@@ -17,29 +17,29 @@
     firstmatch: yes
   when: ipv6 == "true"
 
-- name: remove ipv6 addresses using ip
-  command: "ip -6 a del 2406:e000:0:170::219/64 dev ens160"
-  when: ipv6 != "true"
+#- name: remove ipv6 addresses using ip
+#  command: "ip -6 a del 2406:e000:0:170::219/64 dev ens160"
+#  when: ipv6 != "true"
 
-- name: change renderer to NetworkManager
-  replace:
-    path: /etc/netplan/99-netcfg-vmware.yaml
-    regexp: '(.*renderer: ).*'
-    replace: '\1NetworkManager'
-  notify: netplan apply config
+#- name: change renderer to NetworkManager
+#  replace:
+#    path: /etc/netplan/99-netcfg-vmware.yaml
+#    regexp: '(.*renderer: ).*'
+#    replace: '\1NetworkManager'
+#  notify: netplan apply config
 
-- name: Remove the template ip and run handlers ubutnu 18.04
-  file:
-    path: /etc/netplan/01-netcfg.yaml
-    state: absent
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04'
+#- name: Remove the template ip and run handlers ubutnu 18.04
+#  file:
+#    path: /etc/netplan/01-netcfg.yaml
+#    state: absent
+#  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04'
 #  notify: netplan generate config
 #  notify: netplan apply config
 
-- name: Remove the template ip and run handlers ubuntu 20.04
-  file:
-    path: /etc/netplan/01-netcfg.yaml
-    state: absent
-  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04'
+#- name: Remove the template ip and run handlers ubuntu 20.04
+#  file:
+#    path: /etc/netplan/01-netcfg.yaml
+#    state: absent
+#  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04'
 #  notify: netplan generate config
 #  notify: netplan apply config

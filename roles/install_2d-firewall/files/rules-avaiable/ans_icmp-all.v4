@@ -1,0 +1,2 @@
+Raw: -A INPUT -p icmp -j ACCEPT
+Raw: -A OUTPUT -p icmp -j ACCEPT

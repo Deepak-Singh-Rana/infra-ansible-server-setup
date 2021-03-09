@@ -3,7 +3,7 @@
 ######################################
 - hosts: newservers
   gather_facts: false
-  serial: 2
+#  serial: 3
 
   vars_prompt:
     - name: vcenter_username
@@ -22,4 +22,5 @@
 
   roles:
     - newserver_vm_from_template
+    - newserver_vm_reboot
     - newserver_access

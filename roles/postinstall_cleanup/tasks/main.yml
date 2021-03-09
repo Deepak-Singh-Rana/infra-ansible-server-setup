@@ -1,9 +1,9 @@
 ---
 # tasks file for postinstall_cleanup
 #reboot the server so hardening takes affect
-- name: Unconditionally reboot the machine waiting for 120 seconds before testing connection again
+- name: Unconditionally reboot the machine waiting for 300 seconds - 5mins before testing connection again
   reboot:
-    reboot_timeout: 180
+    reboot_timeout: 300
 
 
 
@@ -20,3 +20,19 @@
 #    path: /etc/ssh/sshd_config.d/matches
 #    regexp: '^Match User zeus\n.*Auth.*$'
 #    replace: ''
+
+#- name: remove zeus sudoers file
+#  file:
+#   path: /etc/sudoers.d/deploy_zeus
+#   state: absent
+
+#
+#FINAL TASK
+#nothing should be placced after this task as anything placed after this will not work
+#removing the sudoers file must be the last thing else you can't run any sudo commands after the file is removed
+#
+- name: zeus sudoers file and authorization_keys file
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - rm /home/zeus/.ssh/authorized_keys
+    - rm /etc/sudoers.d/deploy_zeus

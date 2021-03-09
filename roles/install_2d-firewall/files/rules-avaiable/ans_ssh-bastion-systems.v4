@@ -1,0 +1,6 @@
+##############################
+#DO NOT MANUALLY EDIT
+#ANY CHANGES WILL BE OVER WRITTEN WHEN THE PACKAGE GETS UPDATED
+##############################
+
+Accept: 22/tcp from $$BASTIONSYSTEMS$$

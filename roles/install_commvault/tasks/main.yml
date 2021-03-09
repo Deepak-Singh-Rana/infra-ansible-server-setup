@@ -1,0 +1,41 @@
+---
+# tasks file for install_commvault
+
+- name: copy over filewall rules
+  ansible.builtin.copy:
+   src: ans_commvault-filebackup.v4
+   dest: /etc/fw-2d/rules-available/ans_commvault-filebackup.v4
+   owner: root
+   group: root
+   mode: '0400'
+
+- name: Enable firewall rule
+  ansible.builtin.file:
+    src: /etc/fw-2d/rules-available/ans_commvault-filebackup.v4
+    dest: /etc/fw-2d/rules-enabled/50_ans_commvault-filebackup.v4
+    owner: root
+    group: root
+    state: link
+
+- name: reload firewall
+  ansible.builtin.command:
+    cmd: /usr/local/sbin/firewall-up
+
+- name: copy over the deb file
+  ansible.builtin.copy:
+    src: commvault.instance001_11.0.0-80.190.0.2548879.190.3144274_amd64.deb
+    dest: /tmp/commvault.instance001_11.0.0-80.190.0.2548879.190.3144274_amd64.deb
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")
+- name: Install commvault
+  apt:
+    deb: /tmp/commvault.instance001_11.0.0-80.190.0.2548879.190.3144274_amd64.deb
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")
+
+- name: delete the installer
+  ansible.builtin.file:
+    path: /tmp/commvault.instance001_11.0.0-80.190.0.2548879.190.3144274_amd64.deb
+    state: absent
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")

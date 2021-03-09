@@ -20,17 +20,10 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: enable audit rules
+- name: enable audit rules redhat
   shell: /usr/sbin/augenrules --load
-  notify:
-#  - restart auditd centos7 # we don't restart because we should reboot manually
-#  - restart auditd centos8
-  - restart rsyslog
   when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
-- name: enable audit rules
+- name: enable audit rules ubuntu
   shell: /sbin/augenrules --load
-  notify:
-#  - restart auditd ubuntu# we don't restart because we should reboot manually
-  - restart rsyslog
   when: ansible_facts['distribution'] == 'Ubuntu'

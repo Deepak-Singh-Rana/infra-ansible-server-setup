@@ -1,0 +1,8 @@
+#############################################
+#PLace me near the end of the firewall rules#
+#############################################
+Raw: -N LOGGING-OUT
+Raw: -A OUTPUT -j LOGGING-OUT
+Raw: -A LOGGING-OUT -m limit --limit 2/min -j LOG --log-prefix "#### IPTables-OUTPUT-Dropped: ####" --log-level 4
+Raw: -A LOGGING-OUT -j DROP
+

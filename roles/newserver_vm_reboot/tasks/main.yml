@@ -1,0 +1,4 @@
+---
+# tasks file for deploy_vm_from_template
+- name: deploy a vm from a template
+  include: vcenter.yml

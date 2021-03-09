@@ -14,7 +14,7 @@
     mode: '0640'
   when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == '16'
 
-- name: 2dsshd_config
+- name: 2dsshd_config rhel8
   copy:
     src: 2d.sshd_config-rhel8
     dest: /etc/ssh/2d.sshd_config
@@ -24,7 +24,16 @@
   when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
        (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
 
-- name: 2dsshd_config
+- name: 2dsshd_config suse15
+  copy:
+    src: 2d.sshd_config-suse15
+    dest: /etc/ssh/2d.sshd_config
+    owner: root
+    group: root
+    mode: '0640'
+  when: (ansible_facts['distribution'] == "SUSE" and ansible_facts['distribution_major_version'] >= "15")
+
+- name: 2dsshd_config ubuntu18
   copy:
     src: 2d.sshd_config-ub18
     dest: /etc/ssh/2d.sshd_config

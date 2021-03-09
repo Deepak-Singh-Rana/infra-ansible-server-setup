@@ -1,0 +1,12 @@
+###====docker rules should be set to blocking rules====###
+
+# in the chain docker-user for port 80 if does not matcha range in the ipset daveisawesome, then drop
+Raw: -A DOCKER-USER -p tcp  --dport 80  -m set ! --match-set ipsetgroup6 dst -j DROP
+
+# in the chain docker-user for port 443 if does not matcha range in the ipset daveisawesome, then drop
+Raw: -A DOCKER-USER -p tcp  --dport 443  -m set ! --match-set ipsetgroup6 dst -j DROP
+
+
+##Note, below can only be used for continous rules, use of ipset is recommended instead
+# in the chain docker-user tcp port 80 not match source 2406:e000:0:200::0/64 then drop
+Raw: -A DOCKER-USER -p tcp -m iprange --dport 80 ! -s 2406:e000:0:200::0/64 -j DROP

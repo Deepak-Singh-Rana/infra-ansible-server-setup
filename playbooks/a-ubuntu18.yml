@@ -83,5 +83,7 @@
     - install_2daide
 #Auto updates come at the end so it doens't start updating while we are setting up the vm
     - install_autoupdates
+#install backups
+    - install_commvault
 #run the postinstall cleanup role
     - postinstall_cleanup

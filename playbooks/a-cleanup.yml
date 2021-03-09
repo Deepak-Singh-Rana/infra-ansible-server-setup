@@ -3,7 +3,7 @@
 ###########################
 - hosts: newservers
   gather_facts: false
-  serial: 2
+#  serial: 3
 
   vars:
     - ansible_python_interpreter: /usr/bin/python3

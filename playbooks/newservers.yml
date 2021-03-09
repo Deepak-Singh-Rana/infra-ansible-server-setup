@@ -1,5 +1,18 @@
----
-- import_playbook: a-vcenter.yml
-- import_playbook: a-radius.yml
-- import_playbook: a-ubuntu18.yml
-- import_playbook: a-cleanup.yml
+- hosts: localhost
+  gather_facts: false
+#  serial: 2
+
+- name: vcenter playbook
+  import_playbook: a-vcenter.yml
+
+- name: radius playbook
+  import_playbook: a-radius.yml
+
+- name: configure server
+  import_playbook: a-wait.yml
+
+- name: configure server
+  import_playbook: a-ubuntu18.yml
+
+- name: cleanup
+  import_playbook: a-cleanup.yml

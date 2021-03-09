@@ -1,0 +1,38 @@
+##files extension must be ipset, else firewall-up will not detect it
+#
+#format...
+#create the set
+#add rules to the set
+#join two sets together if needed
+
+#################
+###create sets###
+#################
+
+#create a group/set for ipv4 ranges
+Ipset: -N rickysip4ranges hash:net
+Ipset: -N davesip4ranges hash:net
+
+#create a group for ipv6 ranges
+Ipset: -N davesip6ranges hash:net family inet6
+
+#create a group that can contain groups
+Ipset: -N combinedipranges list:set
+
+######################
+###add ip's to sets###
+######################
+
+#appaned an ip4 range to the set/s
+Ipset: -A rickysip4ranges 192.168.0.0/24
+Ipset: -A rickysip4ranges 192.168.10.0/24
+
+Ipset: -A davesip4ranges 192.168.100.0/24
+
+#append ipv6 ranges to ipv6 set/s
+Ipset: -A davesip6ranges 2406:e000:0:150::0/64
+Ipset: -A davesip6ranges 2406:e000:1:150::0/64
+
+#add group into combined group
+Ipset: -A combinedipranges davesip4ranges
+Ipset: -A combinedipranges davesip6ranges

@@ -1,0 +1,7 @@
+##################################################
+#Place me near at the start of the firewall rules#?????
+##################################################
+Raw: -N LOGGING-FORWARD
+Raw: -A FORWARD -j LOGGING-FORWARD
+Raw: -A LOGGING-FORWARD -m limit --limit 2/min -j LOG --log-prefix "#### IPTables-INPUT-Dropped: ####" --log-level 4
+Raw: -A LOGGING-FORWARD -j DROP

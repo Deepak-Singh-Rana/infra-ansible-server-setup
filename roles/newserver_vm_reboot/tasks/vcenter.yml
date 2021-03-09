@@ -1,44 +1,21 @@
 ---
 # tasks file for deploy_ubuntu18
 # requires sudo apt install python3-pyvmomi
-- name:  Clone a virtual machine from Linux template and customize
+- name:  reboot the vm to make sure netowrk is set correctly
   delegate_to: 127.0.0.1
-#  delegate_to: localhost
   community.vmware.vmware_guest:
     hostname: "{{ vcenter_fqdn }}"
     username: "{{ vcenter_username }}"
     password: "{{ vcenter_password }}"
     validate_certs: no
     datacenter: "{{ vcenter_datacenter }}"
-    datastore: "{{ vcenter_datastore }}"
     cluster: "{{ vcenter_cluster }}"
 #    annotation: "{{ vcenter_notes }}"
     #state: present
-    state: poweredon
+    state: reboot-guest
     folder: "{{ vcenter_folder }}"
-    template: "{{ vm_template }}"
     name: "{{ vm_shortname }}"
-    networks:
-      - name: "{{ vcenter_vlan }}"
-        type: static
-        ip: "{{ vm_ipv4_address }}"
-        netmask: "{{ vm_ipv4_netmask }}"
-        gateway: "{{ vm_ipv4_gateway }}"
-        start_connected: yes
-        connected: yes
-    wait_for_customization: yes
     wait_for_ip_address: yes
-    customization:
-      domain: "2dl.nz"
-      dns_servers:
-        - "{{ vm_ipv4_dns_a }}"
-        - "{{ vm_ipv4_dns_b }}"
-#        - "2406:e000:300::16"
-#        - "2406:e000:300::17"
-      dns_suffix:
-        - snap.net.nz
-        - 2degrees.nz
-        - nzc.co.nz
 
 #- name: reboot the machine to make sure it has connectivity on the new ip
 #  delegate_to: 127.0.0.1

@@ -1,14 +1,10 @@
 - name: Install docker
-  hosts: hypnotoad-stag
-#  remote_user: zeus
+  hosts: singleserver
   become: yes
   become_method: sudo
   gather_facts: true
-  ignore_unreachable: true
   vars:
     ansible_python_interpreter: /usr/bin/python3
   #how many to run at once
-  serial:
-  - 1
   roles:
-    - install_docker
+    - configure_as_docker_host

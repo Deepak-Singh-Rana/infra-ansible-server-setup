@@ -1,0 +1,2 @@
+Raw: -A INPUT -p ipv6-icmp -j ACCEPT
+Raw: -A OUTPUT -p ipv6-icmp -j ACCEPT
