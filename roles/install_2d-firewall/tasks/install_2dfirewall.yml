@@ -1,0 +1,23 @@
+- name: copy ifup firewall script
+  copy:
+    src: 05-firewall-up
+    dest: /etc/NetworkManager/dispatcher.d/05-firewall-up
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: copy firewall-up script
+  copy:
+    src: sbin/firewall-up
+    dest: /usr/local/sbin/firewall-up
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: copy firewall-down script
+  copy:
+    src: sbin/firewall-down
+    dest: /usr/local/sbin/firewall-down
+    owner: root
+    group: root
+    mode: '0700'

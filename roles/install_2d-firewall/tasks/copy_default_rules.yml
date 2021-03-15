@@ -1,0 +1,72 @@
+- name: copy base.ipset
+  ansible.builtin.copy:
+    src: rules-enabled/10_base.ipset
+    dest: /etc/fw-2d/rules-enabled/10_base.ipset
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy base.v4
+  ansible.builtin.copy:
+    src: rules-enabled/10_base.v4
+    dest: /etc/fw-2d/rules-enabled/10_base.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy base.v6
+  ansible.builtin.copy:
+    src: rules-enabled/10_base.v6
+    dest: /etc/fw-2d/rules-enabled/10_base.v6
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_default-rules.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_default-rules.v4
+    dest: /etc/fw-2d/rules-available/ans_default-rules.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_default-rules.v6
+  ansible.builtin.copy:
+    src: rules-available/ans_default-rules.v6
+    dest: /etc/fw-2d/rules-available/ans_default-rules.v6
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_ssh-bastion-systems.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_ssh-bastion-systems.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-bastion-systems.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_ssh-bastion-systems.v6
+  ansible.builtin.copy:
+    src: rules-available/ans_ssh-bastion-systems.v6
+    dest: /etc/fw-2d/rules-available/ans_ssh-bastion-systems.v6
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_ssh-ansible-systems.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_ssh-ansible-systems.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-ansible-systems.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_ssh-ansible-systems.v6
+  ansible.builtin.copy:
+    src: rules-available/ans_ssh-ansible-systems.v6
+    dest: /etc/fw-2d/rules-available/ans_ssh-ansible-systems.v6
+    owner: root
+    group: root
+    mode: '0600'
+

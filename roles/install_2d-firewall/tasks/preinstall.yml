@@ -1,0 +1,82 @@
+- name: make sure perl is installed
+  package:
+    name: perl
+    state: present
+
+- name: make sure binutils is installed(to extract the deb pacakge)
+  package:
+    name: binutils
+    state: present
+
+- name: make sure iptables is installed
+  package:
+    name: iptables
+    state: present
+
+- name: make sure ipset is installed
+  package:
+    name: ipset
+    state: present
+
+- name: addusrlocalsbin into root $PATH
+  lineinfile:
+    path: /root/.bashrc
+    insertafter: '^# User specific aliases and functions'
+    line: export PATH='/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
+  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: mkdir fw-2d folder
+  ansible.builtin.file:
+    path: /etc/fw-2d
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: mkdir fw-2d/rules_enabled folder
+  ansible.builtin.file:
+    path: /etc/fw-2d/rules_enabled
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: mkdir fw-2d/rules_available folder
+  ansible.builtin.file:
+    path: /etc/fw-2d/rules_available
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: mkdir fw-2d/example-rules folder
+  ansible.builtin.file:
+    path: /etc/fw-2d/example-rules
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: mkdir fw-2d/networks folder
+  ansible.builtin.file:
+    path: /etc/fw-2d/networks
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: mkdir fw-2d/custom_networks.d folder
+  ansible.builtin.file:
+    path: /etc/fw-2d/custom_networks.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: copy README.md
+  ansible.builtin.copy:
+    src: README.md
+    dest: /etc/fw-2d/README.md
+    owner: root
+    group: root
+    mode: '0600'

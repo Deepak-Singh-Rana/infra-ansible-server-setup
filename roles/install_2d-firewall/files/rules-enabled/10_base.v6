@@ -1,0 +1,9 @@
+##############################
+#DO NOT MANUALLY EDIT
+#ANY CHANGES WILL BE OVER WRITTEN WHENEVER THE ANSIBLE PACKAGE GETS RUN
+##############################
+
+#Drop if no rules match
+Raw: -P INPUT DROP
+Raw: -P FORWARD DROP
+Raw: -P OUTPUT DROP

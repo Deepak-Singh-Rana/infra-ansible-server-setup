@@ -1,0 +1,728 @@
+#!/usr/bin/perl
+#########################################
+# firewall-up  by James Burnett 2017-03-23
+# Last modified by Dave Gardner 2019-07-08
+#########################################
+$|=1;
+my $lockdir = '/var/run/lock';
+my $mylock = $lockdir.'/firewall-up';
+
+#create a lock file so this script can not run more than once at a time
+open(MYLOCK, ">$mylock") || die;
+flock(MYLOCK, 2) || die;
+
+my $comment = '-m comment --comment "2d-firewall"';
+$comment =~ /"([^"]+)"/;
+my $comment_text = $1;
+
+my $RuleDir = '/etc/fw-2d/rules-enabled';
+my $NetDir = '/etc/fw-2d/networks';
+
+my @IpSetRules;
+
+my %NetworksV4;
+my %ConfigV4Rules;
+my @TablesV4Rules;
+my @FailedV4Rules;
+
+my %NetworksV6;
+my %ConfigV6Rules;
+my @TablesV6Rules;
+my @FailedV6Rules;
+
+my $DEBUG=1;
+
+# if rules dont exist, ie restarting server then flush and process rule. else just delete and process just package rules.
+my $Refresh=1;
+chomp ( my $CurrentRules = `iptables -L INPUT -n -t filter | grep -c -P "^ACCEPT"` );
+if($CurrentRules == 0){ $Refresh=0; }
+
+# manual override for rule processing
+if($ARGV[0] eq 'full') {$Refresh=0;} elsif($ARGV[0] eq 'package') { $Refresh=1;}
+
+
+print "REFRESH $Refresh $CurrentRules\n";
+
+
+if($Refresh) {
+        &Delete2dRules();
+}
+%GetIpSetConfig = &GetIpSetConfig($RuleDir);
+
+%ConfigV4Rules = &GetV4Config($RuleDir);
+%NetworksV4 = &GetV4Networks($NetDir);
+@TablesV4Rules = &BuildV4Rules(\%ConfigV4Rules, \%NetworksV4);
+
+
+
+if($Refresh) {
+        # because i am inserting no appending rules have to reverse the array order
+        @TablesV4Rules = reverse @TablesV4Rules;
+}
+
+
+#####################
+###get ipset files###
+#####################
+sub GetIpSetConfig() {
+        print "\n------------------------\n";
+        print "--PROCESING IPSET GROUPS--\n";
+        print "------------------------\n";
+        my $ConDir = shift;
+        my @ConfigList = `find $ConDir -name "*.ipset" -xtype f | sort -n`;
+
+        foreach my $File (@ConfigList) {
+                #print "Processing $File";
+                chomp($File);
+                open(IN,"$File") || die "Can not open file $File $!";
+                while(<IN>) {
+                        #If an ipset rule (man ipset)
+                        if ($_ =~ /^Ipset:\s+(.+)$/){
+                                #print "Found ipset rule $_";
+                                push(@IpSetRules, $_);
+                        }
+                        #If we find a blank line do nothing(allows for nice formatting in the rule files)
+                        elsif ($_ =~ /^\s+$/) {
+                        }
+                        #If we find a comment
+                        elsif ($_ =~/^#/) {
+                                #print "found comment $_";
+                        }
+                }
+        }
+
+        #process ipset rules
+        print "\napplying ipset rules\n";
+        foreach my $IpSetRule(@IpSetRules) {
+                my @IpSetRuleSplit = split /: /, $IpSetRule;
+#               my $Ipset = `/sbin/ipset -exist @IpSetRuleSplit[1]`;
+                print "/sbin/ipset -exist @IpSetRuleSplit[1]";
+#               print "$Ipset\n";
+                `/sbin/ipset -exist @IpSetRuleSplit[1]`;
+        }
+}
+
+
+################################
+###Run ipv4 rules on iptables###
+################################
+
+# for each Rule in the ipv4 Rules list
+print "\n------------------------\n";
+print "--PROCESING IPV4 RULES--\n";
+print "------------------------\n";
+
+for(my $i;$i<=$#TablesV4Rules;$i++) {
+        if($Refresh) {
+                # change append to insert
+                $TablesV4Rules[$i] =~ s/^\s*-A/-I/;
+                # dont flush anything
+                if($TablesV4Rules[$i] =~ /\-P/) {next;}
+                if($TablesV4Rules[$i] =~ /\-X/) {next;}
+                if($TablesV4Rules[$i] =~ /\-F/) {next;}
+        }
+
+        #apply the ipv4 rules
+        print "/sbin/iptables $TablesV4Rules[$i]\n";
+        `/sbin/iptables $TablesV4Rules[$i] $comment`;
+}
+
+%ConfigV6Rules = &GetV6Config($RuleDir);
+%NetworksV6 = &GetV6Networks($NetDir);
+@TablesV6Rules = &BuildV6Rules(\%ConfigV6Rules, \%NetworksV6);
+
+if($Refresh) {
+        # because I am inserting not appending rules have to reverse the array order
+        @TablesV6Rules = reverse @TablesV6Rules;
+}
+################################
+###Run ipv6 rules on iptables###
+################################
+
+#for each Rule in the ipv6 Rules list
+print "\n------------------------\n";
+print "--PROCESING IPV6 RULES--\n";
+print "------------------------\n";
+for(my $i;$i<=$#TablesV6Rules;$i++) {
+        if($Refresh) {
+                # change append to insert
+                $TablesV6Rules[$i] =~ s/^\s*-A/-I/;
+                # dont flush anything
+                if($TablesV6Rules[$i] =~ /\-P/) {next;}
+                if($TablesV6Rules[$i] =~ /\-X/) {next;}
+                if($TablesV6Rules[$i] =~ /\-F/) {next;}
+        }
+
+        #apply the ipv6 rule
+
+        print "/sbin/ip6tables $TablesV6Rules[$i] $comment\n";
+        `/sbin/ip6tables $TablesV6Rules[$i] $comment`;
+
+}
+
+
+#close the lock file
+close(MYLOCK);
+
+
+##############
+##############
+#### IPv4 ####
+##############
+##############
+#build the ipv4 rules list
+sub BuildV4Rules() {
+
+        my $RulesV4 = shift;
+        my $NetsV4 = shift;
+        my @TableRules;
+
+#proccess the rules
+        foreach my $rulenum (sort{ $a <=> $b }(keys(%{$RulesV4}))) {
+
+                ### ports ###
+                my @ports;
+                my @from;
+                my @to;
+                my @on;
+
+#keep track of errors
+                my $ErrorState=0;
+
+                foreach my $port (@{$RulesV4->{$rulenum}->{ports}}){
+
+                        if($port =~ /^(\d+(:\d+){0,1})(\/(\w+)){0,1}$/) {
+                                if($4) {
+                                        $ports[$#ports+1] = "-p $4 --dport $1";
+                                }
+                                else {
+                                        $ports[$#ports+1] = "-p tcp --dport $1";
+                                        $ports[$#ports+1] = "-p udp --dport $1";
+                                }
+                        }
+                }
+                if($#ports == -1 ){$ports[$#ports+1] = '';}
+#proccess "from ip" rules
+                foreach my $f (@{$RulesV4->{$rulenum}->{from}}){
+                        if($f =~ /^\$\$\w+\$\$$/) {
+# increments error count if $NetsV4->{$f} is empty
+                                if(!@{$NetsV4->{$f}}){
+                                        print "ERROR no $f ";
+                                        $ErrorState++;
+                                }
+                                foreach (@{$NetsV4->{$f}}) {
+                                        $from[$#from+1] = "-s $_";
+                                }
+                        }
+                        else {
+                                $from[$#from+1] = "-s $f";
+                        }
+                }
+                if($#from == -1 ){$from[$#from+1] = '';}
+#proccess "to ip" rules
+                foreach my $t (@{$RulesV4->{$rulenum}->{to}}){
+                        if($t =~ /^\$\$\w+\$\$$/) {
+# increments error count if $NetsV4->{$t} is empty
+                                if(!@{$NetsV4->{$t}}){
+                                        print "ERROR no $t ";
+                                        $ErrorState++;
+                                }
+                                foreach (@{$NetsV4->{$t}}) {
+                                        $to[$#to+1] = "-d $_";
+                                }
+                        }
+                        else {
+                                $to[$#to+1] = "-d $t";
+                        }
+                }
+                if($#to == -1 ){$to[$#to+1] = '';}
+#proccess "on ip" rules
+                foreach my $o (@{$RulesV4->{$rulenum}->{on}}){
+                        $on[$#on+1] = "-i $o";
+                }
+                if($#on == -1 ){$on[$#on+1] = '';}
+
+#process raw rules
+                if($RulesV4->{$rulenum}->{raw} ) {
+
+                        my $match=0;
+                        foreach my $netkey (keys(%{$NetsV4})) {
+
+                                my $netkeymod = $netkey;
+                                $netkeymod =~ s/\$/\\\$/g;
+
+                                if($RulesV4->{$rulenum}->{raw} =~ /$netkeysmod/) {
+
+                                        foreach my $subnet (@{$NetsV4->{$netkey}}) {
+                                                my $modrule = $RulesV4->{$rulenum}->{raw};
+                                                $modrule =~ s/$netkeymod/$subnet/g;
+                                                $modrule =~ s/\$\$\w+\$\$//g;
+                                                $TableRules[$#TableRules+1] = $modrule;
+                                                $match++;
+                                        }
+                                }
+                        }
+                        if(!$match)  {$TableRules[$#TableRules+1] = $RulesV4->{$rulenum}->{raw}; }
+
+                }else {
+
+                foreach my $p (@ports) {
+                        foreach my $f (@from) {
+                                foreach my $t (@to) {
+                                        foreach my $o (@on) {
+#print error instead of creating rule if errorstat is not 0.
+                                                if($ErrorState) {
+                                                        print "ERROR Failed -A INPUT $f $t $p $o -j ACCEPT\n";
+                                                }
+                                                else {
+                                                        $TableRules[$#TableRules+1] = "-A INPUT $f $t $p $o -j ACCEPT";
+                                                }
+                                        }
+                                }
+                        }
+                }
+                }
+
+        }
+
+        return @TableRules;
+}
+#Print out failed rules at the bottom
+if (@FailedV4Rules) {
+        print "\n---------------------\n";
+        print "--FAILED IPV4 RULES--\n";
+        print "---------------------\n";
+}
+foreach (@FailedV4Rules) {
+        print "$_\n";
+}
+
+
+########################
+###Proccess .v4 files###
+########################
+sub GetV4Config() {
+
+        my $ConDir = shift;
+        my @ConfigList = `find $ConDir -name "*.v4" -xtype f | sort -n`;
+        my %RulesV4;
+        my @RulesV4Raw;
+        my $RuleNumber=0;
+        print "\n--------------------------------\n";
+        print "--FINDING IPV4 FIREWALL RULLES--\n";
+        print "--------------------------------\n";
+
+        foreach my $File (@ConfigList) {
+                chomp($File);
+                open(IN,"$File") || die "Can not open file $File $!";
+                #deal with
+                while(<IN>) {
+                        #If an accept rule
+                        if($_ =~ /Accept:\s+(.+)$/){
+                                $RuleNumber++;
+                                my $line = $1;
+                                $line =~ s/(to|on|from)/\|$1/g;
+                                my @vars = split(/\|/,$line);
+                                foreach (@vars) {
+                                        if($_ =~ /^(to|on|from)\s+(.+)$/){
+                                                my @d = split(/\s*,\s*/,$2);
+                                                for(my $i;$i<=$#d;$i++) {$d[$i] =~ s/\s+//g;}
+                                                $RulesV4{$RuleNumber}->{$1} = \@d;
+                                        }
+                                        else {
+                                                my @d = split(/\s*,\s*/,$_);
+                                                for(my $i;$i<=$#d;$i++) {$d[$i] =~ s/\s+//g;}
+                                                $RulesV4{$RuleNumber}->{'ports'} = \@d;
+                                        }
+                                }
+                        }
+                        #If a Raw iptables rule
+                        elsif ($_ =~ /^Raw:\s+(.+)$/){
+                                $RuleNumber++;
+                                $RulesV4{$RuleNumber}->{'raw'} = $1;
+                        }
+#                       #If an ipset rule (man ipset)
+#                       elsif ($_ =~ /^Ipset:\s+(.+)$/){
+#                               print "Found ipset rule $_";
+#                               push(@IpSetV4Rules, $_);
+#                       }
+                        #If we find a blank line do nothing(allows for nice formatting in the rule files)
+                        elsif ($_ =~ /^\s+$/) {
+                        }
+                        #If a network alias
+                        elsif ($_ =~/^\$\$/) {
+                                print "found network alias $_";
+                        }
+                        #If a comment
+                        elsif ($_ =~/^#/) {
+                                #print "found comment $_";
+                        }
+                        #we didn't match anything so let us know there might be something wrong
+                        else {
+                                print "Unknown Rule type: $_";
+                                push(@FailedV4Rules, $_);
+                        }
+                }
+                close(IN);
+        }
+
+        return %RulesV4;
+}
+
+#build the ipv4 Networks list
+sub GetV4Networks() {
+
+        my $ConDir = shift;
+        #my @ConfigList = `ls $ConDir/*.v4`;
+        my @ConfigList = `find $ConDir -name "*.v4" -xtype f | sort -n`;
+
+        my %NetsV4;
+
+        foreach my $File (@ConfigList) {
+                chomp($File);
+
+                open(IN,$File) || die "Can not open $ConFile $!";
+                while(<IN>) {
+                        chomp;
+                        $_ =~ s/\s+//g;
+                        if($_ =~ /^(\$\$\w+\$\$)\s*=\s*(.+)$/) {
+                                my @nets = split(/\s*,\s*/,$2);
+                                my @VaildNets;
+                                foreach my $subnet (@nets) {
+                                        if($subnet =~ /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(\/\d{1,2}){0,1}$/){
+                                                $VaildNets[$#VaildNets+1] = $subnet;
+                                        }
+                                        else
+                                        {
+                                                print "ERROR: $subnet is NOT a Valid subnet\n";
+                                        }
+
+                                }
+                                $NetsV4{$1} = \@VaildNets;
+                        }
+                }
+                close(IN);
+        }
+        return %NetsV4
+}
+
+##############
+##############
+#### IPv6 ####
+##############
+##############
+#build the ipv6 rules list
+sub BuildV6Rules() {
+
+        my $RulesV6 = shift;
+        my $NetsV6 = shift;
+        my @TableRules;
+
+
+#prcess ipv6 rules
+        foreach my $rulenum (sort{ $a <=> $b }(keys(%{$RulesV6}))) {
+
+                ### ports ###
+                my @ports;
+                my @from;
+                my @to;
+                my @on;
+# set error state
+                my $ErrorState=0;
+
+                foreach my $port (@{$RulesV6->{$rulenum}->{ports}}){
+
+                        if($port =~ /^(\d+(:\d+){0,1})(\/(\w+)){0,1}$/) {
+                                if($4) {
+                                        $ports[$#ports+1] = "-p $4 --dport $1";
+                                }
+                                else {
+                                        $ports[$#ports+1] = "-p tcp --dport $1";
+                                        $ports[$#ports+1] = "-p udp --dport $1";
+                                }
+                        }
+                }
+                if($#ports == -1 ){$ports[$#ports+1] = '';}
+
+                foreach my $f (@{$RulesV6->{$rulenum}->{from}}){
+                        if($f =~ /^\$\$\w+\$\$$/) {
+
+# increments error count if $NetsV6->{$f} is empty
+                                if(!@{$NetsV6->{$f}}){
+                                        print "ERROR no $f ";
+                                        $ErrorState++;
+                                }
+                                foreach (@{$NetsV6->{$f}}) {
+                                        $from[$#from+1] = "-s $_";
+                                }
+                        }
+                        else {
+                                $from[$#from+1] = "-s $f";
+                        }
+                }
+                if($#from == -1 ){$from[$#from+1] = '';}
+
+                foreach my $t (@{$RulesV6->{$rulenum}->{to}}){
+                        if($t =~ /^\$\$\w+\$\$$/) {
+# increments error count if $NetsV6->{$t} is empty
+                                if(!@{$NetsV6->{$t}}){
+                                        print "ERROR no $t ";
+                                        $ErrorState++;
+                                }
+                                foreach (@{$NetsV6->{$t}}) {
+                                        $to[$#to+1] = "-d $_";
+                                }
+                        }
+                        else {
+                                $to[$#to+1] = "-d $t";
+                        }
+                }
+                if($#to == -1 ){$to[$#to+1] = '';}
+
+                foreach my $o (@{$RulesV6->{$rulenum}->{on}}){
+                        $on[$#on+1] = "-i $o";
+                }
+                if($#on == -1 ){$on[$#on+1] = '';}
+
+
+                if($RulesV6->{$rulenum}->{raw} ) {
+
+                        my $match=0;
+                        foreach my $netkey (keys(%{$NetsV6})) {
+
+                                my $netkeymod = $netkey;
+                                $netkeymod =~ s/\$/\\\$/g;
+
+                                if($RulesV4->{$rulenum}->{raw} =~ /$netkeysmod/) {
+
+                                        foreach my $subnet (@{$NetsV6->{$netkey}}) {
+                                                my $modrule = $RulesV6->{$rulenum}->{raw};
+                                                $modrule =~ s/$netkeymod/$subnet/g;
+                                                $modrule =~ s/\$\$\w+\$\$//g;
+                                                $TableRules[$#TableRules+1] = $modrule;
+                                                $match++;
+                                        }
+                                }
+                        }
+                        if(!$match)  {$TableRules[$#TableRules+1] = $RulesV6->{$rulenum}->{raw}; }
+
+                }else {
+
+                foreach my $p (@ports) {
+                        foreach my $f (@from) {
+                                foreach my $t (@to) {
+                                        foreach my $o (@on) {
+#print error instead of creating rule if errorstat is not 0.
+                                                if($ErrorState) {
+                                                        print "ERROR Failed -A INPUT $f $t $p $o -j ACCEPT\n";
+                                                }
+                                                else {
+                                                        $TableRules[$#TableRules+1] = "-A INPUT $f $t $p $o -j ACCEPT";
+                                                }
+                                        }
+                                }
+                        }
+                }
+                }
+
+        }
+
+        return @TableRules;
+
+}
+#Print out failed rules at the bottom
+if (@FailedV6Rules) {
+        print "\n---------------------\n";
+        print "--FAILED IPV6 RULES--\n";
+        print "---------------------\n";
+}
+foreach (@FailedV6Rules) {
+        print "$_\n";
+}
+
+########################
+###Proccess .v6 files###
+########################
+sub GetV6Config() {
+
+        my $ConDir = shift;
+        #my @ConfigList = `ls $ConDir/*.v6`;
+        my @ConfigList = `find $ConDir -name "*.v6" -xtype f | sort -n`;
+        #push @ConfigList, @CustomConfigList;
+        my %RulesV6;
+        my @RulesV6Raw;
+        my $RuleNumber=0;
+
+        print "\n--------------------------------\n";
+        print "--FINDING IPV6 NETWORK ALIASES--\n";
+        print "--------------------------------\n";
+
+        foreach my $File (@ConfigList) {
+                chomp($File);
+                open(IN,"$File") || die "Can not open file $File $!";
+                while(<IN>) {
+                        #If an accept rule
+                        if($_ =~ /Accept:\s+(.+)$/){
+                                $RuleNumber++;
+                                my $line = $1;
+                                $line =~ s/(to|on|from)/\|$1/g;
+                                my @vars = split(/\|/,$line);
+                                foreach (@vars) {
+                                        if($_ =~ /^(to|on|from)\s+(.+)$/){
+                                                my @d = split(/\s*,\s*/,$2);
+                                                for(my $i;$i<=$#d;$i++) {$d[$i] =~ s/\s+//g;}
+                                                $RulesV6{$RuleNumber}->{$1} = \@d;
+                                        }
+                                        else {
+                                                my @d = split(/\s*,\s*/,$_);
+                                                for(my $i;$i<=$#d;$i++) {$d[$i] =~ s/\s+//g;}
+                                                $RulesV6{$RuleNumber}->{'ports'} = \@d;
+                                        }
+                                }
+                        }
+                        #If A Raw iptables rule
+                        elsif ($_ =~ /^Raw:\s+(.+)$/){
+                                $RuleNumber++;
+                                $RulesV6{$RuleNumber}->{'raw'} = $1;
+                        }
+#                       #If an ipset rule (man ipset)
+#                       elsif ($_ =~ /^Ipset:\s+(.+)$/){
+#                               print "Found ipset rule $_";
+#                               push(@IpSetV6Rules, $_);
+#                       }
+                        #If we find a blank line do nothing(allows for nice formatting in the rule files)
+                        elsif ($_ =~ /^\s+$/) {
+                        }
+                        #If a network alias
+                        elsif ($_ =~/^\$\$/) {
+                                print "found network alias $_";
+                        }
+                        #If a comment
+                        elsif ($_ =~/^#/) {
+#                               print "found comment $_";
+                        }
+                        #we didn't match anything so let us know there might be something wrong
+                        else {
+                                print "Unknown Rule type: $_";
+                                push(@FailedV6Rules, $_);
+                        }
+                }
+                close(IN);
+        }
+
+        return %RulesV6;
+}
+###############################
+###Proccess .v6 network list###
+###############################
+sub GetV6Networks() {
+
+        my $ConDir = shift;
+
+        my @ConfigList = `find $ConDir -name "*.v6" -xtype f | sort -n`;
+        my %NetsV6;
+
+        foreach my $File (@ConfigList) {
+                chomp($File);
+
+                open(IN,$File) || die "Can not open $ConFile $!";
+                while(<IN>) {
+                        chomp;
+                        $_ =~ s/\s+//g;
+                        if($_ =~ /^(\$\$\w+\$\$)\s*=\s*(.+)$/) {
+                                my @nets = split(/\s*,\s*/,$2);
+                                my @VaildNets;
+                                foreach my $subnet (@nets) {
+                                        my @ipv6address = split( '/', $subnet);
+                                        if($ipv6address[0] =~ /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/ && ($ipv6address[1] > 0 && $ipv6address[1] < 129)){
+                                                $VaildNets[$#VaildNets+1] = $subnet;
+                                                #print "$ipv6address[0] is valid\n";
+                                        }
+                                        else
+                                        {
+                                                print "ERROR: $ipv6address[0] is NOT a Valid subnet\n";
+                                        }
+                                }
+                                $NetsV6{$1} = \@VaildNets;
+                        }
+                }
+                close(IN);
+        }
+        return %NetsV6;
+}
+
+#####################
+###Delete 2d Rules###
+#####################
+sub Delete2dRules() {
+
+        # delete all 2d-firewall rules.
+        print "\n--------------------------------\n";
+        print "--PROCESING IPV4 DELETE RULES--\n";
+        print "--------------------------------\n";
+
+        my @tables = ('mangle', 'raw', 'nat', 'filter');
+
+        # compile list of v4 rules to delete
+        foreach my $t (@tables){
+
+                my @res = `/sbin/iptables -n --line-numbers -t $t -L`;
+                my $chain;
+
+                foreach my $r (@res) {
+                        if($r =~ /Chain (\S+) /) {$chain = $1}
+
+                        if($r =~ /^(\d+)\s/) {
+                                my $ruleno = $1;
+                                if($r =~ /$comment_text/) {
+                                        $delete{$t}->{$chain}->{$ruleno}++;
+                                }
+                        }
+                }
+        }
+        # delete all compiled v4 rules
+        foreach my $t (keys(%delete)) {
+                foreach my $c (keys(%{$delete{$t}})) {
+                        # delete rules in reverse order because iptable reorders rules after every delete
+                        foreach my $r (sort {$b <=> $a} (keys(%{$delete{$t}->{$c}}))) {
+                                print "/sbin/iptables -t $t -D $c $r\n";
+                               `/sbin/iptables -t $t -D $c $r`;
+                        }
+                }
+        }
+
+        # compile list of v6 rules to delete
+        undef %delete;
+
+        print "\n--------------------------------\n";
+        print "--PROCESING IPV6 DELETE RULES--\n";
+        print "--------------------------------\n";
+
+        foreach my $t (@tables){
+
+                my @res = `/sbin/ip6tables -n --line-numbers -t $t -L`;
+                my $chain;
+
+                foreach my $r (@res) {
+                        if($r =~ /Chain (\S+) /) {$chain = $1}
+
+                        if($r =~ /^(\d+)\s/) {
+                                my $ruleno = $1;
+                                if($r =~ /$comment_text/) {
+                                        $delete{$t}->{$chain}->{$ruleno}++;
+                                }
+                        }
+                }
+        }
+        # delete all compiled v6 rules
+        foreach my $t (keys(%delete)) {
+                foreach my $c (keys(%{$delete{$t}})) {
+                        # delete rules in reverse order because iptable reorders rules after every delete
+                        foreach my $r (sort {$b <=> $a} (keys(%{$delete{$t}->{$c}}))) {
+                                print "/sbin/ip6tables -t $t -D $c $r\n";
+                                `/sbin/ip6tables -t $t -D $c $r`;
+                        }
+                }
+        }
+
+}

@@ -1,0 +1,11 @@
+- name: disable firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  when: (ansible_facts['distribution'] == 'CentOS') or
+        (ansible_facts['distribution'] == 'RedHat') or
+        (ansible_facts['distribution'] == 'Suse')
+
+- name: enable the 2degrees firewall
+  shell: /usr/local/sbin/firewall-up

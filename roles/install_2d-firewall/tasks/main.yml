@@ -1,16 +1,17 @@
 ---
 # tasks file for roles/install_2d-firewall
-- name: install ubuntu 2d-firewall
-  include: ub_install2dfirewall.yml
+- name: make sure required pacakges are isntalled
+  include: preinstall.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: install centos 2d-firewall
-  include: ce_extractdeb.yml
+- name: install 2d-firewall
+  include: install_2dfirewall.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
-- name: start firewall centos
-  include: ce_start_firewall.yml
+- name: enable default firewall rules
+  include: enable_default_rules.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: start the firewall
+  include: start_firewall.yml
+  ignore_errors: yes
