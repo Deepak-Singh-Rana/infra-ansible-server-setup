@@ -37,19 +37,19 @@ Use the format man_protocolname-detail.v4/.v6
 
 :exclamation:Do not manually put anything in this folder
 Use the below options instead 
-* enable a rule *
+*enable a rule*
 ```bash
 
 fwenrule
 
 ```
-* disable a rule *
+*disable a rule*
 ```bash
 
 fwdisrule
 
 ```
-* move rules around *
+*move rules around*
 ```bash
 
 fwmvrule
