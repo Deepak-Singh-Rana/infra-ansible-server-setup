@@ -1,0 +1,19 @@
+---
+# task for setting up server to be able to use ansible
+
+- name: install python3-pip
+  ansible.builtin.apt
+    name: python3-pip
+
+- name: install rustc
+  ansible.builtin.apt
+    name: rustc
+
+#copy over ansilbe user setup
+- name: copy installansible script
+  ansible.builtin.copy
+    src: bin/installansible.sh
+    dest: /usr/local/bin/installansible.sh
+    owner: root
+    group: root
+    mode: '0755'
