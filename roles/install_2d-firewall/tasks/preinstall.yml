@@ -33,17 +33,17 @@
     group: root
     mode: '0770'
 
-- name: mkdir fw-2d/rules_enabled folder
+- name: mkdir fw-2d/rules-enabled folder
   ansible.builtin.file:
-    path: /etc/fw-2d/rules_enabled
+    path: /etc/fw-2d/rules-enabled
     state: directory
     owner: root
     group: root
     mode: '0770'
 
-- name: mkdir fw-2d/rules_available folder
+- name: mkdir fw-2d/rules-available folder
   ansible.builtin.file:
-    path: /etc/fw-2d/rules_available
+    path: /etc/fw-2d/rules-available
     state: directory
     owner: root
     group: root

@@ -8,6 +8,10 @@
   include: install_2dfirewall.yml
   ignore_errors: yes
 
+- name: copy_default_rules.yml
+  include: copy_default_rules.yml
+  ignore_errors: yes
+
 - name: enable default firewall rules
   include: enable_default_rules.yml
   ignore_errors: yes

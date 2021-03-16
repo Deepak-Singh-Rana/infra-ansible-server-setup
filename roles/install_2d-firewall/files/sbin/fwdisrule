@@ -1,0 +1,34 @@
+#!/bin/bash
+
+BASEDIR="/etc/fw-2d"
+
+#Make sure we are running as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+RULESAVAILABLE="$BASEDIR/rules-available"
+RULESENABLED="$BASEDIR/rules-enabled"
+echo "----------------------"
+echo ""
+
+echo "Enabled Rules"
+echo "----------------------"
+echo ""
+#pushd to the rules enabled dir so we can autocomplete the read command using "-e"
+pushd $RULESENABLED
+ls $RULESENABLED
+read -e -r -p $'Type the name of the rule you want to disable : ' rulechoice
+rulechoice=${rulechoice,,}
+RULE=$rulechoice
+popd
+
+#remove the chosen rule from the enabled folder
+rm $RULESENABLED/$RULE
+echo ""
+echo "Removed $RULE from the enabled rules"
+echo ""
+
+echo "YOU NOW NEED TO RUN FIREWALL-UP"
+exit 0

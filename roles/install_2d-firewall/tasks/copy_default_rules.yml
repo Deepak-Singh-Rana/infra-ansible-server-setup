@@ -1,3 +1,19 @@
+- name: copy base.v4 networks file
+  ansible.builtin.copy:
+    src: networks/base.v4
+    dest: /etc/fw-2d/networks/base.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy base.v6 networks file
+  ansible.builtin.copy:
+    src: networks/base.v6
+    dest: /etc/fw-2d/networks/base.v6
+    owner: root
+    group: root
+    mode: '0600'
+
 - name: copy base.ipset
   ansible.builtin.copy:
     src: rules-enabled/10_base.ipset
@@ -38,6 +54,7 @@
     group: root
     mode: '0600'
 
+
 - name: copy ans_ssh-bastion-systems.v4
   ansible.builtin.copy:
     src: rules-available/ans_ssh-bastion-systems.v4
@@ -66,6 +83,46 @@
   ansible.builtin.copy:
     src: rules-available/ans_ssh-ansible-systems.v6
     dest: /etc/fw-2d/rules-available/ans_ssh-ansible-systems.v6
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_ssh-bastion-networks.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_ssh-bastion-networks.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-bastion-networks.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_ssh-bastion-networks.v6
+  ansible.builtin.copy:
+    src: rules-available/ans_ssh-bastion-networks.v6
+    dest: /etc/fw-2d/rules-available/ans_ssh-bastion-networks.v6
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_log_dropped-input-packets.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_log_dropped-input-packets.v4
+    dest: /etc/fw-2d/rules-available/ans_log_dropped-input-packets.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_log_dropped-output-packets.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_log_dropped-output-packets.v4
+    dest: /etc/fw-2d/rules-available/ans_log_dropped-output-packets.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy ans_log_dropped-forwarding-packets.v4
+  ansible.builtin.copy:
+    src: rules-available/ans_log_dropped-forwarding-packets.v4
+    dest: /etc/fw-2d/rules-available/ans_log_dropped-forwarding-packets.v4
     owner: root
     group: root
     mode: '0600'

@@ -21,3 +21,27 @@
     owner: root
     group: root
     mode: '0700'
+
+- name: copy fwenrule script
+  copy:
+    src: sbin/fwenrule
+    dest: /usr/local/sbin/fwenrule
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: copy fwmvrule script
+  copy:
+    src: sbin/fwmvrule
+    dest: /usr/local/sbin/fwmvrule
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: copy fwdisrule script
+  copy:
+    src: sbin/fwdisrule
+    dest: /usr/local/sbin/fwdisrule
+    owner: root
+    group: root
+    mode: '0700'

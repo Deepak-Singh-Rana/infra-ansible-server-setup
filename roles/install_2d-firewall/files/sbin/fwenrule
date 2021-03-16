@@ -1,0 +1,73 @@
+#!/bin/bash
+
+BASEDIR="/etc/fw-2d"
+
+#Make sure we are running as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+RULESAVAILABLE="$BASEDIR/rules-available"
+RULESENABLED="$BASEDIR/rules-enabled"
+
+echo "----------------------"
+echo ""
+
+echo "Available Rules"
+echo "----------------------"
+echo ""
+#pushd to the rules available dir so we can autocomplete the read command using "-e"
+pushd $RULESAVAILABLE
+ls $RULESAVAILABLE
+read -e -r -p $'Type the name of the rule you want to enable : ' rulechoice
+rulechoice=${rulechoice,,}
+RULE=$rulechoice
+
+if [[ "$RULE" == *".v4" ]]
+then
+        V=4
+fi
+if [[ "$RULE" == *".v6" ]]
+then
+        V=6
+fi
+if [[ "$RULE" == *".ipset" ]]
+then
+        V=ipset
+fi
+popd
+#echo $V
+
+if [[ "$V" == "ipset" ]]
+then
+        ln -s $RULESAVAILABLE/$RULE $RULESENABLED/$RULE
+        echo "ip set enabled, you man now use the ipset match in your firewall rules"
+else
+        echo "currently enabled rules"
+        echo "----------------------"
+        echo ""
+        ls $RULESENABLED | grep "$V"
+        echo "What position do you want to give the rule?"
+        read -r -p $'Type a number : ' position
+        position=${position,,}
+        POSITION=$position
+
+        echo "----------------------"
+        echo ""
+        #echo "Position:$POSITION"
+        #echo "ln -s $RULESAVAILABLE/$RULE $RULESENABLED/${POSITION}_$RULE"
+        ln -s $RULESAVAILABLE/$RULE $RULESENABLED/${POSITION}_$RULE
+
+        echo "Updated enabled rules"
+        echo "----------------------"
+        echo ""
+        ls $RULESENABLED | grep "$V"
+        echo ""
+        echo "----------------------"
+        echo ""
+
+fi
+echo "YOU NOW NEED TO RUN FIREWALL-UP"
+
+exit 0

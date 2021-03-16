@@ -30,26 +30,28 @@ use the file extension *.v4* for **IPv4**, *.v6* for **IPv6**, and *.ipset* for 
 
 Use the format man_protocolname-detail.v4/.v6
 
-:exclamation: Do not edit *ans_* or *pkg_* rules as they will automatically get overwritten when the playbook/package that created them gets updated
+:exclamation: **DO NOT** edit *ans_* or *pkg_* rules as they will automatically get overwritten when the playbook/package that created them gets updated
 
 
 ## rules-enabled
 
-:exclamation:Do not manually put anything in this folder
-Use the below options instead 
-*enable a rule*
+:exclamation: **DO NOT** manually put anything in this folder
+
+Use the below options instead
+
+**enable a rule**
 ```bash
 
 fwenrule
 
 ```
-*disable a rule*
+**disable a rule**
 ```bash
 
 fwdisrule
 
 ```
-*move rules around*
+**move rules around**
 ```bash
 
 fwmvrule

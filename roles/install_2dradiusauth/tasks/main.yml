@@ -27,6 +27,13 @@
 
 #restart nscd so we can start using radius auth right away
 
+- name: set restart interval to a 1500
+  ansible.builtin.replace:
+    path: /etc/nscd.conf
+    regexp: '^#(.*restart-interval.*?)\d+$'
+    replace: '\1 1500'
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
 - name: set paranoia to true
   ansible.builtin.replace:
     path: /etc/nscd.conf

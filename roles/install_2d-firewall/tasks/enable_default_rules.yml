@@ -1,22 +1,47 @@
-- name: enable 
+- name: enable ans_default-rules.v4
   file:
-    src: /etc/fw-2d/rules-available/ans_
-    dest: /etc/fw-2d/rules-enabled/_ans_
+    src: /etc/fw-2d/rules-available/ans_default-rules.v4
+    dest: /etc/fw-2d/rules-enabled/20_ans_default-rules.v4
     owner: root
     group: root
     state: link
 
-- name: enable 
+- name: enable ans_default-rules.v6
   file:
-    src: /etc/fw-2d/rules-available/ans_
-    dest: /etc/fw-2d/rules-enabled/_ans_
+    src: /etc/fw-2d/rules-available/ans_default-rules.v6
+    dest: /etc/fw-2d/rules-enabled/20_ans_default-rules.v6
     owner: root
     group: root
     state: link
-- name: enable 
+
+- name: enable ans_ssh-ansible-systems.v4
   file:
-    src: /etc/fw-2d/rules-available/ans_
-    dest: /etc/fw-2d/rules-enabled/_ans_
+    src: /etc/fw-2d/rules-available/ans_ssh-ansible-systems.v4
+    dest: /etc/fw-2d/rules-enabled/30_ans_ssh-ansible-systems.v4
+    owner: root
+    group: root
+    state: link
+
+- name: enable ans_ssh-ansible-systems.v6
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-ansible-systems.v6
+    dest: /etc/fw-2d/rules-enabled/30_ans_ssh-ansible-systems.v6
+    owner: root
+    group: root
+    state: link
+
+- name: enable ans_ssh-bastion-systems.v4
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-bastion-systems.v4
+    dest: /etc/fw-2d/rules-enabled/31_ans_ssh-bastion-systems.v4
+    owner: root
+    group: root
+    state: link
+
+- name: enable ans_ssh-bastion-systems.v6
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-bastion-systems.v6
+    dest: /etc/fw-2d/rules-enabled/31_ans_ssh-bastion-systems.v6
     owner: root
     group: root
     state: link

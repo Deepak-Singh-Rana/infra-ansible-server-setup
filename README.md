@@ -40,7 +40,7 @@ git push
 #### allow the ansible server to talk to ansible galaxy
 ```
 export http_proxy=http://frigg.snap.net.nz:3128
-export https_proxy=https://frigg.snap.net.nz:3128
+export https_proxy=http://frigg.snap.net.nz:3128
 ```
 #### installing a new community role
 ```
