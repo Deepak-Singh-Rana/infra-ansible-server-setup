@@ -62,3 +62,6 @@
     owner: svc_d42_unix@2degrees.nz
     group: users
     mode: '0644'
+
+- name: run the apply_ssh.sh script
+  shell: /usr/local/sbin/apply_ssh.sh
