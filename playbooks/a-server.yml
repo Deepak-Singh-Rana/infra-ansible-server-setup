@@ -25,7 +25,8 @@
 #cleans up the server so clones of templates become indipendant from each other
     - clean_serverscript
 #configure satellite subscription if server is redhat
-    - configure_rhel_subscription
+    - role: configure_rhel_subscription
+      when: (ansible_facts['distribution'] == "Redhat" and ansible_facts['distribution_major_version'] == "8")
 #configures the repositories that the OS uses to get updates and software
     - configure_repos
 #sets up loging on the servers
@@ -75,6 +76,8 @@
     - configure_bgaccounts
 #setup vulnerability scanning
     - configure_upguardaccess
+#setup cmdb scanning
+    - configure_device42access
 #grants sudo permissions to sysadmin security group
     - permissions_sudo-sysadmin
 #grants sudo permissions to techm security group
