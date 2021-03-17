@@ -24,7 +24,7 @@
 
 - name: copy firewall rule
   copy:
-    src: ans_ssh-upguard.v4
+    src: ans_ssh-device42.v4
     dest: /etc/fw-2d/rules-available/ans_ssh-device42.v4
     owner: root
     group: root

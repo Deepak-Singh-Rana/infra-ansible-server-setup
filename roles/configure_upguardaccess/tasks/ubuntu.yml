@@ -6,6 +6,22 @@
     name: nscd
     state: restarted
 
+- name: copy ssh matches rule
+  copy:
+    src: ans_upguard.user
+    dest: /etc/ssh/matches-available/ans_upguard.user
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Enable ssh matches rule
+  file:
+    src: /etc/ssh/matches-available/ans_ssh-upguard.v4
+    dest: /etc/ssh/matches-enabled/10_ans_upguard.user
+    owner: root
+    group: root
+    state: link
+
 - name: copy firewall rule
   copy:
     src: ans_ssh-upguard.v4
