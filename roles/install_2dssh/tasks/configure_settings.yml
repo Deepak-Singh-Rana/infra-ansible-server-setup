@@ -1,11 +1,12 @@
-- name: sshd_config.d
-  file:
-    path: /etc/ssh/sshd_config.d
-    state: directory
+- name: 2dsshd readme
+  copy:
+    src: README.md
+    dest: /etc/ssh/README.md
     owner: root
     group: root
-    mode: '0740'
-- name: 2dsshd_config
+    mode: '0640'
+
+- name: 2dsshd_config ubuntu16
   copy:
     src: 2d.sshd_config-legacy
     dest: /etc/ssh/2d.sshd_config
@@ -42,21 +43,29 @@
     mode: '0640'
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
 
-- name: apply_ssh.sh
+- name: copy apply_ssh.sh
   copy:
-    src: apply_ssh.sh
+    src: sbin/apply_ssh.sh
     dest: /usr/local/sbin/apply_ssh.sh
     owner: root
     group: root
     mode: '0740'
 
-- name: matches.example
+- name: copy sshenrule
   copy:
-    src: matches.example
-    dest: /etc/ssh/sshd_config.d/matches.example
+    src: sbin/sshenrule
+    dest: /usr/local/sbin/sshenrule
     owner: root
     group: root
-    mode: '0640'
+    mode: '0740'
+
+- name: copy sshdisrule
+  copy:
+    src: sbin/sshdisrule
+    dest: /usr/local/sbin/sshdisrule
+    owner: root
+    group: root
+    mode: '0740'
 
 - name: user_ca.pub
   copy:

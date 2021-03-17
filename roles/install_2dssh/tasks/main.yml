@@ -3,6 +3,12 @@
 - name: make sure ssh is installed
   include: install_ssh.yml
 
+- name: copy over default available rules
+  include: copy_available_rules.yml
+
+- name: enable default rules
+  include: enable_default_rules.yml
+
 - name: configure ssh
   include: configure_settings.yml
 

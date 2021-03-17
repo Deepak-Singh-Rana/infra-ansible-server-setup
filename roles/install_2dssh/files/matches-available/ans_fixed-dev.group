@@ -1,0 +1,2 @@
+Match Group servers.dev@staff.snap.net.nz
+        AllowGroups servers.dev@staff.snap.net.nz

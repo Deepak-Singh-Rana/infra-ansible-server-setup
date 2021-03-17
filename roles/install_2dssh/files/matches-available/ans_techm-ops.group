@@ -1,0 +1,2 @@
+Match Group SEC_servers.fixed.TechM
+        AllowGroups SEC_servers.fixed.TechM

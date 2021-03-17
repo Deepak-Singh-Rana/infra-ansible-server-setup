@@ -6,16 +6,13 @@
 
 sshdconfig_file="/etc/ssh/sshd_config"
 sshddefault_file="/etc/ssh/2d.sshd_config"
-matches="/etc/ssh/sshd_config.d/matches"
+matches="/etc/ssh/matches-enabled"
 
 echo "generating sshd_config file..."
-if [ ! -f ${matches} ]
-then
-        echo "no matches file found, not appending to sshd_config..."
-        cat $sshddefault_file > $sshdconfig_file
-else
-        cat $sshddefault_file $matches > $sshdconfig_file
-fi
+
+#build the sshd file
+cat $sshddefault_file $matches/*.address $matches/*.user $matches/*.group > $sshdconfig_file
+
 #make sure permissions are correct
 echo "setting permissions to sshd_config..."
 chown root:root ${sshdconfig_file}

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+BASEDIR="/etc/ssh"
+
+#Make sure we are running as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+RULESAVAILABLE="$BASEDIR/matches-available"
+RULESENABLED="$BASEDIR/matches-enabled"
+echo "----------------------"
+echo ""
+
+echo "Enabled Rules"
+echo "----------------------"
+echo ""
+#pushd to the rules enabled dir so we can autocomplete the read command using "-e"
+pushd $RULESENABLED
+ls $RULESENABLED
+read -e -r -p $'Type the name of the rule you want to disable : ' rulechoice
+rulechoice=${rulechoice,,}
+RULE=$rulechoice
+popd
+
+#remove the chosen rule from the enabled folder
+if [ $RULE == "00-title.address" ]
+then
+        echo "not allow to remove $RULE"
+elif [ $RULE == "00-title.user" ]
+then
+        echo "not allow to remove $RULE"
+elif [ $RULE == "00-title.group" ]
+then
+        echo "not allow to remove $RULE"
+else
+        rm $RULESENABLED/$RULE
+        echo ""
+        echo "Removed $RULE from the enabled rules"
+        echo ""
+        echo "YOU NOW NEED TO RUN ssh_apply.sh"
+fi
+exit 0

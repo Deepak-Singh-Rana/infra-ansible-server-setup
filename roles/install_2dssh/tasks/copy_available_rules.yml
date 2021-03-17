@@ -1,0 +1,87 @@
+- name: copy 00-heading.address
+  copy:
+    src: matches-enabled/00-heading.address
+    dest: /etc/ssh/matches-enabled/00-heading.address
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy 00-heading.user
+  copy:
+    src: matches-enabled/00-heading.user
+    dest: /etc/ssh/matches-enabled/00-heading.user
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy 00-heading.group
+  copy:
+    src: matches-enabled/00-heading.group
+    dest: /etc/ssh/matches-enabled/00-heading.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_fixed-dbops.group
+  copy:
+    src: matches-available/ans_fixed-dbops.group
+    dest: /etc/ssh/matches-available/ans_fixed-dbops.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_fixed-dev.group
+  copy:
+    src: matches-available/ans_fixed-dev.group
+    dest: /etc/ssh/matches-available/ans_fixed-dev.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_network-engineers.group
+  copy:
+    src: matches-available/ans_network-engineers.group
+    dest: /etc/ssh/matches-available/ans_network-engineers.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_sysadmin.group
+  copy:
+    src: matches-available/ans_sysadmin.group
+    dest: /etc/ssh/matches-available/ans_sysadmin.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_sysadmin-jump.group
+  copy:
+    src: matches-available/ans_sysadmin-jump.group
+    dest: /etc/ssh/matches-available/ans_sysadmin-jump.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_techm-db.group
+  copy:
+    src: matches-available/ans_techm-db.group
+    dest: /etc/ssh/matches-available/ans_techm-db.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_techm-ops.group
+  copy:
+    src: matches-available/ans_techm-ops.group
+    dest: /etc/ssh/matches-available/ans_techm-ops.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_voice.group
+  copy:
+    src: matches-available/ans_voice.group
+    dest: /etc/ssh/matches-available/ans_voice.group
+    owner: root
+    group: root
+    mode: '0640'
