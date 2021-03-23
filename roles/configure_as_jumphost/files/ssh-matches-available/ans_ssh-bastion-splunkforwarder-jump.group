@@ -1,0 +1,5 @@
+#jumphost/bastion rule
+Match Group SEC_apps.splunkforwarder.access
+        AllowGroups SEC_apps.splunkforwarder.access
+        AllowTcpForwarding yes
+        AuthenticationMethods "publickey,password"

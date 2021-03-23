@@ -38,11 +38,25 @@ ans_davesserver.address
 :exclamation: **DO NOT** place any files in this folder
 
 instead use the command `sshenmatch` to enable a match rule
+
 instead use the command `sshdismatch` to disable a match rule
 
 `sshenmatch` creates a softlink to the matches-enabled folder
 
 `sshdismatch` removes the softlink from the matches-enabled folder
+
+### Ordering of matches
+default server match rules are in the 50 range
+
+:bulb: try to avoid choosing a number under the value of 10 as 10 is reserved for jumphost rules
+
+When enabling a match rule if you want to *"override"* another match rule, make sure the number is lower than the match rule you want to *"override"*
+
+e.g.
+the bellow will make it so daves group must use a pubkey
+
+40_allowdavesgroup-pubkeyonly.group
+50_allowdavesgroup-password.group
 
 ## Applying your changes
 

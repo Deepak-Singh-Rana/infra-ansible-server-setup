@@ -42,7 +42,7 @@ popd
         echo ""
         ls $RULESENABLED | grep "$V"
         echo "What position do you want to give the rule?"
-        echo "What position do you want to give the rule?"
+        echo "the lower the number the higher priority, nomral placing should be in the 50/60 range"
         read -r -p $'Type a number : ' position
         position=${position,,}
         POSITION=$position

@@ -1,7 +1,7 @@
 - name: enable sysadmin
   ansible.builtin.file:
     src: /etc/ssh/matches-available/ans_sysadmin.group
-    dest: /etc/ssh/matches-enabled/05_ans_sysadmin.group
+    dest: /etc/ssh/matches-enabled/50_ans_sysadmin.group
     owner: root
     group: root
     state: link
@@ -9,7 +9,7 @@
 - name: enable techm-ops
   ansible.builtin.file:
     src: /etc/ssh/matches-available/ans_techm-ops.group
-    dest: /etc/ssh/matches-enabled/06_ans_techm-ops.group
+    dest: /etc/ssh/matches-enabled/51_ans_techm-ops.group
     owner: root
     group: root
     state: link

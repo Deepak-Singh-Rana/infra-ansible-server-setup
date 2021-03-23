@@ -1,6 +1,6 @@
 - name: install 2d-ssh
-  hosts: newserver
-  remote_user: zeus
+  hosts: singleserver
+#  remote_user: zeus
   become: yes
   become_method: sudo
   ignore_unreachable: true

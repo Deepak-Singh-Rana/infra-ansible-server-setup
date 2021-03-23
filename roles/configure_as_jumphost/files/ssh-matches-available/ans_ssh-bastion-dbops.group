@@ -1,0 +1,5 @@
+#jumphost/bastion rule
+Match Group SEC_servers.fixed.dbops
+        AllowGroups SEC_servers.fixed.dbops
+        AllowTcpForwarding yes
+        AuthenticationMethods "publickey,password"

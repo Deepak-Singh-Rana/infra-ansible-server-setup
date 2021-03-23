@@ -30,10 +30,18 @@
     group: root
     mode: '0640'
 
-- name: copy ans_fixed-dev.group
+- name: copy ans_fixed-appdevs.group
   copy:
-    src: matches-available/ans_fixed-dev.group
-    dest: /etc/ssh/matches-available/ans_fixed-dev.group
+    src: matches-available/ans_fixed-appdevs.group
+    dest: /etc/ssh/matches-available/ans_fixed-appdevs.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy ans_fixed-appops.group
+  copy:
+    src: matches-available/ans_fixed-appops.group
+    dest: /etc/ssh/matches-available/ans_fixed-appops.group
     owner: root
     group: root
     mode: '0640'
