@@ -110,10 +110,26 @@
     group: root
     mode: '0400'
 
-- name: copy the splunkforwarder-jump ssh match rule to the server
+- name: copy the ender ssh match rule to the server
   ansible.builtin.copy:
-    src: ssh-matches-available/ans_ssh-bastion-splunkforwarder-jump.group
-    dest: /etc/ssh/matches-available/ans_ssh-bastion-splunkforwarder-jump.group
+    src: ssh-matches-available/ans_ender.address
+    dest: /etc/ssh/matches-available/ans_ender.address
+    owner: root
+    group: root
+    mode: '0400'
+
+- name: copy the alai ssh match rule to the server
+  ansible.builtin.copy:
+    src: ssh-matches-available/ans_alai.address
+    dest: /etc/ssh/matches-available/ans_alai.address
+    owner: root
+    group: root
+    mode: '0400'
+
+- name: copy the bean ssh match rule to the server
+  ansible.builtin.copy:
+    src: ssh-matches-available/ans_bean.address
+    dest: /etc/ssh/matches-available/ans_bean.address
     owner: root
     group: root
     mode: '0400'
@@ -138,6 +154,29 @@
   file:
     src: /etc/ssh/matches-available/ans_ssh-bastion-techm-ops.group
     dest: /etc/ssh/matches-enabled/10_ans_ssh-bastion-techm-ops.group
+    owner: root
+    group: root
+    state: link
+
+- name: Enable ender ssh match rule
+  file:
+    src: /etc/ssh/matches-available/ans_ender.address
+    dest: /etc/ssh/matches-enabled/15_ans_ender.address
+    owner: root
+    group: root
+    state: link
+- name: Enable alai ssh match rule
+  file:
+    src: /etc/ssh/matches-available/ans_alai.address
+    dest: /etc/ssh/matches-enabled/15_ans_alai.address
+    owner: root
+    group: root
+    state: link
+
+- name: Enable bean ssh match rule
+  file:
+    src: /etc/ssh/matches-available/ans_bean.address
+    dest: /etc/ssh/matches-enabled/15_ans_bean.address
     owner: root
     group: root
     state: link

@@ -1,0 +1,4 @@
+#automation management access
+Match Address 172.21.255.113/32
+        AllowGroups servers.admin@staff.snap.net.nz
+        AuthenticationMethods "password"

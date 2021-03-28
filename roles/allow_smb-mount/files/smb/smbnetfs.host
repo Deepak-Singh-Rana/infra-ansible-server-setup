@@ -1,0 +1,9 @@
+
+
+# uncomment to access mgt file share
+#
+#link mgt-file01 mgt-file01.nzcmgt.co.nz/Shared
+
+# uncomment to access network config backups
+#
+#link Configs   snzclakl036.nzc.co.nz/Configs

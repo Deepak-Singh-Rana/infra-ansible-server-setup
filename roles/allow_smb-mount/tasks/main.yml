@@ -1,0 +1,62 @@
+---
+# tasks file for allow_smb-mount
+
+- name: create smb file in skel folder
+  ansible.builtin.file:
+    name: /etc/skel/.smb
+    state: directory
+    mode: '0754'
+
+- name: create mnt file in skel folder
+  ansible.builtin.file:
+    name: /etc/skel/mnt
+    state: directory
+    mode: '0754'
+
+- name: copy the bash_logout file to the skel dir
+  ansible.builtin.copy:
+    src: skel/bash_logout
+    dest: /etc/skel/.bash_logout
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy the 2d-networksharmap-start file to the usrlocalbin dir
+  ansible.builtin.copy:
+    src: bin/2d-networkShareMap-start.sh
+    dest: /usr/local/bin/2d-networkShareMap-start.sh
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy the smb.conf file to the skel dir
+  ansible.builtin.copy:
+    src: skel/smb.conf
+    dest: /etc/skel/smb.conf
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy the smbnetfs.auth file to the skel dir
+  ansible.builtin.copy:
+    src: skel/smbnetfs.auth
+    dest: /etc/skel/.smb/smbnetfs.auth
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy the smbnetfs.conf file to the skel dir
+  ansible.builtin.copy:
+    src: skel/smbnetfs.conf
+    dest: /etc/skel/.smb/smbnetfs.conf
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copy the smbnetfs.host file to the skel dir
+  ansible.builtin.copy:
+    src: skel/smbnetfs.host
+    dest: /etc/skel/.smb/smbnetfs.host
+    owner: root
+    group: root
+    mode: '0600'

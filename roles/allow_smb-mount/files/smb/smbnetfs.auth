@@ -1,0 +1,11 @@
+#
+# to include one or more entries like this:
+# auth                  "hostname" "username" "password"
+#
+#
+
+# file shared server
+#auth   mgt-file01.nzcmgt.co.nz nzcmgt.co.nz/MGT.Your.Name      YourAbcAccountPass
+
+#config backups
+#auth   snzclakl036.nzc.co.nz   nzc.co.nz/ABC.Your.Name@2degrees.nz     YourMgtAccountPass
