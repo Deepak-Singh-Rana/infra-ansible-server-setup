@@ -41,7 +41,7 @@ def get_file_from_lastpass(filename):
 	except FileNotFoundError:
 		print(filename+" not found, downloading from lastpass")
 		f = open("tmp/"+filename, "w")
-		p2 = subprocess.Popen(["lpass", "show", "--notes", "infra-ansible-server-setup/"+filename], stdout=f)
+		p2 = subprocess.Popen(["lpass", "show", "--notes", "Shared-infra-ansible-server-setup/"+filename], stdout=f)
 		os.chmod("tmp/"+filename, 0o400)
 	finally:
 		f.close()
