@@ -8,7 +8,11 @@ https://bitbucket.org/2dgreesdev/td-ansible-server-setup/src/master/README.md
 ### Preparing for intial git clone
 
 #### Set git to use a proxy so we can access bitbucket
+```bash
+
 git config --global http.proxy http://frigg.snap.net.nz:3128
+
+```
 
 #### Set yourself a password
 on bitbucket go to your settings and generate yourself an "app password" this will be your password when checking out the repo
@@ -35,16 +39,16 @@ git push
 
 # ANSIBLE info
 
-### updating ansible-galaxy roles
+### Updating ansible-galaxy roles
 
-#### allow the ansible server to talk to ansible galaxy
+#### Allow the ansible server to talk to ansible galaxy
 ```
 export http_proxy=http://frigg.snap.net.nz:3128
 export https_proxy=http://frigg.snap.net.nz:3128
 ```
 #### installing a new community role
 ```
-ansible-galaxy collection install community.****
+ansible-galaxy collection install community.\<thing\>
 ```
 ### e.g.
 ```
