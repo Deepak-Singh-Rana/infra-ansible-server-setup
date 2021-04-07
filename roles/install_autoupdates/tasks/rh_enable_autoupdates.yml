@@ -2,14 +2,14 @@
   systemd:
     daemon_reload: yes
   ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: Enable dnf-automatic-download.service
   service:
     name: dnf-automatic-download.service
     enabled: yes
   ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: Enable dnf-automatic-download.timer
   service:
@@ -17,14 +17,14 @@
     enabled: yes
     state: restarted
   ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: Enable dnf-automatic-install.service
   service:
     name: dnf-automatic-install.service
     enabled: yes
   ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: Enable dnf-automatic-install.timer
   service:
@@ -32,5 +32,5 @@
     enabled: yes
     state: restarted
   ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 

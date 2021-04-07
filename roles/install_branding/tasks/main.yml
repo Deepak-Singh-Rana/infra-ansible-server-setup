@@ -8,3 +8,6 @@
 
 - name: configure_motd.yml
   import_tasks: configure_motd.yml
+
+- name: configure_bashrc.yml
+  import_tasks: configure_bashrc.yml

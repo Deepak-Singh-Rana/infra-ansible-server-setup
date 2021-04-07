@@ -1,5 +1,7 @@
 #don't upload the ansible-vault-file as it's unecrypted
 ansible-vault-file
+ansible-vault-file*
+*ansible-vault-file*
 #don't upload a users personal vars
 personal.yml
 #don't upload any vm lists variable files to git

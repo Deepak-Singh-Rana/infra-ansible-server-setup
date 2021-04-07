@@ -1,0 +1,28 @@
+# User specific aliases and functions
+export PATH='/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+#give theselves colour so it's easier to tell that we are root
+#cli colour setup
+export PS1="\e[1;31m\u@\h\e[m:\e[1;34m\w\e[m# "
+
+# If this is an xterm set the title to user@host:dir
+#This needs to be after the cli colour setup
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac

@@ -7,9 +7,10 @@
    group: root
    mode: '0600'
    force: no
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
-- name: make sure useful tools are installed ubuntu
+- name: make sure useful tools are installed ubuntu18
   apt:
     name:
     - pwgen
@@ -18,6 +19,16 @@
     - nscd
     state: present
   when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+
+- name: make sure useful tools are installed ubuntu20
+  apt:
+    name:
+    - pwgen
+    - libmysqlclient21
+    - libpam-radius-auth
+    - nscd
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20"
 
 - name: install libnss-mysql-bg from ubuntu 16 repo
   apt:
@@ -30,7 +41,8 @@
    mode: '0700'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 - name: copy libnss-mysql-root.cfg to server
   copy:
@@ -39,7 +51,8 @@
    mode: '0640'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 - name: copy libnss-mysql.cfg to server
   copy:
@@ -48,7 +61,8 @@
    mode: '0640'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 - name: pam config 2d-auth mkhome
   copy:
@@ -57,7 +71,8 @@
    mode: '0622'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 - name: pam config 2d-radius-auth radius
   copy:
@@ -66,7 +81,8 @@
    mode: '0622'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 - name: pam config 2d-auth rootsecuretty
   copy:
@@ -75,7 +91,8 @@
    mode: '0622'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 - name: pam config 2d-auth shells
   copy:
@@ -84,7 +101,8 @@
    mode: '0622'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 
 #- name: remove nullok_secure from unix pam config file
 #  replace:
@@ -99,5 +117,6 @@
    mode: '0622'
    owner: root
    group: root
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18"
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
 

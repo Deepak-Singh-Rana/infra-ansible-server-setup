@@ -3,10 +3,10 @@
     name: perl
     state: present
 
-- name: make sure binutils is installed(to extract the deb pacakge)
-  package:
-    name: binutils
-    state: present
+#- name: make sure binutils is installed(to extract the deb pacakge)
+#  package:
+#    name: binutils
+#    state: present
 
 - name: make sure iptables is installed
   package:

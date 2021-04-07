@@ -6,7 +6,7 @@
     name: "rkhunter"
     state: present
 
-- name: rh create logrotate file if not exist
+- name: RH create logrotate file if not exist
   copy:
     src: rh_logrotate_rkhunter
     dest: /etc/logrotate.d/rkhunter
@@ -17,7 +17,7 @@
   when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
        (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
 
-- name: ub create logrotate file if not exist
+- name: UB create logrotate file if not exist
   copy:
     src: rh_logrotate_rkhunter
     dest: /etc/logrotate.d/rkhunter
@@ -27,7 +27,7 @@
     force: no
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
 
-- name: rh permissions for rkhunter directory
+- name: RH permissions for rkhunter directory
   file:
     group: adm
     owner: root
@@ -37,7 +37,7 @@
   when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
        (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
 
-- name: ub permissions for rkhunter directory
+- name: UB permissions for rkhunter directory
   file:
     group: adm
     owner: syslog
@@ -73,7 +73,7 @@
   when: rk_log_loc.stat.exists
   notify: cleanup
 
-- name: rh permissions for rkhunter file
+- name: RH permissions for rkhunter file
   file:
     group: adm
     owner: root
@@ -83,7 +83,7 @@
   when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
        (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
 
-- name: ub permissions for rkhunter file
+- name: UB permissions for rkhunter file
   file:
     group: adm
     owner: syslog

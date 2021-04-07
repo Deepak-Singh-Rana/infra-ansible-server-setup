@@ -9,7 +9,7 @@
   gather_facts: true
   serial: 2
   vars:
-    - ansible_ssh_private_key_file: "./files/ansible-deploy.key"
+    - ansible_ssh_private_key_file: "./tmp/ansible-deploy.key"
     - ansible_python_interpreter: /usr/bin/python3
 
   vars_files:
@@ -26,7 +26,7 @@
     - clean_serverscript
 #configure satellite subscription if server is redhat
     - role: configure_rhel_subscription
-      when: (ansible_facts['distribution'] == "Redhat" and ansible_facts['distribution_major_version'] == "8")
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 #configures the repositories that the OS uses to get updates and software
     - configure_repos
 #sets up loging on the servers
@@ -71,7 +71,7 @@
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
 #Hardens redhat8 to level2 compliance
     - role: harden_rhel8
-      when: (ansible_facts['distribution'] == "Redhat" and ansible_facts['distribution_major_version'] == "8")
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 #setups breakglass utils/permissions
     - configure_bgaccounts
 #setup vulnerability scanning

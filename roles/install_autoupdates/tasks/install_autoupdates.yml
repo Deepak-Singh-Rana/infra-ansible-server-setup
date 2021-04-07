@@ -1,10 +1,10 @@
-- name: install dnf-automatic
+- name: RH install dnf-automatic
   package:
    name: dnf-automatic
   ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS') or (ansible_facts['distribution'] == 'RedHat')
+  when: (ansible_facts['distribution'] == 'RedHat')
 
-- name: install 2dupgrades
+- name: UB install 2dupgrades
   package:
    name: 2d-upgrades
   ignore_errors: yes

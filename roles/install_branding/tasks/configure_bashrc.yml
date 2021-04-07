@@ -1,0 +1,59 @@
+- name: RH root bashrc
+  copy:
+    src: root.bashrc.rh
+    dest: /root/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: UB root bashrc
+  copy:
+    src: root.bashrc.ub
+    dest: /root/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: RH skel bashrc
+  copy:
+    src: skel/bashrc.rh
+    dest: /etc/skel/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: UB skel bashrc
+  copy:
+    src: skel/bashrc.ub
+    dest: /etc/skel/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: RH zeus bashrc
+  copy:
+    src: skel/bashrc.rh
+    dest: /home/zeus/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: UB skel bashrc
+  copy:
+    src: skel/bashrc.ub
+    dest: /home/zeus/.bashrc
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'

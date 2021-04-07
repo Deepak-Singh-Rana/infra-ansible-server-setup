@@ -33,26 +33,55 @@ def generate_password(characters):
 	password = pwgen(characters, no_ambiguous=True)
 	return password
 
+def get_file_from_lastpass(filename):
+	print(filename)
+	try:
+		f = open("tmp/"+filename)
+		print(f)
+	except FileNotFoundError:
+		print(filename+" not found, downloading from lastpass")
+		f = open("tmp/"+filename, "w")
+		p2 = subprocess.Popen(["lpass", "show", "--notes", "infra-ansible-server-setup/"+filename], stdout=f)
+		os.chmod("tmp/"+filename, 0o400)
+	finally:
+		f.close()
+
 #cleanup before our run to make sure we don't have things that we don't want
 for file in os.listdir("tmp"):
 	if file.endswith(".md"):
 		print(file+" is a markdown file")
+	elif os.path.isfile("tmp/ansible-vault-file"):
+		print(file+" is fine to keep")
+	elif os.path.isfile("tmp/ansible-deploy.key"):
+		print(file+" is fine to keep")
+	elif os.path.isfile("tmp/ansible-deploy.key.pub"):
+		print(file+" is fine to keep")
+	elif os.path.isfile("tmp/server_ca"):
+		print(file+" is fine to keep")
+	elif os.path.isfile("tmp/server_ca.pub"):
+		print(file+" is fine to keep")
 	elif os.path.isdir("tmp/"+file):
 		print(file+" is a folder")
 	else:
 		file_relpath=os.path.join("tmp",file)
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
+
 for file in os.listdir("tmp/radius"):
 	print("removing old file :"+file)
 	os.remove("tmp/radius/"+file)
+##make sure we have needed files
+##make sure the vault password file exists
+
+get_file_from_lastpass("ansible-vault-file")
+get_file_from_lastpass("ansible-deploy.key")
+get_file_from_lastpass("ansible-deploy.key.pub")
+get_file_from_lastpass("server_ca")
+get_file_from_lastpass("server_ca.pub")
 
 ##read in the vault password
-with open("ansible-vault-file") as f:
+with open("tmp/ansible-vault-file") as f:
 	ansible_vault_pass = f.read().rstrip("\n")
-#	vault = Vault(ansible_vault_pass)
-#	print(vault)
-#	print(ansible_vault_pass)
 
 ##read in the csv
 csvfile = open(csvtoread, 'r')
@@ -150,9 +179,6 @@ for row_index, row in enumerate(datareader):
 		vm_yaml_file.close()
 		print(vm_yaml_file)
 
-	#ecrpyt the yml file as it contains passwords
-	#if it is commented out we are jsut encrpyint at the very end of processing everything
-#		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])
 
 	#create the lastpass files to upload
 		root_json = "tmp/"+filename+"_root.json"
@@ -194,7 +220,7 @@ for row_index, row in enumerate(datareader):
 
 hosts_text += "\n"
 hosts_text += "[newservers:vars]\n"
-hosts_text += "ansible_ssh_private_key_file='./files/ansible-deploy.key'\n"
+hosts_text += "ansible_ssh_private_key_file='./tmp/ansible-deploy.key'\n"
 hosts_text += "ansible_ssh_extra_args='-o StrictHostKeyChecking=no'\n"
 
 #write our hosts string to the hosts_file and close it
@@ -210,8 +236,6 @@ print("building radius files...")
 for file in os.listdir("tmp"):
 	if file.endswith(".yml"):
 		ymlfilepath="tmp/"+file
-		#decrypt the file
-#		subprocess.run(["ansible-vault", "decrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])
 		print("building radius file for "+file+"...")
 		yaml_file = open("tmp/"+ file, "r")
 		parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
@@ -238,4 +262,4 @@ for file in os.listdir("tmp"):
 
 		yaml_file.close()
 		#encrpyt the file
-		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=ansible-vault-file"])
+		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=tmp/ansible-vault-file"])

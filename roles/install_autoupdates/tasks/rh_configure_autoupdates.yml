@@ -5,7 +5,7 @@
    regex: '^email_from ='
    line: email_from = root@{{ ansible_hostname }}
   ignore_errors: yes
-#  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+#  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: email to
   lineinfile:
@@ -14,7 +14,7 @@
    regex: '^email_to ='
    line: email_to = sysadmin@2degrees.nz
   ignore_errors: yes
-#  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+#  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: email host
   lineinfile:
@@ -23,7 +23,7 @@
    regex: '^email_host ='
    line: email_host = smtp@snap.net.nz
   ignore_errors: yes
-#  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+#  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: create /etc/systemd/system/dnf-automatic-download.d
   file: 
@@ -49,7 +49,7 @@
    group: root
    mode: 0644
   ignore_errors: yes
-#  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+#  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
 - name: edit download timer
   copy:
@@ -59,4 +59,4 @@
    group: root
    mode: 0644
   ignore_errors: yes
-#  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8")
+#  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")

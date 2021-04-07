@@ -22,5 +22,5 @@
 
   roles:
     - newserver_vm_from_template
-    - newserver_vm_reboot
+#    - newserver_vm_reboot
     - newserver_access

@@ -1,0 +1,10 @@
+- name: Configure the server to act as a bastion/jumphost
+  hosts: singleserver
+  become: yes
+  become_method: sudo
+  gather_facts: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  #how many to run at once
+  roles:
+    - configure_as_ansible
