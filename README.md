@@ -75,15 +75,17 @@ when executing the above, you will notice it doesn't ask for password.
 make sure you have a rsa ssh key generated and put onto gary so you can authenticate to gary without a password, else pam_radius config will failmake sure you have created a personal.yml file from personal.yml.example and then encrypted it
 ```
 ssh-keygen -t rsa
-ssh-copy-id -i ~/.shh/id_rsa.pub gary.snap.net.nz
+ssh-copy-id -i ~/.ssh/id_rsa.pub gary.snap.net.nz
 ```
 
 # Deploying a new server
 
+:exclamation: warning, firewall rules, networking and domain name must be complete else deployment will fail:exclamation:
+
 ## DNS for servers
 
 Put all vm dns entries fully into dns else deployment will fail
-[link](https://dnsdb.snap.net.nz)
+[dnsdb link](https://dnsdb.snap.net.nz)
 
 ## LastPass access
 
