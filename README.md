@@ -91,7 +91,7 @@ sudo apt install python3-pyvmomi
 ```
 
 ```bash
-ansible-galaxy collection install community.vmware
+env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection install community.vmware
 ```
 
 # Deploying a new server
