@@ -67,12 +67,16 @@ for file in os.listdir("tmp"):
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
 
+if not os.path.isdir("tmp"):
+	os.makedirs("tmp")
+
+if not os.path.isdir("tmp/radius"):
+	os.makedirs("tmp/radius")
+
 for file in os.listdir("tmp/radius"):
 	print("removing old file :"+file)
 	os.remove("tmp/radius/"+file)
 ##make sure we have needed files
-##make sure the vault password file exists
-
 get_file_from_lastpass("ansible-vault-file")
 get_file_from_lastpass("ansible-deploy.key")
 get_file_from_lastpass("ansible-deploy.key.pub")
@@ -94,7 +98,7 @@ hosts_file = open("inventory/autogen-newservers", 'w')
 hosts_text = ""
 
 hosts_text += "[radius]\n"
-hosts_text += "gary.snap.net.nz ansible_ssh_private_key_file=~/.ssh/id_ed25519\n\n"
+hosts_text += "gary.snap.net.nz ansible_ssh_private_key_file=~/.ssh/id_rsa\n\n"
 hosts_text += "[newservers]\n"
 
 # Loop through each row...
