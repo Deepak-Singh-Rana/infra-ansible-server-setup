@@ -27,6 +27,8 @@ on bitbucket go to your settings and generate yourself an "app password" this wi
 
     ```
     git clone https://<username>@bitbucket.org/2dgreesdev/infra-ansible-server-setup.git
+    ```
+    ```
     cd infra-ansible-server-setup
     ```
 
