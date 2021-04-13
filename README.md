@@ -63,6 +63,9 @@ env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection instal
 
 :exclamation: Firewall rules, Networking and the domain name to be used, must be complete else deployment will fail:exclamation:
 
+### 0. Firewall rules
+[Default rule spreadsheet](https://2degreesnz.sharepoint.com/:x:/r/sites/Team-InfrastructureEngineeringAndOperations/Shared%20Documents/General/Linux/Firewall/new-server-default-firewallrules.xlsx?d=w21b307a19781403f86628d1ba5dfcce9&csf=1&web=1&e=NWrKhi)
+
 ### 1. DNS for servers
 
 Put all vm dns entries fully into dns else deployment will fail
