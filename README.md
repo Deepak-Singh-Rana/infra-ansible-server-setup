@@ -4,28 +4,31 @@
 ### Installing Ansible
 
 1. Run the install ansible command as a normal user, this will configure everything you need
-```bash
-/usr/local/bin/installansible.sh
-```
+
+	```bash
+	/usr/local/bin/installansible.sh
+	```
+	
 2. Log out and log back into the server
 
 
 ### Bitbucket access
 
 1. Set git to use a proxy so we can access bitbucket
-```bash
-git config --global http.proxy http://frigg.snap.net.nz:3128
-```
+
+	```bash
+	git config --global http.proxy http://frigg.snap.net.nz:3128
+	```
 
 2. Set yourself a password
 on bitbucket go to your settings and generate yourself an "app password" this will be your password when checking out the repo
 
 3. Cloning the repo
 
-```bash
-git clone https://<username>@bitbucket.org/2dgreesdev/infra-ansible-server-setup.git
-cd infra-ansible-server-setup
-```
+	```bash
+	git clone https://<username>@bitbucket.org/2dgreesdev/infra-ansible-server-setup.git
+	cd infra-ansible-server-setup
+	```
 
 ### Lastpass access
 
