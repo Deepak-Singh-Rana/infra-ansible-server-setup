@@ -1,76 +1,37 @@
 # infra-ansible-server-setup
 
+## Preperation
+### Installing Ansible
 
-:warning: to fix
+1. Run the install ansible command as a normal user, this will configure everything you need
+```bash
+/usr/local/bin/installansible.sh
+```
+2. Log out and log back into the server
 
 
-community.vmware
+### Bitbucket access
 
-
-
-2degrees linux ansible repo
-for all linux servers
-https://bitbucket.org/2dgreesdev/td-ansible-server-setup/src/master/README.md 
-
-## BITBUCKET info
-
-### Preparing for intial git clone
-
-#### Set git to use a proxy so we can access bitbucket
+1. Set git to use a proxy so we can access bitbucket
 ```bash
 git config --global http.proxy http://frigg.snap.net.nz:3128
 ```
 
-#### Set yourself a password
+2. Set yourself a password
 on bitbucket go to your settings and generate yourself an "app password" this will be your password when checking out the repo
 
-
-### Cloning the repo
+3. Cloning the repo
 
 ```bash
 git clone https://<username>@bitbucket.org/2dgreesdev/infra-ansible-server-setup.git
 cd infra-ansible-server-setup
 ```
 
-## How to push your changes back to the repo
-
-```bash
-git add .
-```
-```bash
-git commit -m "comment about your changes here"
-```
-```bash
-git push
-```
-
-# ANSIBLE info
-
-##### vault-password-file
-to create/encrypt/decrypt the file, you use:
-
-for new file:
-```bash
-ansible-vault create testfile.txt --vault-password-file=~/infra-ansible-server-setup/tmp/ansible-vault-file
-```
-for encrypting existing file:
-```bash
-ansible-vault encrypt testfile.txt --vault-password-file=~/infra-ansible-server-setup/tmp/ansible-vault-file
-```
-for decrypting:
-```
-ansible-vault decrypt testfile.txt --vault-password-file=~/infra-ansible-server-setup/tmp/ansible-vault-file
-```
-when executing the above, you will notice it doesn't ask for password.
-
-
-# First time setup
-
-## Lastpass access
+### Lastpass access
 
 Make sure you have access to the `Shared-Techm` folder
 
-## User ssh keys
+### User ssh keys
 
 Make sure you have a rsa ssh key generated and put onto `gary.snap.net.nz:~/.ssh/authorized_keys` so you can authenticate to `gary.snap.net.nz` without a password from the ansible server, else pam_radius config will fail.
 ```bash
@@ -80,7 +41,7 @@ ssh-keygen -t rsa
 ssh-copy-id -i ~/.ssh/id_rsa.pub gary.snap.net.nz
 ```
 
-## Required software
+### Required software
 
 ```bash
 pip3 install --ignore-installed --user PyYAML pwgen
@@ -93,6 +54,7 @@ sudo apt install python3-pyvmomi
 ```bash
 env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection install community.vmware
 ```
+
 
 # Deploying a new server
 
