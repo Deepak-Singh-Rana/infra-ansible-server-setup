@@ -1,6 +1,6 @@
 - name: Install zenoss on ubuntu 18.04 servers and newer
-  hosts: newserver
-  remote_user: zeus
+  hosts: singleserver
+#  remote_user: zeus
   become: yes
   become_method: sudo
   gather_facts: true

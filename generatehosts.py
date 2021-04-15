@@ -67,6 +67,7 @@ for file in os.listdir("tmp"):
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
 
+#mk dirs exist if they don't already
 if not os.path.isdir("tmp"):
 	os.makedirs("tmp")
 
