@@ -34,7 +34,9 @@ on bitbucket go to your settings and generate yourself an "app password" this wi
 
 ### Lastpass access
 
-Make sure you have access to the `Shared-Techm` folder
+Make sure you have access to the folders
+1) `Shared-TechM`
+2) `Shared-infra-ansible-server-setup`
 
 ### User ssh keys
 
