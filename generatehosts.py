@@ -45,6 +45,13 @@ def get_file_from_lastpass(filename):
 		os.chmod("tmp/"+filename, 0o400)
 	finally:
 		f.close()
+#mk dirs exist if they don't already
+
+if not os.path.isdir("tmp"):
+	os.makedirs("tmp")
+
+if not os.path.isdir("tmp/radius"):
+	os.makedirs("tmp/radius")
 
 #cleanup before our run to make sure we don't have things that we don't want
 for file in os.listdir("tmp"):
@@ -67,12 +74,6 @@ for file in os.listdir("tmp"):
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
 
-#mk dirs exist if they don't already
-if not os.path.isdir("tmp"):
-	os.makedirs("tmp")
-
-if not os.path.isdir("tmp/radius"):
-	os.makedirs("tmp/radius")
 
 for file in os.listdir("tmp/radius"):
 	print("removing old file :"+file)
