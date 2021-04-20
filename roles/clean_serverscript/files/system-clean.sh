@@ -120,7 +120,7 @@ else
                                 echo "not wiping, script complete"
                                 exit 1;
                         elif [[ "$doublesureresponse" =~ ^[q]$ ]]; then
-                                echo "ueer choese to quite, not wiping, script complete"
+                                echo "user choese to quit, not wiping, script complete"
                                 exit 1;
                         elif [[ "$doublesureresponse" =~ ^[y]$ ]]; then
                                 function_cleanupos
