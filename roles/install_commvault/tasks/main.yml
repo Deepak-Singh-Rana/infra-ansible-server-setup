@@ -21,6 +21,7 @@
   ansible.builtin.command:
     cmd: /usr/local/sbin/firewall-up
 
+#install for ubuntu
 - name: copy over the deb file
   ansible.builtin.copy:
     src: commvault.instance001_11.0.0-80.190.0.2548879.190.3144274_amd64.deb
@@ -39,3 +40,25 @@
     path: /tmp/commvault.instance001_11.0.0-80.190.0.2548879.190.3144274_amd64.deb
     state: absent
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")
+
+#isntall for redhat
+- name: copy over the rpm file
+  ansible.builtin.copy:
+    src: commvault.Instance001-11.0.0-80.200.0.2779330.200.3349518.x86_64.rpm
+    dest: /tmp/commvault.Instance001-11.0.0-80.200.0.2779330.200.3349518.x86_64.rpm
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+- name: Install commvault
+  ansible.builtin.dnf:
+    name: /tmp/commvault.Instance001-11.0.0-80.200.0.2779330.200.3349518.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: delete the installer
+  ansible.builtin.file:
+    path: /tmp/commvault.Instance001-11.0.0-80.200.0.2779330.200.3349518.x86_64.rpm
+    state: absent
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
