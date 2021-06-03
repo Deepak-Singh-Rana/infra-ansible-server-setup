@@ -1,0 +1,7 @@
+//jenkins access
+Accept: 22/tcp from 172.26.209.0/24
+Accept: 443/tcp from 172.26.209.0/24
+Accept: 80/tcp from 172.26.209.0/24
+Accept: 22/tcp from 172.26.207.0/24
+Accept: 443/tcp from 172.26.207.0/24
+Accept: 80/tcp from 172.26.207.0/24

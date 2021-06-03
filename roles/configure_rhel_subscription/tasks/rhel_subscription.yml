@@ -45,7 +45,7 @@
   community.general.redhat_subscription:
     state: present
     activationkey: RHEL8_Key
-    auto_attach: yes
+#    auto_attach: yes
     org_id: Default_Organization
     force_register: yes
   when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"

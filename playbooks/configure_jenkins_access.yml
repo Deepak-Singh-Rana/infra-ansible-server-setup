@@ -1,4 +1,4 @@
-- name: install clamav
+- name: Configure configure_upguardaccess
   hosts: singleserver
   become: yes
   become_method: sudo
@@ -8,4 +8,4 @@
   vars:
     ansible_python_interpreter: /usr/bin/python3
   roles:
-    - install_clamav
+    - configure_jenkins_access

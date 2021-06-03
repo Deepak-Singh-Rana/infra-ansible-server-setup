@@ -5,6 +5,7 @@ import random
 import string
 import os
 import subprocess
+import glob
 #from ansible_vault import Vault
 from pwgen import pwgen
 import argparse
@@ -46,7 +47,6 @@ def get_file_from_lastpass(filename):
 	finally:
 		f.close()
 #mk dirs exist if they don't already
-
 if not os.path.isdir("tmp"):
 	os.makedirs("tmp")
 
@@ -54,30 +54,25 @@ if not os.path.isdir("tmp/radius"):
 	os.makedirs("tmp/radius")
 
 #cleanup before our run to make sure we don't have things that we don't want
+a=0
 for file in os.listdir("tmp"):
-	if file.endswith(".md"):
-		print(file+" is a markdown file")
-	elif os.path.isfile("tmp/ansible-vault-file"):
-		print(file+" is fine to keep")
-	elif os.path.isfile("tmp/ansible-deploy.key"):
-		print(file+" is fine to keep")
-	elif os.path.isfile("tmp/ansible-deploy.key.pub"):
-		print(file+" is fine to keep")
-	elif os.path.isfile("tmp/server_ca"):
-		print(file+" is fine to keep")
-	elif os.path.isfile("tmp/server_ca.pub"):
-		print(file+" is fine to keep")
-	elif os.path.isdir("tmp/"+file):
-		print(file+" is a folder")
-	else:
-		file_relpath=os.path.join("tmp",file)
+#	print(file)
+	if file.endswith(".yml"):
+		file_relpath="tmp/"+file
+		print(file+" is a yml file")
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
-
+#	if os.path.isfile("tmp/ansible-vault-file"):
+	if "ssh_host_ed25519_key" in file:
+		file_relpath="tmp/"+file
+		print(file+" is a ssh host key file")
+		print("removing old file :"+file_relpath)
+		os.remove(file_relpath)
 
 for file in os.listdir("tmp/radius"):
 	print("removing old file :"+file)
 	os.remove("tmp/radius/"+file)
+
 ##make sure we have needed files
 get_file_from_lastpass("ansible-vault-file")
 get_file_from_lastpass("ansible-deploy.key")
@@ -268,4 +263,5 @@ for file in os.listdir("tmp"):
 
 		yaml_file.close()
 		#encrpyt the file
+		print("encrypting :"+ymlfilepath)
 		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=tmp/ansible-vault-file"])

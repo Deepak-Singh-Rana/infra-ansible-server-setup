@@ -1,4 +1,4 @@
-- name: centos install clamav
+- name: rh install clamav
   yum:
    name: "{{ packages }}"
   vars:
@@ -6,4 +6,3 @@
     - clamav
     - clamd
     - clamav-update
-    

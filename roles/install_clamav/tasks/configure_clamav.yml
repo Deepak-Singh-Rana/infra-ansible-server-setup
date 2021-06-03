@@ -1,0 +1,67 @@
+- name: rh Set antivirus_can_scan_system flag on and keep it persistent across reboots
+  seboolean:
+    name: antivirus_can_scan_system
+    state: yes
+    persistent: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: rh Set antivirus_use_jit flag on and keep it persistent across reboots
+  seboolean:
+    name: antivirus_use_jit
+    state: yes
+    persistent: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: create clamav folder
+  file:
+   path: /etc/clamav/
+   state: directory
+   mode: '0600'
+
+- name: create 2d-conf.d clamav folder
+  file:
+   path: /etc/clamav/2d-conf.d
+   state: directory
+   mode: '0600'
+
+#- name: rh Copy file with owner and permission, using symbolic representation
+#  ansible.builtin.copy:
+#    remote_src: yes
+#    src: /usr/local/etc/freshclam.conf.sample
+#    dest: /usr/local/etc/freshclam.conf
+#    owner: root
+#    group: root
+#    mode: '0640'
+#  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: rh configure private mirror
+  lineinfile:
+   path: /usr/local/etc/freshclam.conf
+   regexp: '^PrivateMirror'
+   line: PrivateMirror clamav.snap.net.nz
+   create: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: rh configure scripted updates to be no
+  lineinfile:
+   path: /usr/local/etc/freshclam.conf
+   regexp: '^ScriptedUpdates'
+   line: ScriptedUpdates no
+   create: yes
+  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: ub configure private mirror
+  lineinfile:
+   path: /etc/freshclam.conf
+   regexp: '^PrivateMirror'
+   line: PrivateMirror clamav.snap.net.nz
+   create: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: ub configure scripted updates to be no
+  lineinfile:
+   path: /etc/freshclam.conf
+   regexp: '^ScriptedUpdates'
+   line: ScriptedUpdates no
+   create: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'

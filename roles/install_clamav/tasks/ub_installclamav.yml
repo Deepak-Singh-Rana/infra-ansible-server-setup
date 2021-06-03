@@ -1,4 +1,9 @@
 - name: ubuntu install clamav
   apt:
-   name: 2d-clamav
+   name: clamav
+   state: latest
+
+- name: ubuntu install clamav
+  apt:
+   name: clamav-freshclam
    state: latest

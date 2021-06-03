@@ -60,3 +60,11 @@
     owner: root
     group: root
     mode: '0600'
+
+- name: copy the smbnetfs.host file to the skel dir
+  ansible.builtin.copy:
+    src: clamav/11_ans_smbusermount.exclude
+    dest: /etc/clamav/2d-conf.d/11_ans_smbusermount.exclude
+    owner: root
+    group: root
+    mode: '0600'

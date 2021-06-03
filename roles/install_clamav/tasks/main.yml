@@ -1,22 +1,36 @@
 ---
 # tasks file for install_clamav
-- name: ubutnu install clamav
+- name: ubuntu install clamav
   include: ub_installclamav.yml
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: centos install clamav
-  include: ce_installclamav.yml
+- name: redhat install clamav
+  include: rh_installclamav.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat'
 
-- name: centos configure clamav
-  include: ce_configureclamav.yml
+- name: configure clamav
+  include: configure_clamav.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
-- name: centos start clamav
-  include: ce_startclamav.yml
+- name: copy 2d-clamav files
+  include: copy_files.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
+
+- name: reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Enable service 2d-clamav and ensure it is not masked
+  ansible.builtin.systemd:
+    name: 2d-clamav.service
+    enabled: yes
+    masked: no
+
+- name: Enable a timer for 2d-clamav
+  ansible.builtin.systemd:
+    name: 2d-clamav.timer
+    state: started
+    enabled: yes

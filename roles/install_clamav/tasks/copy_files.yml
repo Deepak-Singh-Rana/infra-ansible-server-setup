@@ -1,0 +1,47 @@
+- name: copy the readme
+  ansible.builtin.copy:
+    src: README.md
+    dest: /etc/clamav/README.md
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy config files
+  ansible.builtin.copy:
+    src: 10_ans-2ddefaults.exclude
+    dest: /etc/clamav/2d-conf.d/10_ans-2ddefaults.exclude
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy config files
+  ansible.builtin.copy:
+    src: 10_ans-2ddefaults.include
+    dest: /etc/clamav/2d-conf.d/10_ans-2ddefaults.include
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy config files
+  ansible.builtin.copy:
+    src: clamav.py
+    dest: /usr/local/sbin/clamav.py
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy config files
+  ansible.builtin.copy:
+    src: 2d-clamav.service
+    dest: /etc/systemd/system/2d-clamav.service
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: copy config files
+  ansible.builtin.copy:
+    src: 2d-clamav.timer
+    dest: /etc/systemd/system/2d-clamav.timer
+    owner: root
+    group: root
+    mode: '0640'

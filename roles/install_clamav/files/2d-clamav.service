@@ -3,7 +3,7 @@ Description=ClamAV Service
 
 [Service]
 Type=simple
-ExecStart=/bin/bash /usr/local/sbin/clamav.sh
+ExecStart=/usr/bin/python3 /usr/local/sbin/clamav.py
 StandardOutput=syslog
 StandardError=syslog
 SyslogIdentifier=clamav

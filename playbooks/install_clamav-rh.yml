@@ -1,5 +1,6 @@
 - name: install clamav
   hosts: singleserver
+  remote_user: zeus
   become: yes
   become_method: sudo
   ignore_unreachable: true
