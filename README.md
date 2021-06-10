@@ -88,6 +88,12 @@ LastPass access for adding zeus and root passwords/retrieving needed passwords a
 
 ```
 env https_proxy="http://frigg.snap.net.nz:3128" lpass login --trust $USER
+
+```
+### 2.a Update deploy script
+```
+cd ~/infra-ansible-server-setup
+git pull
 ```
 
 
