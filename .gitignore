@@ -7,6 +7,7 @@ personal.yml
 #don't upload any vm lists variable files to git
 vm_list.cvs
 *.csv*
+!examples/*.csv
 #don't include maybe sensitive information
 vars/newserver_vcenterdetails.yml
 #don't include other peoples vars
