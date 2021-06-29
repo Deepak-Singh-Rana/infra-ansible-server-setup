@@ -1,0 +1,9 @@
+---
+#https://serverfault.com/questions/1060123/how-to-fetch-the-disk-difference-before-and-after-adding-a-new-disk
+
+# tasks file for vm_new_disk_test
+- name: Bare include (free-form)
+  include_vars: main.yml
+
+- name: get current hardware
+  include: get_vmware_disk_facts.yml

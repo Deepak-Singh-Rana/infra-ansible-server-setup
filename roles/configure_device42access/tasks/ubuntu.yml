@@ -5,6 +5,8 @@
   ansible.builtin.service:
     name: nscd
     state: restarted
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
 - name: copy sshd matches rule
   copy:
@@ -46,14 +48,18 @@
     owner: svc_d42_unix@2degrees.nz
     group: users
     mode: '0701'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
-- name: Create svc_d42_unix@2degrees.nz home dir
+- name: Create svc_d42_unix@2degrees.nz ssh dir
   file:
     path: /home/svc_d42_unix@2degrees.nz/.ssh
     state: directory
     owner: svc_d42_unix@2degrees.nz
     group: users
     mode: '0701'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
 - name: copy over the authorized_keys file
   copy:
@@ -62,6 +68,8 @@
     owner: svc_d42_unix@2degrees.nz
     group: users
     mode: '0644'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
 - name: run the apply_ssh.sh script
   shell: /usr/local/sbin/apply_ssh.sh

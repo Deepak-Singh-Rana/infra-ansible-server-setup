@@ -1,0 +1,30 @@
+---
+#https://serverfault.com/questions/1060123/how-to-fetch-the-disk-difference-before-and-after-adding-a-new-disk
+
+# tasks file for vm_new_disk_test
+- name: Bare include (free-form)
+  include_vars: main.yml
+
+#create custom facts dir to store our before and after facts
+- name: Create directory for ansible custom facts
+  ansible.builtin.file:
+    state: directory
+    recurse: true
+    path: /etc/ansible/facts.d
+
+#show the current contents of ansible_local
+- debug:
+    var: ansible_local
+
+#set the fact variable
+- name: set before fact
+  ansible.builtin.set_fact:
+    before_add: "{{ ansible_facts['devices'] }}"
+
+
+#save the fact in a file
+- name: Install custom devices fact
+  ansible.builtin.copy:
+    content: |
+      {"general": {"before_add": {{ before_add }} }}
+    dest: /etc/ansible/facts.d/devicesbefore.fact

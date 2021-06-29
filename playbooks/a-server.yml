@@ -46,7 +46,10 @@
 #configures the home folder to 2degrees standards
     - install_2dhome
 #configures the server to use radius for AD authentication
-    - install_2dradiusauth
+    - role: install_2dradiusauth
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+            (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
+#    - install_2dradiusauth
 #configures ssh to 2degrees hardened standard
     - install_2dssh
 #sets up ntp on the server
@@ -72,8 +75,6 @@
 #Hardens redhat8 to level2 compliance
     - role: harden_rhel8
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
-#setups breakglass utils/permissions
-    - configure_bgaccounts
 #setup vulnerability scanning
     - configure_upguardaccess
 #setup cmdb scanning
@@ -88,5 +89,7 @@
     - install_autoupdates
 #install backups
     - install_commvault
+#setups breakglass utils/permissions
+    - configure_bgaccounts
 #run the postinstall cleanup role
     - postinstall_cleanup

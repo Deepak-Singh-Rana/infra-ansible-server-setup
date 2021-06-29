@@ -1,0 +1,16 @@
+
+#- hosts: localhost
+#  gather_facts: false
+
+- name: Include only files matching bastion.yaml (2.2)
+  include_vars:
+    dir: vars_disks/
+    files_matching:
+      - 'yaml'
+      - 'yml'
+
+- name: vcenter new disk
+  import_playbook: b-disk-create.yml
+
+#- name: parted
+#  import_playbook: b-mount.yml

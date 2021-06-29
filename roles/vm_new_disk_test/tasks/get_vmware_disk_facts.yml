@@ -1,0 +1,68 @@
+- name: Bare include (free-form)
+  include_vars: main.yml
+
+- name: get disk info
+  community.vmware.vmware_guest_disk_info:
+    hostname: "{{ vcenter_hostname }}"
+    username: "{{ vcenter_username }}"
+    password: "{{ vcenter_password }}"
+    datacenter:  "{{ datacenter_name }}"
+    name: "{{ vcenter_vmname }}"
+    validate_certs: no
+  register: disk_info
+  delegate_to: localhost
+
+##show the current contents of ansible_local
+#- name: sort
+#  debug: 
+#    msg: "{{ disk_info['guest_disk_info'] }}"
+
+# get scsi controller bus number
+- name: set fact controllerFacts
+  set_fact: 
+    controllerFacts: "{{ disk_info['guest_disk_info'].values() | map(attribute='controller_key') | list }}"
+
+#get scsi numbers
+- name: print controllerFacts _ the scsi numbers in use
+  debug:
+    msg: "{{ controllerFacts }}"
+
+#grab the last scsi number
+- name: set facts controllerKey
+  set_fact: 
+    controllerKey: "{{ controllerFacts | sort | last  }}"
+
+#print the scsi number we will use for debugging
+- name: print controllerKey _ the scsi number we will use
+  debug:
+    msg: "{{ controllerKey }}"
+
+#use the controllerKey to sort the last used unit_number and incremet by one, so we can use it
+- name: set fact unitNumber
+  set_fact:
+    unitNumber: "{{ disk_info['guest_disk_info'].values() |selectattr('controller_key','equalto',(controllerKey | int))|map(attribute='unit_number')| list | sort | last |int +1 }}"
+
+#make sure we don't select unit number 7
+- name: Skip SCSI controller No 7
+  set_fact:
+    unitNumber: "{{unitNumber |int+1 }}"
+  when: unitNumber == "7"
+
+#- name: test unit number fail
+#  set_fact:
+#    unitNumber: 15
+
+#print the unit_number we chose
+- name: print unit number2
+  debug:
+    msg: "{{ unitNumber }}"
+
+- name: print max unit number
+  debug:
+    msg: "{{ scsi_max_devices }}"
+
+- name: fail when we his max unit number
+  fail:
+    msg: "Can't use number higher than '{{ scsi_max_devices }}'"
+  when: ( unitNumber | int >= scsi_max_devices )
+

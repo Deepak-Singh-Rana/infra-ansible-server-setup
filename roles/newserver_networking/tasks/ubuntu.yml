@@ -7,7 +7,7 @@
     insertafter: 'addresses:'
     line: '        - {{ vm_ipv6_address }}/{{ vm_ipv6_netmask }}'
     firstmatch: yes
-  when: ipv6 == "true"
+  when: ipv6|bool == true
 
 - name: addipv6_gateway
   lineinfile:
@@ -15,11 +15,11 @@
     insertafter: 'gateway4:*'
     line: '      gateway6: {{ vm_ipv6_gateway }}'
     firstmatch: yes
-  when: ipv6 == "true"
+  when: ipv6|bool == true
 
 #- name: remove ipv6 addresses using ip
 #  command: "ip -6 a del 2406:e000:0:170::219/64 dev ens160"
-#  when: ipv6 != "true"
+#  when: ipv6|bool != "true"
 
 #- name: change renderer to NetworkManager
 #  replace:

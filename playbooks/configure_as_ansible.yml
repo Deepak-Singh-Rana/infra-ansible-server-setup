@@ -1,5 +1,5 @@
 - name: Configure the server to act as a bastion/jumphost
-  hosts: singleserver
+  hosts: automationservers
   become: yes
   become_method: sudo
   gather_facts: true

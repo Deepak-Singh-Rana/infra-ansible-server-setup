@@ -1,0 +1,27 @@
+######################################
+###########deploy template############
+######################################
+- hosts: singleserver
+  gather_facts: true
+#  serial: 3
+
+  vars_prompt:
+    - name: vcenter_username
+      prompt: "please enter your vcenter username"
+      private: no
+    - name: vcenter_password
+      prompt: "please enter your password"
+      private: yes
+
+  vars:
+    - ansible_python_interpreter: /usr/bin/python3
+
+#  vars_files:
+#    - "../tmp/{{inventory_hostname}}.yml"
+#    - "../vars/newserver_ca_passphrase.yml"
+
+  roles:
+    - vm_new_disk_test
+#    - newserver_vm_from_template
+#    - newserver_vm_reboot
+#    - newserver_access

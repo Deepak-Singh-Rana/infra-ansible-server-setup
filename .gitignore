@@ -9,6 +9,9 @@ vm_list.cvs
 *.csv*
 #don't include maybe sensitive information
 vars/newserver_vcenterdetails.yml
+#don't include other peoples vars
+vars_disks/*
+!vars_disks/README.md
 #don't include the inventory, as it should be built from scratch each time
 inventory/*
 !inventory/README.md

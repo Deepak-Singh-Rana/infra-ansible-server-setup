@@ -1,6 +1,6 @@
 ---
 # tasks file for roles/install_2d-firewall
-- name: configure ubuntu
+- name: configure ubuntu networking
   include: ubuntu.yml
   when: ansible_facts['distribution'] == 'Ubuntu'
 

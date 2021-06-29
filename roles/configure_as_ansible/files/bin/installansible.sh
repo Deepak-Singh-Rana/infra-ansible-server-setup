@@ -15,6 +15,15 @@ if [[ $EUID -ne 0 ]]; then
 	#set execuatble permissions on ansible files
 	chmod 700 ~/.local/bin/ansible*
 
+	if grep -Fxq "alias ap=~/.local/bin/ansible-playbook" ~/.bashrc
+	then
+		echo "ap alias to ansible-playbook already found"
+	else
+		echo "creating shortcut to ansible-play as 'ap'"
+		echo "alias ap=~/.local/bin/ansible-playbook" >> ~/.bashrc
+	fi
+
+
         echo "please log out and log back in for ansible to become available"
 else
 	echo "This script must not be run as root" 
