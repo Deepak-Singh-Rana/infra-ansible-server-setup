@@ -2,23 +2,23 @@
 #https://vconfig.pl/2019/08/17/ansible-add-disk-to-vm-skipping-scsi-id-x7/
 
 # tasks file for vm_new_disk_test
-- name: Bare include (free-form)
-  include_vars: main.yml
+#- name: Bare include (free-form)
+#  include_vars: main.yml
 
 - name: get current unit number
-  include: get_vmware_disk_facts.yml
+  include: a_get_vmware_disk_facts.yml
 
 - name: get current hardware
-  include: get_current_hardware.yml
+  include: b_get_current_hardware.yml
 
 - name: add_new_hardware.yml
-  include: add_new_hardware.yml
+  include: c_add_new_hardware.yml
 
 - name: get_new_hardware.yml
-  include: get_new_hardware.yml
+  include: d_get_new_hardware.yml
 
 - name: compare_hardware.yml
-  include: compare_hardware.yml
+  include: e_compare_hardware.yml
 
-#- name: 
-#  include:
+- name: enlarge_parition.yml
+  include: enlarge_parition.yml

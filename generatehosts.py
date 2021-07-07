@@ -110,8 +110,8 @@ for row_index, row in enumerate(datareader):
 		# Open a new file with filename based on index number of our current row.
 		#filename = str(row_index) + '.yml'
 		#get the shortname from the first column
-		print(row[3])
-		filename = row[3]
+		print("compiling info for: " + row[0])
+		filename = row[0]+"."+row[1]
 		ymlfilepath = "tmp/"+filename+".yml"
 		print("building "+filename+".yml")
 		vm_yaml_file = open("tmp/"+filename+".yml", 'w')
@@ -124,6 +124,8 @@ for row_index, row in enumerate(datareader):
 		zeus_data = ""
 		root_data = ""
 		# Loop through each cell in this row...
+		shortname = ""
+		domain = ""
 		for cell_index, cell in enumerate(row):
 
 			# Compile a line of YAML text from our headings list and the text of the current cell, followed by a linebreak.
@@ -132,10 +134,17 @@ for row_index, row in enumerate(datareader):
 			cell_heading = data_headings[cell_index].lower().replace(" ", "_").replace("-", "")
 			#grab the shortname for lastpass files
 			if cell_heading == "vm_shortname":
-				lp_text += "Hostname: "+cell+"\n"
-			#if we spot the fqdn then grab it so we can use it
-			if cell_heading == "vm_fqdn":
-				hosts_text += cell+"\n"
+				shortname = cell
+				print("shortname: " + shortname)
+				# add the shortname to the lastpass text
+				lp_text += "Hostname: " + shortname +"\n"
+			#if we spot the doamin then grab it so we can use it
+			if cell_heading == "vm_domain":
+				domain = cell
+				print("domain: " + domain)
+				# Add the hostname to the autogen_servers variable
+				hosts_text += shortname + "." + domain +"\n"
+
 			if cell_heading == "ipv6":
 				#if ipv6 is false 0 or empty quit the loop so we don't write empty variables to the yaml
 				if cell == "" or cell == "0" or cell.lower() == "false":

@@ -1,7 +1,9 @@
 ---
 # tasks file for configure_upguardaccess
 
-# configure upguard
+# configure device42
+- include_tasks: configure_snmpd.yml
+
 - include_tasks: redhat.yml
   when: ansible_facts['distribution'] == "Redhat"
 

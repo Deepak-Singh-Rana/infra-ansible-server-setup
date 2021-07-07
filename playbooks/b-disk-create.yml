@@ -12,7 +12,13 @@
     - name: vcenter_password
       prompt: "please enter your password"
       private: yes
+    - name: vcenter_vmname
+      prompt: "please enter the vmname found in vcenter"
+      private: no
 
+  vars_files:
+#    - "vars_disks/{{ inventory_hostname }}.yml"
+    - ../vars_disks/sys-staga.snap.net.nz.yml
   vars:
     - ansible_python_interpreter: /usr/bin/python3
 

@@ -2,8 +2,8 @@
 #https://serverfault.com/questions/1060123/how-to-fetch-the-disk-difference-before-and-after-adding-a-new-disk
 
 # tasks file for vm_new_disk_test
-- name: Bare include (free-form)
-  include_vars: main.yml
+#- name: Bare include (free-form)
+#  include_vars: main.yml
 
 #add a new disk to vmware
 - name: Add disks to virtual machine using vm name
@@ -15,11 +15,12 @@
     datacenter: "{{ datacenter_name }}"
     name: "{{ vcenter_vmname }}"
     disk:
-      - size_mb: "{{ disk_size_mb }}"
+      - size_gb: "{{ disk_size_gb }}"
         type: thick
         autoselect_datastore: yes
         state: present
-        scsi_controller: "{{ disk_scsi_controller }}"
+        scsi_controller: "{{ controllerKey[3:4] }}"
+#        scsi_controller: "{{ disk_scsi_controller }}"
         unit_number: "{{ unitNumber }}"
         scsi_type: 'paravirtual'
         disk_mode: 'persistent'

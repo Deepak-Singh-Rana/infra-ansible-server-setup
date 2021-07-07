@@ -1,5 +1,7 @@
-- name: Bare include (free-form)
-  include_vars: main.yml
+#- name: Bare include (free-form)
+#  include_vars: main.yml
+
+#This file generates vmware info we need when we go to add a new disk
 
 - name: get disk info
   community.vmware.vmware_guest_disk_info:
@@ -13,11 +15,11 @@
   delegate_to: localhost
 
 ##show the current contents of ansible_local
-#- name: sort
-#  debug: 
-#    msg: "{{ disk_info['guest_disk_info'] }}"
+- name: sort
+  debug: 
+    msg: "{{ disk_info['guest_disk_info'] }}"
 
-# get scsi controller bus number
+# got scsi controller bus number
 - name: set fact controllerFacts
   set_fact: 
     controllerFacts: "{{ disk_info['guest_disk_info'].values() | map(attribute='controller_key') | list }}"

@@ -2,12 +2,10 @@
 #- hosts: localhost
 #  gather_facts: false
 
-- name: Include only files matching bastion.yaml (2.2)
-  include_vars:
-    dir: vars_disks/
-    files_matching:
-      - 'yaml'
-      - 'yml'
+#- name: Include only files matching yaml or yml
+#  vars_files:
+#      - 'vars_disks/{{ ansible_play_batch }}.yaml'
+#      - 'vars_disks/{{ ansible_play_batch }}.yml'
 
 - name: vcenter new disk
   import_playbook: b-disk-create.yml

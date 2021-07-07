@@ -1,0 +1,33 @@
+---
+#https://serverfault.com/questions/1060123/how-to-fetch-the-disk-difference-before-and-after-adding-a-new-disk
+
+# tasks file for vm_new_disk_test
+#- name: Bare include (free-form)
+#  include_vars: main.yml
+
+#read the custom facts only
+- name: Re-read facts so we can compare between before and after
+  ansible.builtin.setup:
+    filter: ansible_local
+
+- debug:
+    msg: "{{ after_add|difference(before_add) }}"
+
+#- debug:
+#    msg: "{{ after_add|symmetric_difference(before_add) }}"
+
+#set the fact variable
+- name: set after fact
+  ansible.builtin.set_fact:
+    new_drive: "{{ after_add|difference(before_add) }}"
+
+- debug:
+    msg: "{{ new_drive }}"
+
+
+#save the new_drive fact in a file
+- name: save new_drive fact
+  ansible.builtin.copy:
+    content: |
+      {"general": {"new_drive": {{ new_drive }} }}
+    dest: /etc/ansible/facts.d/new_drive.fact

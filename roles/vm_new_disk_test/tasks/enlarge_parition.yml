@@ -1,0 +1,22 @@
+#https://docs.ansible.com/ansible/latest/collections/community/general/lvg_module.html
+#https://docs.ansible.com/ansible/latest/collections/community/general/lvol_module.html
+
+#read the custom facts only
+- name: get new_hardware fact
+  ansible.builtin.setup:
+    filter: ansible_local
+
+- debug:
+    msg: "{{ new_hardware }}"
+
+#- name: attached volume group
+#  community.general.lvg
+#    vg: {{ lvm_group_name }}
+#    pvs: /dev/sda3
+#    pvresize: yes
+
+#- name: resized lvol
+#  community.general.lvol
+
+
+
