@@ -35,6 +35,10 @@
     - base_role
 #deployes required 2degrees certificates onto the servers
     - deploy_certs
+#configure canonical landscape subscription
+    - role: configure_ubuntu_subscription
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+            (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
 #setups 2degrees standard firewall
     - install_2d-firewall
 #configures the servers to allow them to email out if need be

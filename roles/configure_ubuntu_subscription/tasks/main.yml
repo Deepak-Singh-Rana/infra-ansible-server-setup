@@ -1,0 +1,9 @@
+---
+# tasks file for configure_ubuntu_subscription
+- name: installed landscape-client
+  ansible.builtin.apt:
+    name: landscape-client
+    state: present
+
+- name: registered to canonical landscape onprem
+  shell: /usr/bin/landscape-config --silent -t "{{ inventory_hostname }}" -a standalone -u https://frigg.2degrees.nz/message-system --ping-url http://frigg.2degrees.nz/ping

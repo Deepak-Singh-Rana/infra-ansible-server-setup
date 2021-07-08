@@ -5,7 +5,7 @@
     enabled: yes
 
 - name: Added snmp user
-  command: net-snmp-config --create-snmpv3-user -ro -A {{ snmp3apass }} -X  {{ snmp3epass }} -a SHA -x AES {{ nsmp3user }}
+  command: net-snmp-config --create-snmpv3-user -ro -A "{{ snmp3passa }}" -X "{{ snmp3passe }}" -a SHA -x AES128 "{{ snmp3user }}"
 
 - name: Started and enabled snmpd
   service:

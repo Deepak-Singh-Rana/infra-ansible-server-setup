@@ -1,75 +1,75 @@
 ---
 # tasks file for configure_upguardaccess
 
-- name: restart nscd so we can get the groups
+- name: restarted nscd so we can get the groups
   ansible.builtin.service:
     name: nscd
     state: restarted
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
         (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
-- name: copy sshd matches rule
-  copy:
-    src: ans_device42.user
-    dest: /etc/ssh/matches-available/ans_device42.user
+- name: copied sshd matches rule
+  ansible.builtin.template:
+    src: ans_autodiscover.user.j2
+    dest: /etc/ssh/matches-available/ans_autodiscover.user
     owner: root
     group: root
     mode: '0640'
 
-- name: Enable ssh matches rule
+- name: Enabled ssh matches rule
   file:
-    src: /etc/ssh/matches-available/ans_device42.user
-    dest: /etc/ssh/matches-enabled/10_ans_device42.user
+    src: /etc/ssh/matches-available/ans_autodiscover.user
+    dest: /etc/ssh/matches-enabled/10_ans_autodiscover.user
     owner: root
     group: root
     state: link
 
-- name: copy firewall rule
+- name: copied firewall rule
   copy:
-    src: ans_ssh-device42.v4
-    dest: /etc/fw-2d/rules-available/ans_ssh-device42.v4
+    src: ans_ssh-autodiscover.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-autodiscover.v4
     owner: root
     group: root
     mode: '0640'
 
-- name: Enable firewall rule
-  file:
-    src: /etc/fw-2d/rules-available/ans_ssh-device42.v4
-    dest: /etc/fw-2d/rules-enabled/43_ans_ssh-device42.v4
+- name: Enabled firewall rule
+  ansible.builtin.file:
+    src: /etc/fw-2d/rules-available/ans_ssh-autodiscover.v4
+    dest: /etc/fw-2d/rules-enabled/43_ans_ssh-autodiscover.v4
     owner: root
     group: root
     state: link
 
 
-- name: Create svc_d42_unix@2degrees.nz home dir
+- name: Created home dir
   file:
-    path: /home/svc_d42_unix@2degrees.nz
+    path: /home/"{{ autodiscover_user }}""
     state: directory
-    owner: svc_d42_unix@2degrees.nz
+    owner: "{{ autodiscover_user }}"
     group: users
     mode: '0701'
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
         (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
-- name: Create svc_d42_unix@2degrees.nz ssh dir
+- name: Created ssh dir
   file:
-    path: /home/svc_d42_unix@2degrees.nz/.ssh
+    path: /home/"{{ autodiscover_user }}"/.ssh
     state: directory
-    owner: svc_d42_unix@2degrees.nz
+    owner: "{{ autodiscover_user }}"
     group: users
     mode: '0701'
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
         (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
-- name: copy over the authorized_keys file
+- name: copied over the authorized_keys file
   copy:
     src: authorized_keys
-    dest: /home/svc_d42_unix@2degrees.nz/.ssh/authorized_keys
-    owner: svc_d42_unix@2degrees.nz
+    dest: /home/"{{ autodiscover_user }}"/.ssh/authorized_keys
+    owner: "{{ autodiscover_user }}"
     group: users
     mode: '0644'
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
         (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 
-- name: run the apply_ssh.sh script
+- name: ran the apply_ssh.sh script
   shell: /usr/local/sbin/apply_ssh.sh

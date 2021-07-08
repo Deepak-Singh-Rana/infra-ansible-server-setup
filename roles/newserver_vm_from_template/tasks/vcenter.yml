@@ -16,7 +16,7 @@
     #state: present
     state: poweredon
     folder: "{{ vcenter_folder }}"
-    template: "{{ vm_template }}"
+    template: "{{ vcenter_template }}"
     name: "{{ vm_shortname }}"
     networks:
       - name: "{{ vcenter_vlan }}"
