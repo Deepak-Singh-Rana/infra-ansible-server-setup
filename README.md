@@ -55,11 +55,12 @@ ssh-copy-id -i ~/.ssh/id_rsa.pub gary.snap.net.nz
 
 ```
 pip3 install --ignore-installed --user PyYAML pwgen
+pip3 install "pyvmomi>=6.7.1.2018.12"
 ```
 
-```
-sudo apt install python3-pyvmomi
-```
+#``` do not use
+#sudo apt install python3-pyvmomi
+#```
 
 ```
 env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection install community.vmware
