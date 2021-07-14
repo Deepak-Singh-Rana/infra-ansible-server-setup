@@ -1,0 +1,60 @@
+---
+# task for setting up server to be able to use ansible
+
+- name: created reporting group
+  ansible.builtin.group:
+    name: reporting
+    state: present
+
+- name: created reporting user
+  ansible.builtin.user:
+    name: reporting
+    group: reporting
+    shell: /bin/bash
+    comment: user to automate networking scripts
+
+- name: Insert networking su to reporting allowing in pamd us
+  blockinfile:
+    path: /etc/pam.d/su
+    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    insertafter: "auth       sufficient pam_rootok.so"
+    block: |
+      
+      # Allow users in SEC_fixed_networking_rwx to su to reporting user without password.
+      auth  [success=ignore default=1] pam_succeed_if.so user = reporting
+      auth sufficient pam_succeed_if.so use_uid user ingroup SEC_fixed_networking_rwx
+      auth sufficient pam_succeed_if.so use_uid user ingroup SEC_fixed_managedservices_rwx
+
+- name: created /usr/local/bin/reporting
+  ansible.builtin.file:
+    path: /usr/local/bin/reporting
+    state: directory
+    owner: root
+    group: reporting
+    mode: '0770'
+
+- name: created /home/reporting/.config/systemd/user
+  ansible.builtin.file:
+    path: /home/reporting/.config/systemd/user
+    state: directory
+    owner: reporting
+    group: reporting
+    mode: '0770'
+
+- name: Set default ACL for fixed_networking engineers on /usr/local/bin/reporting
+  ansible.posix.acl:
+    path: /usr/local/bin/reporting
+    entity: SEC_fixed_networking_rwx
+    etype: group
+    permissions: rwX
+    default: yes
+    state: present
+
+- name: Set default ACL for fixed_managed services on /usr/local/bin/reporting
+  ansible.posix.acl:
+    path: /usr/local/bin/reporting
+    entity: SEC_fixed_managedservices_rwx
+    etype: group
+    permissions: rwX
+    default: yes
+    state: present
