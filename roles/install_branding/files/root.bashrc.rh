@@ -15,8 +15,9 @@ fi
 
 #give theselves colour so it's easier to tell that we are root
 #cli colour setup
-export PS1="\e[1;31m\u@\h\e[m:\e[1;34m\w\e[m# "
-
+#export PS1="\e[1;31m\u@\h\e[m:\e[1;34m\w\e[m# "
+#export PS1="\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
+export PS1="\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[m#\] "
 # If this is an xterm set the title to user@host:dir
 #This needs to be after the cli colour setup
 case "$TERM" in

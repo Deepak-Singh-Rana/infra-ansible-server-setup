@@ -42,8 +42,8 @@
   copy:
     src: skel/bashrc.rh
     dest: /home/zeus/.bashrc
-    owner: root
-    group: root
+    owner: zeus
+    group: zeus
     mode: '0644'
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'RedHat'
@@ -52,8 +52,8 @@
   copy:
     src: skel/bashrc.ub
     dest: /home/zeus/.bashrc
-    owner: root
-    group: root
+    owner: zeus
+    group: zeus
     mode: '0644'
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
