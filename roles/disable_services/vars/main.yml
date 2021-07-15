@@ -1,0 +1,11 @@
+---
+# vars file for disable_services
+disabled_services:
+  - "iscsid.socket"
+  - "iscsiuio.socket"
+  - "multipathd.socket"
+  - "pcscd.socket"
+  - "iscsi.service"
+  - "mdmonitor.service"
+  - "multipathd.service"
+

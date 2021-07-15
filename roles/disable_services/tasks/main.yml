@@ -1,0 +1,8 @@
+---
+# tasks file for disable_services
+- name: disabled unneeded services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: no
+    state: stopped
+  loop: "{{ disabled_services }}"

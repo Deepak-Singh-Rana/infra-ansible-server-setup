@@ -95,5 +95,7 @@
     - install_commvault
 #setups breakglass utils/permissions
     - configure_bgaccounts
+#disable unneded services
+    - disable_services
 #run the postinstall cleanup role
     - postinstall_cleanup
