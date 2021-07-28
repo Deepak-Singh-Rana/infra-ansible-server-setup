@@ -14,7 +14,8 @@
     owner: root
     group: root
     mode: '0444'
-  when: vcenter_datacenter|lower == "khyber pass vi"
+  when: vcenter_datacenter|lower == "khyber pass vi" or
+        vcenter_datacenter|lower == "khyber pass nfv"
 
 - name: copy katello hlz file over
   copy:
@@ -23,7 +24,8 @@
     owner: root
     group: root
     mode: '0444'
-  when: vcenter_datacenter|lower == "hamilton vi"
+  when: vcenter_datacenter|lower == "hamilton vi" or
+        vcenter_datacenter|lower == "hamilton nfv"
 
 - name: isntall katello file
   dnf:

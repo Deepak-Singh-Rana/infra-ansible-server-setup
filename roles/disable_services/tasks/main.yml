@@ -6,3 +6,8 @@
     enabled: no
     state: stopped
   loop: "{{ disabled_services }}"
+  ignore_errors: True
+
+- name: Reloaded ansible configs
+  ansible.builtin.systemd:
+    daemon_reload: yes
