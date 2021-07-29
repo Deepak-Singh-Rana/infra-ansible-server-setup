@@ -1,6 +1,13 @@
 ---
 # task for setting up server to be able to use ansible
 
+- name: install python environments
+  apt:
+   name:
+   - python3-venv
+   - python3-virtualenv
+   state: latest
+
 - name: created reporting group
   ansible.builtin.group:
     name: reporting
@@ -58,3 +65,28 @@
     permissions: rwX
     default: yes
     state: present
+
+- name: created /opt/virtualenv
+  ansible.builtin.file:
+    path: /opt/virtualenv
+    state: directory
+    owner: root
+    group: servers.monitoring@staff.snap.net.nz
+    mode: '0775'
+
+- name: created /opt/bin
+  ansible.builtin.file:
+    path: /opt/bin
+    state: directory
+    owner: root
+    group: servers.monitoring@staff.snap.net.nz
+    mode: '0775'
+
+- name: copied networking suoders file
+  ansible.builtin.copy:
+    src: ans_network
+    dest: /etc/sudoers.d/ans_network
+    owner: root
+    group: root
+    mode: '0440'
+

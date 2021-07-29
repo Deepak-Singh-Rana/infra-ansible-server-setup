@@ -274,3 +274,6 @@ for file in os.listdir("tmp"):
 		#encrpyt the file
 		print("encrypting :"+ymlfilepath)
 		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=tmp/ansible-vault-file"])
+
+print("You can now deploy the servers using the command...")
+print("ansible-playbook playbooks/newservers.yml --vault-password-file tmp/ansible-vault-file -K")
