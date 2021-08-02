@@ -1,4 +1,9 @@
 #!/usr/bin/python3
+#---------------what does this script do?----------------
+#cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files,
+# and generates radius secret files
+#--------------------------------------------------------
+
 import yaml,csv
 #pip3 install --user pyyaml pwgen
 import random
@@ -11,29 +16,31 @@ from pwgen import pwgen
 import argparse
 
 ansible_vault_pass = ""
+hosts_list = ""
+redhat_found = ""
+redhat_hostnames = ""
+personal_password = ""
 
+##---parse command line arguments---#
 parser = argparse.ArgumentParser(description='Tell the script what csv to load')
 #parser.add_argument('--csv', default='vm_list.csv', help='name of file to read (default: vm_list.csv)')
 parser.add_argument('-c', default='vm_list.csv', help='name of file to read (default: vm_list.csv)')
-
 csvargument=parser.parse_args()
 csvtoread=csvargument.c
-#print(csvtoread)
-#exit()
-#---------------what does this script do?----------------
-#cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files, generate radius secret files
-#--------------------------------------------------------
-#generate random strings on request
+
+##----generate random strings on request----##
 def get_random_alphanumeric_string(length):
 	letters_and_digits = string.ascii_letters + string.digits
 	result_str = ''.join((random.choice(letters_and_digits) for i in range(length)))
 	#print("Random alphanumeric String is:", result_str)
 	return result_str
 
+##----generate a random password and return it----##
 def generate_password(characters):
 	password = pwgen(characters, no_ambiguous=True)
 	return password
 
+##----get any files that we need from lastpass----#
 def get_file_from_lastpass(filename):
 	print(filename)
 	try:
@@ -46,14 +53,14 @@ def get_file_from_lastpass(filename):
 		os.chmod("tmp/"+filename, 0o400)
 	finally:
 		f.close()
-#mk dirs exist if they don't already
+##----mk dirs exist if they don't already----#
 if not os.path.isdir("tmp"):
 	os.makedirs("tmp")
 
 if not os.path.isdir("tmp/radius"):
 	os.makedirs("tmp/radius")
 
-#cleanup before our run to make sure we don't have things that we don't want
+##----cleanup before our run to make sure we don't have things that we don't want----#
 a=0
 for file in os.listdir("tmp"):
 #	print(file)
@@ -73,7 +80,7 @@ for file in os.listdir("tmp/radius"):
 	print("removing old file :"+file)
 	os.remove("tmp/radius/"+file)
 
-##make sure we have needed files
+##call the get_file_from_lastpass function to make sure we have needed files
 get_file_from_lastpass("ansible-vault-file")
 get_file_from_lastpass("ansible-deploy.key")
 get_file_from_lastpass("ansible-deploy.key.pub")
@@ -84,21 +91,28 @@ get_file_from_lastpass("server_ca.pub")
 with open("tmp/ansible-vault-file") as f:
 	ansible_vault_pass = f.read().rstrip("\n")
 
+## generate a username and personal password just incase we find any redhat vm's
+###only get's used if we find a redhat vm
+aduser = os.getenv('USER')
+osuser = aduser.split('@')
+personal_password = generate_password(10)
+
 ##read in the csv
 csvfile = open(csvtoread, 'r')
 datareader = csv.reader(csvfile, delimiter=",", quotechar='"')
 data_headings = []
 
-print("building hosts file...")
 #open a hosts file for writing hosts to
+print("building hosts file...")
 hosts_file = open("inventory/autogen-newservers", 'w')
+#this will hold information for us to build an ansible inventory file
 hosts_text = ""
 
 hosts_text += "[radius]\n"
 hosts_text += "gary.snap.net.nz ansible_ssh_private_key_file=~/.ssh/id_rsa\n\n"
 hosts_text += "[newservers]\n"
 
-# Loop through each row...
+# Loop through each row of the csv
 for row_index, row in enumerate(datareader):
 
 	# If this is the first row, populate our data_headings variable.
@@ -126,6 +140,8 @@ for row_index, row in enumerate(datareader):
 		# Loop through each cell in this row...
 		shortname = ""
 		domain = ""
+#		fqdn = ""
+
 		for cell_index, cell in enumerate(row):
 
 			# Compile a line of YAML text from our headings list and the text of the current cell, followed by a linebreak.
@@ -135,15 +151,25 @@ for row_index, row in enumerate(datareader):
 			#grab the shortname for lastpass files
 			if cell_heading == "vm_shortname":
 				shortname = cell
-				print("shortname: " + shortname)
+#				print("shortname: " + shortname)
 				# add the shortname to the lastpass text
 				lp_text += "Hostname: " + shortname +"\n"
 			#if we spot the doamin then grab it so we can use it
 			if cell_heading == "vm_domain":
 				domain = cell
-				print("domain: " + domain)
+#				print("domain: " + domain)
 				# Add the hostname to the autogen_servers variable
 				hosts_text += shortname + "." + domain +"\n"
+				hosts_list += shortname + "." + domain +"\n"
+			if cell_heading == "vcenter_template":
+				if cell == "rhel8-template":
+#					print("template-test:" + cell)
+#					print(shortname)
+					redhat_found = "true"
+					redhat_hostnames += "  - " + shortname + "." + domain +"\n"
+					yaml_text += "localuser: "+osuser[0]+"\n"
+					yaml_text += "localpassword: "+personal_password+"\n"
+#					print(yaml_text)
 
 			if cell_heading == "ipv6":
 				#if ipv6 is false 0 or empty quit the loop so we don't write empty variables to the yaml
@@ -185,28 +211,33 @@ for row_index, row in enumerate(datareader):
 
 
 	# Write our YAML string to the new text file and close it.
+#		print(yaml_text)
 		vm_yaml_file.write(yaml_text)
 		vm_yaml_file.close()
 		print(vm_yaml_file)
 
 
 	#create the lastpass files to upload
+		#root user
 		root_json = "tmp/"+filename+"_root.json"
-		zeus_json = "tmp/"+filename+"_zeus.json"
 		vm_root_passwd_file = open("tmp/"+filename+"_root.json", 'w')
-		vm_zeus_passwd_file = open("tmp/"+filename+"_zeus.json", 'w')
-		zeus_data += lp_text
-		zeus_data += lpz_text
 		root_data += lp_text
 		root_data += lpr_text
-#		print('-zeusdata--\n')
-#		print(zeus_data)
 #		print('-rootdata--\n')
 #		print(root_data)
 		vm_root_passwd_file.write(root_data)
-		vm_zeus_passwd_file.write(zeus_data)
 		vm_root_passwd_file.close()
+
+		#zeus user
+		zeus_json = "tmp/"+filename+"_zeus.json"
+		vm_zeus_passwd_file = open("tmp/"+filename+"_zeus.json", 'w')
+		zeus_data += lp_text
+		zeus_data += lpz_text
+#		print('-zeusdata--\n')
+#		print(zeus_data)
+		vm_zeus_passwd_file.write(zeus_data)
 		vm_zeus_passwd_file.close()
+
 	#upload the root passwords
 		print("uploading to lastpass :"+root_json)
 		p1 = subprocess.Popen(["cat", root_json], stdout=subprocess.PIPE)
@@ -215,6 +246,7 @@ for row_index, row in enumerate(datareader):
 		p2.communicate()[0]
 	#remove the password file
 		os.remove(root_json)
+
 	#upload the zeus passwords
 		print("uploading to lastpass :"+zeus_json)
 		p1 = subprocess.Popen(["cat", zeus_json], stdout=subprocess.PIPE)
@@ -225,9 +257,8 @@ for row_index, row in enumerate(datareader):
 	#remove the password file
 		os.remove(zeus_json)
 
-#		print("------------------???????????FIX THE PYTHON TO DELETE THE JSON FILES WITH PASSWORDS IN WE DPONT NEED ANYMORE")
 
-
+#generate the variables for the hosts
 hosts_text += "\n"
 hosts_text += "[newservers:vars]\n"
 hosts_text += "ansible_ssh_private_key_file='./tmp/ansible-deploy.key'\n"
@@ -239,10 +270,8 @@ hosts_file.close()
 # We're done! Close the CSV file.
 csvfile.close()
 
-#exit()
-
+##----open all yml files and generate radius secret files from them----##
 print("building radius files...")
-#open all yml files and generate radius secret files from them
 for file in os.listdir("tmp"):
 	if file.endswith(".yml"):
 		ymlfilepath="tmp/"+file
@@ -271,9 +300,32 @@ for file in os.listdir("tmp"):
 
 
 		yaml_file.close()
-		#encrpyt the file
+		#encrypt the file
 		print("encrypting :"+ymlfilepath)
 		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=tmp/ansible-vault-file"])
 
+#we need to get host information for below
+
+##---generate username and password info we can use for initial non ad redhat logins----#
+if redhat_found:
+	print("redhat server found, generating local user information")
+
+	pswdfile = open("personal.yml",'a')
+	#print(osuser[0])
+	personal_text = ""
+	personal_text += "#new server range\n"
+	personal_text += "hosts:\n"
+	personal_text += redhat_hostnames
+	personal_text += "username: "+ osuser[0]+"\n"
+	personal_text += "password: "+personal_password
+	personal_text += "\n"
+	personal_text += "\n"
+
+	#write our hosts string to the hosts_file and close it
+	pswdfile.write(personal_text)
+	pswdfile.close()
+#exit(0)
+
+print("")
 print("You can now deploy the servers using the command...")
 print("ansible-playbook playbooks/newservers.yml --vault-password-file tmp/ansible-vault-file -K")

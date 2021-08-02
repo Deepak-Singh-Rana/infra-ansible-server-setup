@@ -1,0 +1,4 @@
+---
+# tasks file for install_zenoss
+- name: create local login
+  include: create_locallogin.yml
