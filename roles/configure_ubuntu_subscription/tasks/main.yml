@@ -1,9 +1,62 @@
 ---
 # tasks file for configure_ubuntu_subscription
+#- name: added apt-key for esm
+#  environment:
+#    http_proxy: http://frigg.snap.net.nz:3128
+#    https_proxy: http://frigg.snap.net.nz:3128
+#  ansible.builtin.apt_key:
+#    id: "56F7650A24C9E9ECF87C4D8D4067E40313CB4B13"
+#    keyserver: keyserver.ubuntu.com
+#    state: present
+
+- name: Add esm Repo Key
+  command:
+   argv:
+    - /usr/bin/apt-key
+    - adv
+    - --keyserver-options
+    - http-proxy=http://frigg.snap.net.nz:3128
+    - --keyserver
+    - hkp://keyserver.ubuntu.com:80
+    - --recv-keys
+    - 56F7650A24C9E9ECF87C4D8D4067E40313CB4B13
+
 - name: installed landscape-client
   ansible.builtin.apt:
-    name: landscape-client
-    state: present
+    name: 
+      - landscape-client
+      - ubuntu-advantage-tools
+    update_cache: yes
+    state: latest
 
 - name: registered to canonical landscape onprem
   shell: /usr/bin/landscape-config --silent -t "{{ inventory_hostname }}" -a standalone -u https://frigg.2degrees.nz/message-system --ping-url http://frigg.2degrees.nz/ping
+
+- name: added http proxy server so UA can talk to licensing server
+  shell: /usr/bin/ua config set http_proxy=http://frigg.snap.net.nz:3128
+
+- name: added https proxy server so UA can talk to licensing server
+  shell: /usr/bin/ua config set https_proxy=http://frigg.snap.net.nz:3128
+
+- name: copied esm conf proxy file
+  copy:
+    src: esmproxy
+    dest: /etc/apt/apt.conf.d/05esmproxy
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: copied esm_repo.list
+  ansible.builtin.template:
+    src: esm_repo.list.j2
+    dest: /etc/apt/sources.list.d/05_esm_repo.list
+    owner: root
+    group: root
+    mode: '0600'
+
+
+#- name: added apt-key for esm
+#  shell: /usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-key 56F7650A24C9E9ECF87C4D8D4067E40313CB4B13
+
+- name: attach the ua
+  shell: /usr/bin/ua attach "{{ advantageregistrationkey }}"

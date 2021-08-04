@@ -1,0 +1,104 @@
+###################################
+#######configure the server########
+###################################
+
+- hosts: newservers
+  remote_user: zeus
+  become: yes
+  become_method: sudo
+  gather_facts: true
+  serial: 2
+  vars:
+    - ansible_ssh_private_key_file: "./tmp/ansible-deploy.key"
+    - ansible_python_interpreter: /usr/bin/python3
+
+  vars_files:
+    - "../tmp/{{inventory_hostname}}.yml"
+#inventory_hostname
+  roles:
+#place signed host_keys onto the server
+    - configure_hostcerts
+#setup base connectivity
+    - newserver_networking
+#configures the hostname of the server
+    - configure_hostname
+#cleans up the server so clones of templates become indipendant from each other
+    - clean_serverscript
+#configure satellite subscription if server is redhat
+    - role: configure_rhel_subscription
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+#configures the repositories that the OS uses to get updates and software
+    - configure_repos
+#sets up loging on the servers
+    - install_2dlogging
+#make sure server can reach it's set repository
+    - base_role
+#deployes required 2degrees certificates onto the servers
+    - deploy_certs
+#configure canonical landscape subscription
+    - role: configure_ubuntu_subscription
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+            (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+#setups 2degrees standard firewall
+    - install_2d-firewall
+#configures the servers to allow them to email out if need be
+#    - install_email
+#install and configure auditd for auditing purposes
+#    - install_auditd
+#install linux virus scanner
+#    - install_clamav
+#configures the home folder to 2degrees standards
+    - install_2dhome
+#configures the server to use radius for AD authentication
+    - role: install_2dradiusauth
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+            (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
+#    - install_2dradiusauth
+#configures ssh to 2degrees hardened standard
+    - install_2dssh
+#sets up ntp on the server
+    - install_ntp
+#sets up splunk forwarder to send logs to splunk forwarder
+#    - install_splunk
+#configures the login messages to TASS/PCI/SOX standards
+    - install_branding
+#installs usefull sysadmin tools
+    - install_2dutils
+#installs rootkit detection
+#    - install_rkhunter
+#configurs snmpd to allow thigns to send traps to zenoss
+#    - install_2dsnmpd
+#setups zenoss user for zenoss management
+#    - install_zenoss
+#Hardens ubuntu 18 to level2 compliance
+#    - role: harden_ub18
+#      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")
+#Hardens ubuntu 20 to level2 compliance
+#    - role: harden_ub20
+#      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+#Hardens redhat8 to level2 compliance
+#    - role: harden_rhel8
+#      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+#create adabsent user
+    - role: configure_rhel_adabsentuser
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+#setup vulnerability scanning
+#    - configure_upguardaccess
+#setup cmdb scanning
+#    - configure_device42access
+#grants sudo permissions to sysadmin security group
+    - permissions_sudo-sysadmin
+#grants sudo permissions to techm security group
+    - permissions_sudo-techm
+#install aide late so we don't have heaps of changes for the next scan because we are setting up the os
+#    - install_2daide
+#Auto updates come at the end so it doens't start updating while we are setting up the vm
+    - install_autoupdates
+#install backups
+#    - install_commvault
+#setups breakglass utils/permissions
+    - configure_bgaccounts
+#disable unneded services
+    - disable_services
+#run the postinstall cleanup role
+    - postinstall_cleanup
