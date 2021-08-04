@@ -1,14 +1,7 @@
 ---
 # tasks file for configure_ubuntu_subscription
-#- name: added apt-key for esm
-#  environment:
-#    http_proxy: http://frigg.snap.net.nz:3128
-#    https_proxy: http://frigg.snap.net.nz:3128
-#  ansible.builtin.apt_key:
-#    id: "56F7650A24C9E9ECF87C4D8D4067E40313CB4B13"
-#    keyserver: keyserver.ubuntu.com
-#    state: present
 
+#https://butwt.wordpress.com/2020/01/24/anisble-apt-proxies/
 - name: Add esm Repo Key
   command:
    argv:
