@@ -1,11 +1,14 @@
 - name: RH install dnf-automatic
-  package:
-   name: dnf-automatic
+  ansible.builtin.dnf:
+    name:
+      - dnf-automatic
+      - kpatch-dnf
   ignore_errors: yes
   when: (ansible_facts['distribution'] == 'RedHat')
 
 - name: UB install 2dupgrades
-  package:
-   name: 2d-upgrades
+  apt :
+    name:
+      - 2d-upgrades
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'

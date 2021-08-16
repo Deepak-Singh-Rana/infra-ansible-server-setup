@@ -34,3 +34,7 @@
   ignore_errors: yes
   when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
+- name: Enable automatic kernel livepatching
+  ansible.builtin.command:
+    cmd: yum kpatch auto
+  when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
