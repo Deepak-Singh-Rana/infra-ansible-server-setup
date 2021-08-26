@@ -1,16 +1,17 @@
 - name: install ssl-cert
-  package:
-   name: ssl-cert
-   state: latest
+  ansible.builtin.apt:
+    name: ssl-cert
+    state: latest
+    update_cache: yes
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: install openssl
-  package:
+  ansible.builtin.dnf:
    name:
     - openssl
     - python3-pyOpenSSL
     - ca-certificates
    state: latest
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat'

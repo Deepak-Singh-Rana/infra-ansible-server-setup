@@ -5,3 +5,9 @@
   when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 - include: rh_enable_autoupdates.yml
   when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
+- include: ub_configure_autoupdates.yml
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")
+- include: ub_enable_autoupdates.yml
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "18") or
+        (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] == "20")

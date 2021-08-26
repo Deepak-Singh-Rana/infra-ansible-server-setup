@@ -21,10 +21,8 @@
         owner: root
         group: freerad
         mode: '0640'
-#      when: ( "{{vcenter_template }}" == "ubuntu18-template")
 
     - name: restart radius
       ansible.builtin.service:
         name: freeradius
         state: restarted
-#      when: ( "{{vcenter_template }}" == "ubuntu18-template")

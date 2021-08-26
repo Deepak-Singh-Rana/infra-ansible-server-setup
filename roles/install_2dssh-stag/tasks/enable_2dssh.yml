@@ -1,0 +1,2 @@
+- name: run the apply_ssh.sh script
+  shell: /usr/local/sbin/apply_ssh.sh

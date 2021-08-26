@@ -17,7 +17,18 @@ fi
 #cli colour setup
 #export PS1="\e[1;31m\u@\h\e[m:\e[1;34m\w\e[m# "
 #export PS1="\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
-export PS1="\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[m#\] "
+
+##"\[\033[1;31m\]" = bold Red
+## \u = username
+## @ = @ symbol
+## \h = shortname
+## \[\033[00m\] = (X)unbold the text and (Y)set the default colour [XYm]
+## : = : symbol
+## "\[\033[1;34m\]" = bold Blue
+## \w = the current working directory, with $HOME abbreviated with a tilde
+## \$ = if the effective UID is 0, a #, otherwise a $
+## \[\033[00m\] = (X)unbold the text and (Y)set the default colour [XYm]
+export PS1="\[\033[01;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 # If this is an xterm set the title to user@host:dir
 #This needs to be after the cli colour setup
 case "$TERM" in

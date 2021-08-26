@@ -1,0 +1,122 @@
+##############################################
+# 2degrees customised sshd configuration file#
+##############################################
+## This file is supplied by 2d-ssh pacakge, do not manually modify me,
+## as your changes will be overwritten, put your permission changes in /etc/ssh/sshd_config.d/match
+##
+## Feel free to change the LogLevel below to "DEBUG" when debugging, default is "INFO"
+##
+
+# Logging
+SyslogFacility AUTH
+LogLevel INFO
+
+###################
+#govt requirements#
+###################
+# https://www.nzism.gcsb.govt.nz/ism-document/#2603
+
+# What ports, IPs and protocols we listen for
+Port 22
+
+#allowed protocols
+Protocol 2
+
+#Disable connection forwarding
+AllowTCPForwarding no
+
+#Disable gateway ports
+Gatewayports no
+
+#Disable the ability to login directly as root
+PermitRootLogin no
+
+#Disable host-based authentication
+HostbasedAuthentication no
+
+#Disable rhosts-based authentication
+IgnoreRhosts yes
+
+#Do not allow empty passwords
+PermitEmptyPasswords no
+
+#BANNER
+Banner /etc/issue.net.2d
+
+#Configure a login authentication timeout of no more than 60 seconds
+LoginGraceTime 60
+
+#Disable X forwarding
+X11Forwarding no
+
+
+##########
+#Defaults#
+##########
+
+# Use these options to restrict which interfaces/protocols sshd will bind to
+ListenAddress ::
+ListenAddress 0.0.0.0
+
+# HostKeys for protocol version 2
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
+
+# Authentication:
+StrictModes yes
+
+PubkeyAuthentication yes
+AuthorizedKeysFile      %h/.ssh/authorized_keys
+
+# Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
+IgnoreUserKnownHosts no
+
+# To enable empty passwords, change to yes (NOT RECOMMENDED)
+PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication no
+
+# Change to no to disable tunnelled clear text passwords
+PasswordAuthentication yes
+
+# Kerberos options
+KerberosAuthentication no
+KerberosOrLocalPasswd yes
+KerberosTicketCleanup yes
+
+# GSSAPI options
+GSSAPIAuthentication no
+GSSAPICleanupCredentials yes
+
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+
+MaxStartups 10:30:60
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+Subsystem sftp /usr/lib/openssh/sftp-server
+
+UsePAM yes
+TrustedUserCAKeys /etc/ssh/user_ca.pub
+MaxAuthTries 4
+PermitUserEnvironment no
+
+#Protection from ssh downgrade attacks
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+
+ClientAliveInterval 300
+ClientAliveCountMax 3
+
+
+###################
+#Access Permission#
+###################
+AuthenticationMethods "publickey,password" "publickey,keyboard-interactive" "password" "publickey"

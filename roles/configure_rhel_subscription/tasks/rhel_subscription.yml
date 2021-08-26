@@ -66,6 +66,12 @@
   ansible.builtin.command: dnf clean all
   when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
 
+- name: DNF update the system
+  dnf:
+    name:  "*"
+    state: latest
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts  ['distribution_major_version'] >= '8'
+
 - name: install katello packages
   dnf:
     name:

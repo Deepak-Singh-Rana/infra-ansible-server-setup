@@ -1,0 +1,16 @@
+- name: install openssh
+  ansible.builtin.package:
+    name: openssh-server
+    state: present
+
+- name: create matches-available folder
+  ansible.builtin.file:
+    name: /etc/ssh/matches-available
+    state: directory
+    mode: '0744'
+
+- name: create matches-enabled folder
+  ansible.builtin.file:
+    name: /etc/ssh/matches-enabled
+    state: directory
+    mode: '0744'

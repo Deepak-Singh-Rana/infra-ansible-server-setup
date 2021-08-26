@@ -1,0 +1,17 @@
+---
+# tasks file for configure_upguardaccess
+
+- name: install realmd
+  ansible.builtin.dnf:
+    name: realmd
+    state: latest
+#  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
+#        (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+
+- name: Discovered realm
+  ansible.builtin.cmd:
+    cmd: /usr/sbin/realm discover "{{ iparealm }}" --unattended
+
+- name: Joint realm
+  ansible.builtin.cmd:
+    cmd: /usr/sbin/realm join "{{ iparealm }}" --unattended

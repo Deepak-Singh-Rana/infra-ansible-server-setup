@@ -1,6 +1,7 @@
 ##We have chosen "DEFAULT" instaed of the recommended "FUTURE" as freeipa does not work with "FUTURE"
 ##Note, "DEFAULT" stops freeipa ad auth from working, so turn it down to "LEGACY"
-
+### "DEFAULT:AD-SUPPORT" allows ad to work with redhat 8.3 and above only
 #1.11 Ensure system-wide crypto policy is FUTURE or FIPS (Scored)
 - name: 1.11 systemwide crypto policy
-  shell: update-crypto-policies --set DEFAULT
+  shell: update-crypto-policies --set DEFAULT:AD-SUPPORT
+

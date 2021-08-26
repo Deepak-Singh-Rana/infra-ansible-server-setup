@@ -1,5 +1,4 @@
 ---
 # tasks file for install_ntp
 - name: install chrony
-  include: ub_install-chrony.yml
-  when: ansible_facts['distribution'] == "Ubuntu"
+  include: configure-chrony.yml

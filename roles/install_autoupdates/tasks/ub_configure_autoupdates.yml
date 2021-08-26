@@ -1,0 +1,49 @@
+- name: copy ub-10_ans_periodic  ub-50_ans_unattended-upgrades
+  ansible.builtin.copy:
+    src: ub-10_ans_periodic
+    dest: /etc/apt/apt.conf.d/10_ans_periodic
+    owner: root
+    group: root
+    mode: '0744'
+
+- name: copy ub-50_ans_unattended-upgrades
+  ansible.builtin.copy:
+    src: ub-50_ans_unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50_ans_unattended-upgrades
+    owner: root
+    group: root
+    mode: '0744'
+
+- name: create /etc/systemd/system/apt-daily.timer.d
+  file: 
+   path: /etc/systemd/system/apt-daily.timer.d
+   state: directory
+   owner: root
+   group: root
+   mode: 0744
+
+- name: create /etc/systemd/system/apt-daily-upgrade.timer.d
+  file: 
+   path: /etc/systemd/system/apt-daily-upgrade.timer.d
+   state: directory
+   owner: root
+   group: root
+   mode: 0744
+
+- name: edit download timer
+  copy:
+   src: apt-daily.timer.d.override
+   dest: /etc/systemd/system/apt-daily.timer.d/override.conf
+   owner: root
+   group: root
+   mode: 0644
+  ignore_errors: yes
+
+- name: edit download timer
+  copy:
+   src: apt-daily-upgrade.timer.d.override
+   dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+   owner: root
+   group: root
+   mode: 0644
+  ignore_errors: yes

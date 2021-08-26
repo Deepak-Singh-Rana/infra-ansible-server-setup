@@ -1,0 +1,44 @@
+---
+# tasks file for configure_upguardaccess
+
+#- name: set dns to ipa server
+#  ansible.builtin.command:
+#    cmd: systemd-resolve --set-dns=172.24.255.10 --interface=ens160
+
+- name: install ipaclient tools
+  ansible.builtin.dnf:
+    name:
+      - oddjob-mkhomedir
+      - oddjob
+      - freeipa-client
+      - ipa-admintools
+      - sssd-tools
+      - sssd
+#      - libnss-sss
+#      - libpam-sss
+#      - python3-pexpect
+    state: latest
+    update_cache: yes
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: ipaclientinstall join
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/ipa-client-install
+      - --domain
+      - "{{ ipadomain }}"
+      - --realm
+      - "{{ iparealm }}"
+      - --mkhomedir
+      - --enable-dns-updates
+      - --unattended
+      - --force-join
+      - --principal
+      - "{{ ipaprincipal }}"
+      - --ntp-server
+      - ipa-master-stag.2dtest.nz
+      - --ssh-trust-dns
+      - -W
+    stdin: "{{ ipapassword }}"
+  # you don't want to show passwords in your logs
+#  no_log: true

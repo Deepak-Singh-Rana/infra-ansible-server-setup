@@ -2,64 +2,6 @@
 #removing old repos
 ###
 # Example removing a repository and cleaning up metadata cache
-- name: Ansible delete yum repos glob
-  find:
-    paths: /etc/yum.repos.d
-    patterns: CentOS-*
-  register: yumrepo_to_delete
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS'
-
-- name: Ansible remove yum repos glob
-  file:
-    path: "{{ item.path }}"
-    state: absent
-  with_items: "{{ yumrepo_to_delete.files }}"
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS'
-
-- name: Ansible delete epel glob
-  find:
-    paths: /etc/yum.repos.d
-    patterns: epel*
-  register: epelfiles_to_delete
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS'
-
-- name: Ansible remove epel glob
-  file:
-    path: "{{ item.path }}"
-    state: absent
-  with_items: "{{ epelfiles_to_delete.files }}"
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS'
-
-###
-#add repos
-###
-##
-#centos
-##
-- name: centos7 repo
-  copy:
-   src: 2d-centos.repo.7
-   dest: /etc/yum.repos.d/2d-centos.repo
-   owner: root
-   group: root
-   mode: '0644'
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' and ansible_distribution_major_version == '7'
-
-- name: centos8 repo
-  copy:
-   src: 2d-centos.repo.8
-   dest: /etc/yum.repos.d/2d-centos.repo
-   owner: root
-   group: root
-   mode: '0644'
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' and ansible_distribution_major_version == '8'
-
 ##
 #Ubuntu
 ##
@@ -111,8 +53,8 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Run the equivalent of "apt-get update"
-  apt:
-    update_cache: yes
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
+#- name: Run the equivalent of "apt-get update"
+#  apt:
+#    update_cache: yes
+#  ignore_errors: yes
+#  when: ansible_facts['distribution'] == 'Ubuntu'

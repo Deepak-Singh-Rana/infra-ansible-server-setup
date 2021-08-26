@@ -1,0 +1,14 @@
+---
+# tasks file for disable_unattended_upgrades
+#we do this so we don't break isntalling software later. we renable it at the end
+- name: turn off update pacakge lists
+  ansible.builtin.lineinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '^APT::Periodic::Update-Package-Lists'
+    line: APT::Periodic::Update-Package-Lists "0";
+
+- name: turn off update pacakge lists
+  ansible.builtin.lineinfile:
+    path: /etc/apt/apt.conf.d/20auto-upgrades
+    regexp: '^APT::Periodic::Unattended-Upgrade'
+    line: APT::Periodic::Unattended-Upgrade "0";

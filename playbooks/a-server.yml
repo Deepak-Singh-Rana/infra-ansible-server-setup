@@ -18,6 +18,9 @@
   roles:
 #place signed host_keys onto the server
     - configure_hostcerts
+# dissable unatennded upgrades during install
+    - role: disable_unattended_upgrades
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
 #setup base connectivity
     - newserver_networking
 #configures the hostname of the server
@@ -97,7 +100,7 @@
 #install backups
     - install_commvault
 #setups breakglass utils/permissions
-    - configure_bgaccounts
+#    - configure_bgaccounts
 #disable unneded services
     - disable_services
 #run the postinstall cleanup role

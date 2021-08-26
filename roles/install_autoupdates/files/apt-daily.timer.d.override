@@ -1,0 +1,15 @@
+[Unit]
+#download available updates
+Description=Daily apt download activities
+After=network-online.target
+Wants=network-online.target
+
+[Timer]
+#every tuesday at 6am with a possible delay of 12 hours
+OnCalendar=Tue *-1..12-* 6:00
+RandomizedDelaySec=12h
+AccuracySec=1m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

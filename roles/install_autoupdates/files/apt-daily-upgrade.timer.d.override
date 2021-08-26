@@ -1,0 +1,14 @@
+[Unit]
+#install the downloaded updates
+Description=Daily apt upgrade and clean activities
+After=apt-daily.timer
+
+[Timer]
+#every wednesday at 6am with a possible delay of 3 hours
+OnCalendar=Wed *-1..12-* 6:00
+RandomizedDelaySec=3h
+AccuracySec=1m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

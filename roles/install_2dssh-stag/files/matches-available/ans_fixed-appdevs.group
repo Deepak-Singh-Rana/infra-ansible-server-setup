@@ -1,0 +1,3 @@
+Match Group SEC_servers.fixed.appdevs
+        AllowGroups SEC_servers.fixed.appdevs
+        AuthenticationMethods "publickey" "password"

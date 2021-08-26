@@ -1,8 +1,5 @@
 ---
 # tasks file for base_role
 
-#- name: run os check
-#  import_tasks: os_check.yml
-
 - name: run repo check
   import_tasks: repo_check.yml

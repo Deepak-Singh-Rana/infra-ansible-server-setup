@@ -1,0 +1,4 @@
+#device42 scanning
+Match User svc_d42_unix@2degrees.nz
+        AllowGroups SEC_d42_unix
+        AuthenticationMethods "publickey"

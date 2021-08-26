@@ -36,5 +36,5 @@
 
 - name: Enable automatic kernel livepatching
   ansible.builtin.command:
-    cmd: yum kpatch auto
+    cmd: yum kpatch auto -y
   when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")

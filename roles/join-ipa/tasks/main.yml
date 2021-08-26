@@ -1,0 +1,8 @@
+---
+# tasks file for ipaauth setup
+
+#- include_tasks: redhat.yml
+#  when: ansible_facts['distribution'] == "RedHat"
+
+- include_tasks: ubuntu.yml
+  when: ansible_facts['distribution'] == "Ubuntu"

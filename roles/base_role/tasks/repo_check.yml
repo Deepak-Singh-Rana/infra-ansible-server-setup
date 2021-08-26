@@ -5,20 +5,6 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Centos8 extra package repository for centos
-  yum:
-   name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-   state: present
-  ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "8") 
-
-- name: Centos7 extra package repository for centos
-  yum:
-   name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-   state: present
-  ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'CentOS' and ansible_facts['distribution_major_version'] == "7") 
-
 #- name: Redhat satellite check repo https://snzclakl173.nzc.co.nz is accessable
 #  uri:
 #    url: https://snzclakl173.nzc.co.nz/XMLRPC

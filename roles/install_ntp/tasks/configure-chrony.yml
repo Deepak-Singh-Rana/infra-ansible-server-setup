@@ -1,0 +1,87 @@
+---
+# tasks file for install_ntp
+- name: Install chrony
+  apt:
+    name: chrony
+    state: present
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: add chrony folder
+  file:
+    path: /etc/chrony
+    state: directory
+    mode: '0755'
+  when: ansible_facts['distribution'] == "RedHat"
+
+- name: add chrony.conf.d folder
+  file:
+    path: /etc/chrony/chrony.conf.d
+    state: directory
+    mode: '0755'
+
+- name: add include /etc/chrony/chrony.conf.d/*.conf
+  lineinfile:
+   path: /etc/chrony/chrony.conf
+   regexp: '^include .*'
+   line: include /etc/chrony/chrony.conf.d/*.conf
+   state: present
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: add include /etc/chrony/chrony.conf.d/*.conf
+  lineinfile:
+   path: /etc/chrony.conf
+   regexp: '^include .*'
+   line: include /etc/chrony/chrony.conf.d/*.conf
+   state: present
+  when: ansible_facts['distribution'] == "RedHat"
+
+- name: copy 10-ad-client.conf
+  copy:
+    src: chrony.conf.d/10-ad-client.conf
+    dest: /etc/chrony/chrony.conf.d/10-ad-client.conf
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: remove pool options ub
+  replace:
+    path: /etc/chrony/chrony.conf
+    regexp: '^pool (.*)'
+    replace: '#pool \1'
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+
+- name: remove serl options ub
+  replace:
+    path: /etc/chrony/chrony.conf
+    regexp: '^server (.*)'
+    replace: '#server \1'
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+
+- name: remove pool options rh
+  replace:
+    path: /etc/chrony.conf
+    regexp: '^pool (.*)'
+    replace: '#pool \1'
+  when: ansible_facts['distribution'] == "RedHat"
+
+
+- name: remove serl options rh
+  replace:
+    path: /etc/chrony.conf
+    regexp: '^server (.*)'
+    replace: '#server \1'
+  when: ansible_facts['distribution'] == "RedHat"
+
+- name: Make sure chrony is restarted
+  systemd:
+    state: restarted
+    name: chrony
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: Make sure chrony is restarted
+  systemd:
+    state: restarted
+    name: chronyd
+  when: ansible_facts['distribution'] == "RedHat"

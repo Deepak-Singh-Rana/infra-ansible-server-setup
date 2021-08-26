@@ -1,0 +1,30 @@
+- name: reload systemctl daemon
+  systemd:
+    daemon_reload: yes
+  ignore_errors: yes
+
+- name: Enable apt-daily.service
+  service:
+    name: apt-daily.service
+    enabled: yes
+  ignore_errors: yes
+
+- name: Enable apt-daily.timer
+  service:
+    name: apt-daily.timer
+    enabled: yes
+    state: restarted
+  ignore_errors: yes
+
+- name: Enable apt-daily-upgrade.service
+  service:
+    name: apt-daily-upgrade.service
+    enabled: yes
+  ignore_errors: yes
+
+- name: Enable apt-daily-upgrade.timer
+  service:
+    name: apt-daily-upgrade.timer
+    enabled: yes
+    state: restarted
+  ignore_errors: yes
