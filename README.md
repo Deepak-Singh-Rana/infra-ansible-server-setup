@@ -64,6 +64,7 @@ pip3 install "pyvmomi>=6.7.1.2018.12"
 
 ```
 env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection install community.vmware
+env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection install community.general
 ```
 
 

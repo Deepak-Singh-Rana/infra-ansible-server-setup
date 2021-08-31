@@ -26,8 +26,12 @@
         gateway: "{{ vm_ipv4_gateway }}"
         start_connected: yes
         connected: yes
+        mac: "{{ '00:05:69' | community.general.random_mac }}"
+#"{{ '52:54:00' | community.general.random_mac }}"
+#00:05:69 
     wait_for_customization: yes
     wait_for_ip_address: yes
+    guest_id: "{{ vm_guest_id }}"
     customization:
       domain: "2dl.nz"
       dns_servers:
@@ -39,6 +43,19 @@
         - snap.net.nz
         - 2degrees.nz
         - nzc.co.nz
+
+#- name: change the mac
+#  delegate_to: 127.0.0.1
+#  community.vmware.vmware_guest_network:
+#    hostname: "{{ vcenter_fqdn }}"
+#    username: "{{ vcenter_username }}"
+#    password: "{{ vcenter_password }}"
+#    validate_certs: no
+#    datacenter: "{{ vcenter_datacenter }}"
+#    name: "{{ vm_shortname }}"
+#    mac_address:
+#    network_name: admin-network
+#    state: present
 
 #- name: reboot the machine to make sure it has connectivity on the new ip
 #  delegate_to: 127.0.0.1
