@@ -26,7 +26,7 @@
         gateway: "{{ vm_ipv4_gateway }}"
         start_connected: yes
         connected: yes
-        mac: "{{ '00:05:69' | community.general.random_mac }}"
+#        mac: "{{ '00:05:69' | community.general.random_mac }}"
 #"{{ '52:54:00' | community.general.random_mac }}"
 #00:05:69 
     wait_for_customization: yes
