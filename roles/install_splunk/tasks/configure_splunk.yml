@@ -1,9 +1,14 @@
+- name: clean up files to make sure we have fresh file on next splunk startreboot
+  ansible.builtin.command:
+    argv:
+      - /opt/splunkforwarder/bin/splunk
+      - clone-prep-clear-config
+
 - name: Ensure /opt/splunkforwarder/etc/apps/all_devices/local folder exists
   file:
    path: /opt/splunkforwarder/etc/apps/all_devices/local
    state: directory
    recurse: yes
-
 
 - name: apps deploymentclient.conf
   copy:
@@ -12,6 +17,7 @@
    owner: splunk
    group: splunk
    mode: '0644'
+
 - name: apps outputs.conf
   copy:
    src: appsconf/outputs.conf
@@ -19,6 +25,7 @@
    owner: splunk
    group: splunk
    mode: '0644'
+
 - name: apps user-seed.conf
   copy:
    src: systemconf/user-seed.conf
@@ -26,6 +33,7 @@
    owner: splunk
    group: splunk
    mode: '0644'
+
 - name: apps web.conf
   copy:
    src: systemconf/web.conf

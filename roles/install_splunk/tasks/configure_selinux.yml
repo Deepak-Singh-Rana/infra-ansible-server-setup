@@ -33,10 +33,10 @@
 - name: set secuirity context of the splunk service file
   command: restorecon /etc/init.d/splunk
 
-- name: stop the slunk service
-  service:
-    name: splunk.service
-    state: stopped
+#- name: stop the slunk service
+#  service:
+#    name: splunk.service
+#    state: stopped
 
 - name: make sure permissions are correct on splunk start
   lineinfile:
@@ -47,8 +47,8 @@
 - name: accept the licence
   shell: /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt -user splunk
 
-- name: start splunk
-  service:
-    name: splunk.service
-    enabled: yes
-    state: started
+#- name: start splunk
+#  service:
+#    name: splunk.service
+#    enabled: yes
+#    state: started

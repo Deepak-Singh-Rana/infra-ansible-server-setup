@@ -15,23 +15,28 @@
   when:
    - splunk_file_check_result.stat.exists == True
 
-#when the package "splunk" is not installed and the os is debian based
-- name: Install the latest splunkforwarder package
-  apt:
-    deb: https://odin.snap.net.nz/3rdparty-packages/splunkforwarder_latest.deb
+- name: copy splunk rmp to remote computer for ubuntu
+  copy:
+    src: installers/splunkforwarder-8.2.2-87344edfcdb4-linux-2.6-amd64.deb
+    dest: /tmp/splunkforwarder.deb
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: copy splunk rmp to remote computer
+- name: copy splunk rmp to remote computer for redhat
   copy:
-   src: installers/splunkforwarder-7.3.0-657388c7a488-linux-2.6-x86_64.rpm
-   dest: /tmp/splunkforwarder-7.3.0-657388c7a488-linux-2.6-x86_64.rpm
+    src: installers/splunkforwarder-8.2.2-87344edfcdb4-linux-2.6-x86_64.rpm
+    dest: /tmp/splunkforwarder.rpm
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
 
-- name: Install the latest splunkforwarder package
+- name: Install the latest splunkforwarder package for ubuntu
+  apt:
+    deb: /tmp/splunkforwarder.deb
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install the latest splunkforwarder package for redhat
   yum:
-    name: /tmp/splunkforwarder-7.3.0-657388c7a488-linux-2.6-x86_64.rpm
+    name: /tmp/splunkforwarder.rpm
     state: present
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
@@ -41,7 +46,13 @@
   when:
    - splunk_file_check_result.stat.exists == True
 
-- name: Start the splunk service
-  command: /bin/systemctl start splunk.service
-  when:
-   - splunk_file_check_result.stat.exists == True
+#- name: clean up files to make sure we have fresh file on next splunk startreboot
+#  ansible.builtin.command:
+#    argv:
+#      - /opt/splunkforwarder/bin/splunk
+#      - clone-prep-clear-config
+
+#- name: Start the splunk service
+#  command: /bin/systemctl start splunk.service
+#  when:
+#   - splunk_file_check_result.stat.exists == True

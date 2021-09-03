@@ -14,15 +14,8 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Install systat centos
-  yum:
-   name: sysstat
-   state: present
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS'
-
 - name: Install systat redhat
-  yum:
+  dnf:
    name: sysstat
    state: present
   ignore_errors: yes

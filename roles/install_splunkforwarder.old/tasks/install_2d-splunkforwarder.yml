@@ -1,0 +1,14 @@
+- name: Make sure 2d-splunkforwarder package is not installed
+  package_facts:
+    manager: auto
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Install the latest 2d-splunkforwarder pacakge
+  apt:
+    name: 2d-splunkforwarder
+    state: latest
+    update_cache: yes
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+

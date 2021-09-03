@@ -10,13 +10,8 @@
 
 - name: run splunk install tasks
   import_tasks: install_splunkforwarder.yml
-  when:
-    - "'splunkforwarder' not in ansible_facts.packages"
-
-- name: run 2d-splunkforwarder install tasks
-  import_tasks: install_2d-splunkforwarder.yml
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'
+#  when:
+#    - "'splunkforwarder' not in ansible_facts.packages"
 
 - name: deploy configs
   import_tasks: configure_splunk.yml
@@ -27,8 +22,8 @@
 - name: update firewall
   import_tasks: configure_firewall.yml
 
-- name: enable splunk
-  import_tasks: enable_splunk.yml
+#- name: enable splunk
+#  import_tasks: enable_splunk.yml
 
 #- name: configure selinux
 #  import_tasks: configure_selinux.yml

@@ -1,13 +1,13 @@
 ####################################
 #### 2degrees Ubuntu 18.04 repo ####
 ####################################
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic main restricted
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-updates main restricted
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic universe
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-updates universe
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic multiverse
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-updates multiverse
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-backports main restricted universe multiverse
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-security main restricted
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-security universe
-deb [arch=amd64] https://odin.snap.net.nz/ubuntu bionic-security multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic main restricted
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-updates main restricted
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic universe
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-updates universe
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-updates multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-backports main restricted universe multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-security main restricted
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-security universe
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu bionic-security multiverse

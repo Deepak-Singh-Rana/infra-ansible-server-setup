@@ -47,9 +47,9 @@
 #configures the servers to allow them to email out if need be
     - install_email
 #install and configure auditd for auditing purposes
-    - install_auditd
+#    - install_auditd
 #install linux virus scanner
-    - install_clamav
+#    - install_clamav
 #configures the home folder to 2degrees standards
     - install_2dhome
 #configures the server to use radius for AD authentication
@@ -68,11 +68,11 @@
 #installs usefull sysadmin tools
     - install_2dutils
 #installs rootkit detection
-    - install_rkhunter
+#    - install_rkhunter
 #configurs snmpd to allow thigns to send traps to zenoss
-    - install_2dsnmpd
+#    - install_2dsnmpd
 #setups zenoss user for zenoss management
-    - install_zenoss
+#    - install_zenoss
 #Hardens ubuntu 18 to level2 compliance
     - role: harden_ub18
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")
@@ -86,19 +86,19 @@
     - role: configure_rhel_adabsentuser
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 #setup vulnerability scanning
-    - configure_upguardaccess
+#    - configure_upguardaccess
 #setup cmdb scanning
-    - configure_device42access
+#    - configure_device42access
 #grants sudo permissions to sysadmin security group
     - permissions_sudo-sysadmin
 #grants sudo permissions to techm security group
     - permissions_sudo-techm
 #install aide late so we don't have heaps of changes for the next scan because we are setting up the os
-    - install_2daide
+#    - install_2daide
 #Auto updates come at the end so it doens't start updating while we are setting up the vm
-    - install_autoupdates
+#    - install_autoupdates
 #install backups
-    - install_commvault
+#    - install_commvault
 #setups breakglass utils/permissions
 #    - configure_bgaccounts
 #disable unneded services

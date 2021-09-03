@@ -1,0 +1,54 @@
+- name: install needed software
+  dnf:
+    name:
+     - python3-policycoreutils
+     - setools-console
+     - selinux-policy-devel
+    state: present
+
+- name: copy splunk.fc
+  copy:
+    src: selinux/splunk.if
+    dest: /usr/share/selinux/devel/include/services/splunk.if
+    owner: splunk
+    group: splunk
+    mode: '0644'
+- name: copy splunk.pp
+  copy:
+    src: selinux/splunk.pp
+    dest: /usr/share/selinux/devel/include/services/splunk.pp
+    owner: splunk
+    group: splunk
+    mode: '0644'
+
+- name: enable the module
+  command: semodule -i /usr/share/selinux/devel/include/services/splunk.pp
+
+- name: set the module to permissive
+  command: semanage permissive -a splunk_t
+
+- name: set the security context on splunk files
+  command: restorecon -R /opt/splunkforwarder
+
+- name: set secuirity context of the splunk service file
+  command: restorecon /etc/init.d/splunk
+
+- name: stop the slunk service
+  service:
+    name: splunk.service
+    state: stopped
+
+- name: make sure permissions are correct on splunk start
+  lineinfile:
+    dest: /etc/init.d/splunk
+    insertafter: "  echo Starting Splunk..."
+    line: restorecon -R /opt/splunkforwarder
+
+- name: accept the licence
+  shell: /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt -user splunk
+
+- name: start splunk
+  service:
+    name: splunk.service
+    enabled: yes
+    state: started
