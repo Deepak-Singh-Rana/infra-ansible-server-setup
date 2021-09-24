@@ -155,6 +155,13 @@ for row_index, row in enumerate(datareader):
 		yaml_text += "vm_guest_id: rhel8_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
 		yaml_text += "localpassword: "+personal_password+"\n"
+	elif row['vcenter_template'].lower() == "suse15-template":
+		print(osuser[0])
+		redhat_found = "true"
+		redhat_hostnames += "  - " + row['vm_shortname'] + "." + row['vm_domain'] +"\n"
+		yaml_text += "vm_guest_id: sles15_64Guest\n"
+		yaml_text += "localuser: "+osuser[0]+"\n"
+		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "ubuntu18-template":
 		yaml_text += "vm_guest_id: ubuntu64Guest\n"
 	elif row['vcenter_template'].lower() == "ubuntu20-template":

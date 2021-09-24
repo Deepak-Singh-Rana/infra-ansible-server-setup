@@ -67,7 +67,7 @@
     dest: /home/svc_fixed.upguard@2degrees.nz/.ssh/authorized_keys
     owner: svc_fixed.upguard@2degrees.nz
     group: users
-    mode: '0644'
+    mode: '0600'
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
          (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 

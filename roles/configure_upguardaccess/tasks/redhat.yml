@@ -45,7 +45,7 @@
     dest: /home/sec_read/.ssh/authorized_keys
     owner: sec_read
     group: users
-    mode: '0644'
+    mode: '0600'
 
 - name: RH copy over the sudoers file
   copy:
