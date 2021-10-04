@@ -1,5 +1,5 @@
 - name: Configure configure_upguardaccess
-  hosts: hypnotoad-stag
+  hosts: singleserver
 #  remote_user: zeus
   become: yes
   become_method: sudo
