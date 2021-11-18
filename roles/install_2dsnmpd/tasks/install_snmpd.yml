@@ -43,6 +43,35 @@
     replace: '#mibs :'
   when: ansible_facts['distribution'] == "Ubuntu"
 
+
+- name: Commenting out unneded lines in snmpd.conf
+  replace:
+    path: /etc/snmp/snmpd.conf
+    regexp: '(com2sec notConfigUser  default       public)'
+    replace: '#\1'
+  when: ansible_facts['distribution'] == "Redhat"
+
+- name: Commenting out unneded lines in snmpd.conf
+  replace:
+    path: /etc/snmp/snmpd.conf
+    regexp: '(group   notConfigGroup v1           notConfigUser)'
+    replace: '#\1'
+  when: ansible_facts['distribution'] == "Redhat"
+
+- name: Commenting out unneded lines in snmpd.conf
+  replace:
+    path: /etc/snmp/snmpd.conf
+    regexp: '(group   notConfigGroup v2c           notConfigUser)'
+    replace: '#\1'
+  when: ansible_facts['distribution'] == "Redhat"
+
+- name: Commenting out unneded lines in snmpd.conf
+  replace:
+    path: /etc/snmp/snmpd.conf
+    regexp: '(access  notConfigGroup ""      any       noauth    exact  systemview none none)'
+    replace: '#\1'
+  when: ansible_facts['distribution'] == "Redhat"
+
 - name: UB edit snmpd.conf to stop listening on localhost only
   replace:
     path: /etc/snmp/snmpd.conf

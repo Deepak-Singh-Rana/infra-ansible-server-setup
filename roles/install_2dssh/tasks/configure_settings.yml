@@ -74,3 +74,11 @@
     owner: root
     group: root
     mode: '0640'
+
+- name: Ensure SELinux is set to enforcing mode
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/sshd
+    regexp: '#CRYPTO_POLICY='
+    line: CRYPTO_POLICY=
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+

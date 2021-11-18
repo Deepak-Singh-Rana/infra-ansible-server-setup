@@ -59,3 +59,8 @@
 #  - restart auditd ubuntu# we don't restart because we should reboot manually
   - restart rsyslog
   when: ansible_facts['distribution'] == 'Ubuntu'
+
+- name: Installed docker-ce
+  apt:
+    name: docker-ce
+    state: present
