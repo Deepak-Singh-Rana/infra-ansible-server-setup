@@ -1,0 +1,3 @@
+Match Group SEC_servers.fixed.voice
+        AllowGroups SEC_servers.fixed.voice
+        AuthenticationMethods "publickey" "password"

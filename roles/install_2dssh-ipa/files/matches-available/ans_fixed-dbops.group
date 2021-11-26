@@ -1,0 +1,3 @@
+Match Group SEC_servers.fixed.dbops
+        AllowGroups SEC_servers.fixed.dbops
+        AuthenticationMethods "publickey" "password"
