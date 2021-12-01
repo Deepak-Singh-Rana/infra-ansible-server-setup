@@ -1,10 +1,5 @@
 ---
 # tasks file for configure_upguardaccess
-
-#- name: set dns to ipa server
-#  ansible.builtin.command:
-#    cmd: systemd-resolve --set-dns=172.24.255.10 --interface=ens160
-
 - name: install ipaclient tools
   ansible.builtin.apt:
     name:
@@ -19,7 +14,6 @@
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
 
 - name: ipaclientinstall join
-#  ansible.builtin.expect:
   ansible.builtin.command:
     argv:
       - /usr/sbin/ipa-client-install
