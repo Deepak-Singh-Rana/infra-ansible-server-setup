@@ -1,5 +1,5 @@
 - name: Configure configure_upguardaccess
-  hosts: singleserver
+  hosts: jenkins
   become: yes
   become_method: sudo
   ignore_unreachable: true
