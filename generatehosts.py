@@ -325,10 +325,13 @@ if redhat_found:
 
 print("")
 print("You can now deploy the servers using the command...")
-print("------for systems testing with ipa-stag auth-------")
-print("ansible-playbook playbooks/newservers-stag.yml --vault-password-file tmp/ansible-vault-file -K")
+
+print("------for systems testing with IPA-stag auth-------")
+print("ansible-playbook playbooks/newservers-ipa-stag.yml --vault-password-file tmp/ansible-vault-file")
+
+print("---------for production with IPA auth--------------")
+print("ansible-playbook playbooks/newservers-ipa.yml --vault-password-file tmp/ansible-vault-file")
+
 print("-----------------for production---------------")
 print("ansible-playbook playbooks/newservers.yml --vault-password-file tmp/ansible-vault-file -K")
 
-print("---------for production with IPa auth--------------")
-print("ansible-playbook playbooks/newservers-ipa.yml --vault-password-file tmp/ansible-vault-file")

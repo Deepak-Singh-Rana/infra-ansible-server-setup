@@ -110,7 +110,7 @@ git pull
 This creates all the needed files/variables/passwords for the ansible script
 
 ```
-env https_proxy="http://frigg.snap.net.nz:3128" python generatehosts.py -c filename.csv
+env https_proxy="http://frigg.snap.net.nz:3128" python3 generatehosts.py -c filename.csv
 ```
 
 

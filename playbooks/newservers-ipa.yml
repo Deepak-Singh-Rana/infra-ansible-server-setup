@@ -6,9 +6,6 @@
 - name: vcenter playbook
   import_playbook: a-vcenter.yml
 
-#- name: radius playbook
-#  import_playbook: a-radius.yml
-
 - name: wait for server to show it's ready
   import_playbook: a-wait.yml
 

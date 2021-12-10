@@ -58,7 +58,7 @@
 #            (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
 #    - install_2dradiusauth
 #configures ssh to 2degrees hardened standard
-    - install_2dssh-stag
+    - install_2dssh-ipa-stag
 #sets up ntp on the server
     - install_ntp
 #configure ipa auth
