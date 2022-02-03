@@ -8,9 +8,10 @@
       - libnss-sss
       - libpam-sss
       - python3-pexpect
+      - realmd
     state: latest
     update_cache: yes
-  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
 
 - name: ipaclientinstall join
   ansible.builtin.command:
@@ -32,4 +33,5 @@
       - -W
     stdin: "{{ ipapassword }}"
   # you don't want to show passwords in your logs
-  no_log: true
+#  no_log: true
+  no_log: false

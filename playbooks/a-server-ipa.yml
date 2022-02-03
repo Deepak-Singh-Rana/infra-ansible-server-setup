@@ -11,7 +11,7 @@
   vars:
     - ansible_ssh_private_key_file: "./tmp/ansible-deploy.key"
     - ansible_python_interpreter: /usr/bin/python3
-
+    - vm_domain: 2dl.nz
   vars_files:
     - "../tmp/{{inventory_hostname}}.yml"
 #inventory_hostname
@@ -52,11 +52,6 @@
     - install_clamav
 #configures the home folder to 2degrees standards
     - install_2dhome
-#configures the server to use radius for AD authentication
-#    - role: install_2dradiusauth
-#      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18") or
-#            (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "16")
-#    - install_2dradiusauth
 #configures ssh to 2degrees hardened standard
     - install_2dssh-ipa
 #sets up ntp on the server
@@ -84,9 +79,6 @@
 #Hardens redhat8 to level2 compliance
     - role: harden_rhel8
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
-#create adabsent user
-#    - role: configure_rhel_adabsentuser
-#      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 #setup vulnerability scanning
     - configure_upguardaccess
 #setup cmdb scanning

@@ -3,11 +3,16 @@
 - name: install apache2
   include: install_apache.yml
 
+#- name: harden apache configuration
+#  include: harden_configuration.yml
+#  when: ansible_facts['distribution'] == 'RedHat'
+
 - name: harden apache configuration
-  include: harden_configuration.yml
+  include: ub_harden_configuration.yml
+  when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: enable apache2
   include: enable_apache.yml
 
-- name: selinux configuration
-  include: selinux_apache.yml
+#- name: selinux configuration
+#  include: selinux_apache.yml

@@ -1,0 +1,9 @@
+---
+# tasks file for configure_upguardaccess
+
+# configure upguard
+- include_tasks: redhat.yml
+  when: ansible_facts['distribution'] == "RedHat"
+
+- include_tasks: ubuntu.yml
+  when: ansible_facts['distribution'] == "Ubuntu"

@@ -1,5 +1,7 @@
 - name: enable apache2
   systemd:
-   name: httpd
+   name: apache2
    state: started
    enabled: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'
+

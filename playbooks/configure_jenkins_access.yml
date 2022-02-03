@@ -1,4 +1,4 @@
-- name: Configure configure_upguardaccess
+- name: Configure configure_jenkinsaccess
   hosts: jenkins
   become: yes
   become_method: sudo

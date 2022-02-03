@@ -61,11 +61,17 @@ if not os.path.isdir("tmp/radius"):
 
 ##----cleanup before our run to make sure we don't have things that we don't want----#
 a=0
+print("cleaning up tmp")
 for file in os.listdir("tmp"):
 #	print(file)
 	if file.endswith(".yml"):
 		file_relpath="tmp/"+file
 		print(file+" is a yml file")
+		print("removing old file :"+file_relpath)
+		os.remove(file_relpath)
+	if file.endswith(".json"):
+		file_relpath="tmp/"+file
+		print(file+" is a json file")
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
 #	if os.path.isfile("tmp/ansible-vault-file"):
@@ -133,7 +139,7 @@ for row_index, row in enumerate(datareader):
 	hosts_text += fqdn + "\n"
 	hosts_list += fqdn + "\n"
 	yaml_text += "vm_shortname: " + row['vm_shortname'] +'\n'
-	yaml_text += "vm_domain: " + row['vm_domain'] +'\n'
+#	yaml_text += "vm_domain: " + row['vm_domain'] +'\n'
 	yaml_text += "vcenter_template: " + row['vcenter_template'] +'\n'
 	yaml_text += "vcenter_fqdn: " + row['vcenter_fqdn'] +'\n'
 	yaml_text += "vcenter_vlan: " + row['vcenter_vlan'] +'\n'

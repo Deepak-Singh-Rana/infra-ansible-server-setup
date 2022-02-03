@@ -25,6 +25,7 @@
       - ipa-admintools
       - sssd-tools
       - sssd
+      - realmd
     state: latest
     update_cache: yes
   when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")

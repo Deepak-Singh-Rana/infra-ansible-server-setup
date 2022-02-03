@@ -1,5 +1,19 @@
 ---
 # tasks file for configure_upguardaccess
+- name: Install a modularity appstream with defined stream
+  dnf:
+    name: '@idm:client'
+    state: absent
+
+- name: Install a modularity appstream with defined stream
+  dnf:
+    name: '@idm:DL1/client'
+    state: present
+
+- name: Upgrade all packages
+  dnf:
+    name: "*"
+    state: latest
 
 - name: install ipaclient tools
   ansible.builtin.dnf:
@@ -10,6 +24,7 @@
       - ipa-admintools
       - sssd-tools
       - sssd
+      - realmd
     state: latest
     update_cache: yes
   when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
@@ -29,7 +44,7 @@
       - --principal
       - "{{ ipaprincipal }}"
       - --ntp-server
-      - ipa-master-stag.2dtest.nz
+      - ipamasterhlz-stag.2dtest.nz
       - --ssh-trust-dns
       - -W
     stdin: "{{ ipapassword }}"

@@ -1,9 +1,17 @@
+#we should not allow apache on redhat?
+#- name: install apache2
+#  dnf:
+#   name:
+#   - httpd
+#   - mod_ssl
+#   state: latest
 - name: install apache2
-  dnf:
+  apt:
    name:
-   - httpd
-   - mod_ssl
+   - apache2
    state: latest
+  when: ansible_facts['distribution'] == 'Ubuntu'
+
 
 - name: mkdir /var/virtual-hosts
   file:

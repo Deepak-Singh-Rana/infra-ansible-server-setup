@@ -1,0 +1,15 @@
+- name: make bash the default shell
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+#    regexp: '^default_shell ='
+    insertafter: '^\[domain\/'
+    line: 'default_shell = /bin/bash'
+    state: present
+
+- name: make bash the ovverride shell
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+#    regexp: '^override_shell ='
+    insertafter: '^\[domain\/'
+    line: 'override_shell = /bin/bash'
+    state: present

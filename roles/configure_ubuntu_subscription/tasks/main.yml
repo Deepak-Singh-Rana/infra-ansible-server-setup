@@ -25,11 +25,23 @@
 - name: registered to canonical landscape onprem
   shell: /usr/bin/landscape-config --silent -t "{{ inventory_hostname }}" -a standalone -u https://landscape.2degrees.nz/message-system --ping-url http://landscape.2degrees.nz/ping
 
-- name: added http proxy server so UA can talk to licensing server
-  shell: /usr/bin/ua config set http_proxy=http://frigg.snap.net.nz:3128
+#- name: added http proxy server so UA can talk to licensing server
+#  shell: /usr/bin/ua config set http_proxy=http://frigg.snap.net.nz:3128
 
-- name: added https proxy server so UA can talk to licensing server
-  shell: /usr/bin/ua config set https_proxy=http://frigg.snap.net.nz:3128
+#- name: added https proxy server so UA can talk to licensing server
+#  shell: /usr/bin/ua config set https_proxy=http://frigg.snap.net.nz:3128
+
+- name: Ensure http proxy is set for ua
+  ansible.builtin.lineinfile:
+    path: /etc/ubuntu-advantage/uaclient.conf
+    regexp: '^  http_proxy:'
+    line: '  http_proxy: http://frigg.snap.net.nz:3128'
+
+- name: Ensure http proxy is set for ua
+  ansible.builtin.lineinfile:
+    path: /etc/ubuntu-advantage/uaclient.conf
+    regexp: '^  https_proxy:'
+    line: '  https_proxy: http://frigg.snap.net.nz:3128'
 
 - name: copied esm conf proxy file
   copy:
@@ -52,4 +64,4 @@
 #  shell: /usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-key 56F7650A24C9E9ECF87C4D8D4067E40313CB4B13
 
 - name: attach the ua
-  shell: /usr/bin/ua attach "{{ advantageregistrationkey }}"
+  shell: env https_proxy="http://frigg.snap.net.nz:3128" /usr/bin/ua attach "{{ advantageregistrationkey }}"

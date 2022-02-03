@@ -11,6 +11,7 @@
   vars:
     - ansible_ssh_private_key_file: "./tmp/ansible-deploy.key"
     - ansible_python_interpreter: /usr/bin/python3
+    - vm_domain: 2dtest.nz
 
   vars_files:
     - "../tmp/{{inventory_hostname}}.yml"

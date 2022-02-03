@@ -9,6 +9,7 @@
       - libnss-sss
       - libpam-sss
       - python3-pexpect
+      - realmd
     state: latest
     update_cache: yes
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
@@ -28,7 +29,7 @@
       - --principal
       - "{{ ipaprincipal }}"
       - --ntp-server
-      - ipa-master-stag.2dtest.nz
+      - ipamasterhlz-stag.2dtest.nz
       - --ssh-trust-dns
       - -W
     stdin: "{{ ipapassword }}"

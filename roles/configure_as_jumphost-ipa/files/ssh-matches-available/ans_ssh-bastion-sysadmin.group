@@ -1,0 +1,5 @@
+#jumphost/bastion rule
+Match Group servers.admin@staff.snap.net.nz
+        AllowGroups servers.admin@staff.snap.net.nz
+        AllowTcpForwarding yes
+        AuthenticationMethods "publickey,password"

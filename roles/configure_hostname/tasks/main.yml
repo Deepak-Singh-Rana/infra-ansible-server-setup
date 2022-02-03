@@ -9,7 +9,7 @@
   lineinfile:
     dest: /etc/hosts
     regexp: '^(127\.0\.0\.1).*(localhost.*)'
-    line: '\1 {{ vm_shortname }}.2dl.nz {{ vm_shortname }} \2'
+    line: '\1 {{ vm_shortname }}.{{ vm_domain }} {{ vm_shortname }} \2'
     state: present
     backrefs: true
 
@@ -17,7 +17,12 @@
   lineinfile:
     dest: /etc/hosts
     regexp: '^(::1).*(localhost .*)'
-    line: '\1 {{ vm_shortname }}.2dl.nz {{ vm_shortname }} \2'
+    line: '\1 {{ vm_shortname }}.{{ vm_domain }} {{ vm_shortname }} \2'
     state: present
     backrefs: true
 
+#make sure we don't have a pretty name, as we dont need it
+- name: Remove /etc/machine-info (delete file) as we don't need a pretty name
+  ansible.builtin.file:
+    path: /etc/machine-info
+    state: absent
