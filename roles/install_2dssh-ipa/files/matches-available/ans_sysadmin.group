@@ -1,3 +1,0 @@
-Match Group servers.admin@staff.snap.net.nz
-        AllowGroups servers.admin@staff.snap.net.nz
-        AuthenticationMethods "publickey" "password"

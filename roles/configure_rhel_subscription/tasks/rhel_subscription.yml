@@ -46,6 +46,9 @@
     group: root
     mode: '0644'
 
+- name: move rhclassic systemid
+  command: mv /etc/sysconfig/rhn/systemid /root/systemid.old
+
 #subscription-manager register --org="Default_Organization" --activationkey="RHEL8_Key"
 - name: register the server
   community.general.redhat_subscription:

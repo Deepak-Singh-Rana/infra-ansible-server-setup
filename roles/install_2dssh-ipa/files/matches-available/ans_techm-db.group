@@ -1,3 +1,0 @@
-Match Group SEC_servers.fixed.database.TechM
-        AllowGroups SEC_servers.fixed.database.TechM
-        AuthenticationMethods "publickey" "password"

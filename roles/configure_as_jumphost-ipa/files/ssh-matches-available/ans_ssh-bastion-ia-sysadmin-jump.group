@@ -1,5 +1,0 @@
-#jumphost/bastion rule
-Match Group SEC_IA_Sysadmin_Jump
-        AllowGroups SEC_IA_Sysadmin_Jump
-        AllowTcpForwarding yes
-        AuthenticationMethods "publickey,password"
