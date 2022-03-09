@@ -13,6 +13,7 @@ import glob
 #from ansible_vault import Vault
 from pwgen import pwgen
 import argparse
+import socket
 
 ansible_vault_pass = ""
 hosts_list = ""
@@ -127,9 +128,15 @@ for row_index, row in enumerate(datareader):
 	lpz_text = ""
 	zeus_data = ""
 	root_data = ""
+	dnscheck = ""
 
 	fqdn = row['vm_shortname']+"."+row['vm_domain']
 	print(fqdn)
+	try:
+		socket.gethostbyname(fqdn)
+	except:
+		print("Can't resolve: "+fqdn+" Exiting")
+		exit()
 	ymlfilepath = "tmp/"+fqdn+".yml"
 	print("building "+fqdn+".yml")
 	vm_yaml_file = open("tmp/"+fqdn+".yml", 'w')
