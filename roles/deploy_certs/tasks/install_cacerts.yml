@@ -14,4 +14,16 @@
     - ca-certificates
    state: latest
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: install openssl
+  ansible.builtin.yum:
+   name:
+    - openssl
+    - python2-cryptography
+    - ca-certificates
+   state: latest
+  ignore_errors: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'

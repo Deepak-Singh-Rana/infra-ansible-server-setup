@@ -1,16 +1,34 @@
-- name: rh Set antivirus_can_scan_system flag on and keep it persistent across reboots
+- name: rh 8 and above Set antivirus_can_scan_system flag on and keep it persistent across reboots
   seboolean:
     name: antivirus_can_scan_system
     state: yes
     persistent: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
-- name: rh Set antivirus_use_jit flag on and keep it persistent across reboots
+- name: rh 8 and above Set antivirus_use_jit flag on and keep it persistent across reboots
   seboolean:
     name: antivirus_use_jit
     state: yes
     persistent: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: rh 7 and below Set antivirus_can_scan_system flag on and keep it persistent across reboots
+  seboolean:
+    name: antivirus_can_scan_system
+    state: yes
+    persistent: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+
+- name: rh 7 and below Set antivirus_use_jit flag on and keep it persistent across reboots
+  seboolean:
+    name: antivirus_use_jit
+    state: yes
+    persistent: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: create clamav folder
   file:

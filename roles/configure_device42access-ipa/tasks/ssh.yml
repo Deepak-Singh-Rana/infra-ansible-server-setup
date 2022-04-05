@@ -1,0 +1,18 @@
+- name: copy ans_ssh-device42.group ssh rule
+  copy:
+    src: ans_ssh-device42.group
+    dest: /etc/ssh/matches-available/ans_ssh-device42.group
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Enable the ans_ssh-device42.group ssh rule
+  file:
+    src: /etc/ssh/matches-available/ans_ssh-device42.group
+    dest: /etc/ssh/matches-enabled/15_ans_ssh-device42.group
+    owner: root
+    group: root
+    state: link
+
+- name: run the apply_ssh script
+  shell: /usr/local/sbin/apply_ssh.sh

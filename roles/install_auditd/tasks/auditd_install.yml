@@ -1,5 +1,5 @@
-- name: install auditd on centos
-  yum:
+- name: install auditd on redhat 8 and above
+  dnf:
    name: "{{ packages }}"
   vars:
    packages:
@@ -7,7 +7,19 @@
    - audit-libs
    - audispd-plugins
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: install auditd on redhat 7 and below
+  yum:
+   name: "{{ packages }}"
+  vars:
+   ansible_python_interpreter: /usr/bin/python2
+   packages:
+   - audit
+   - audit-libs
+   - audispd-plugins
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: install auditd on ubuntu
   apt:

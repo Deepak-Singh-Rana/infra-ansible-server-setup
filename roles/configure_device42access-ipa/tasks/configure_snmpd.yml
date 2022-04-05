@@ -1,0 +1,14 @@
+- name: Stoped snmpd so we can add a user
+  service:
+    name: snmpd
+    state: stopped
+    enabled: yes
+
+- name: Added snmp user
+  command: net-snmp-config --create-snmpv3-user -ro -A "{{ snmp3passa }}" -X "{{ snmp3passe }}" -a SHA -x AES128 "{{ snmp3user }}"
+
+- name: Started and enabled snmpd
+  service:
+    name: snmpd
+    state: restarted
+    enabled: yes

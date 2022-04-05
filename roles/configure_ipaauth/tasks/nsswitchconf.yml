@@ -1,0 +1,5 @@
+- name: only allow sss for sudoers config
+  ansible.builtin.lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: 'sudoers:'
+    line: 'sudoers:        sss'

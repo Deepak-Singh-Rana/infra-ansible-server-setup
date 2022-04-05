@@ -1,0 +1,46 @@
+---
+# tasks file for configure_upguardaccess
+
+#- name: Upgrade all packages
+#  ansible.builtin.yum:
+#    name: "*"
+#    state: latest
+#  vars:
+#    ansible_python_interpreter: /usr/bin/python2
+
+- name: install ipaclient tools
+  ansible.builtin.yum:
+    name:
+      - oddjob-mkhomedir
+      - oddjob
+      - ipa-client
+#      - ipa-admintools
+      - sssd-tools
+      - sssd
+      - realmd
+    state: latest
+    update_cache: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+
+- name: ipaclientinstall join
+  ansible.builtin.command:
+    argv:
+      - /usr/sbin/ipa-client-install
+      - --domain
+      - "{{ ipadomain }}"
+      - --realm
+      - "{{ iparealm }}"
+      - --mkhomedir
+      - --enable-dns-updates
+      - --unattended
+      - --force-join
+      - --principal
+      - "{{ ipaprincipal }}"
+      - --ntp-server
+      - ipamasterakl.2dl.nz
+      - --ssh-trust-dns
+      - -W
+    stdin: "{{ ipapassword }}"
+  # you don't want to show passwords in your logs
+  no_log: true

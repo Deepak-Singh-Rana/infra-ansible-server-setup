@@ -24,6 +24,15 @@
     mode: '0640'
   when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
 
+- name: 2dsshd_config rhel7
+  copy:
+    src: 2d.sshd_config-rhel7
+    dest: /etc/ssh/2d.sshd_config
+    owner: root
+    group: root
+    mode: '0640'
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "7")
+
 - name: 2dsshd_config suse15
   copy:
     src: 2d.sshd_config-suse15
@@ -50,6 +59,15 @@
     group: root
     mode: '0640'
   when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "20")
+
+- name: 2dsshd_config ubuntu22
+  copy:
+    src: 2d.sshd_config-ub22
+    dest: /etc/ssh/2d.sshd_config
+    owner: root
+    group: root
+    mode: '0640'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "22")
 
 - name: copy apply_ssh.sh
   copy:

@@ -1,0 +1,4 @@
+#allow the zeus account to log in only with a password
+Match User zeus
+        AllowUsers zeus
+	AuthenticationMethods "password"

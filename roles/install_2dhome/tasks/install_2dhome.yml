@@ -2,6 +2,16 @@
   package:
     name: perl
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: make sure perl is installed
+  ansible.builtin.yum:
+    name: perl
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 
 - name: 2d-homecleanup.timer

@@ -4,14 +4,14 @@
     dest: /etc/motd.d/10_redhat_release
     state: link
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
 - name: remove cockpit motd
   file:
    path: /etc/motd.d/cockpit
    state: absent
 
-- name: RH motd.2d
+- name: RH motd.2d redhat 8 and up
   copy:
     src: motd.2d
     dest: /etc/motd.d/05_motd.2d
@@ -19,7 +19,17 @@
     group: root
     mode: '0644'
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: RH motd.2d redhat 7 and lower
+  copy:
+    src: motd.2d
+    dest: /etc/motd
+    owner: root
+    group: root
+    mode: '0644'
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 #- name: UB motd
 #  apt:

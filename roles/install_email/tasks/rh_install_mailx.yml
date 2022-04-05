@@ -1,5 +1,14 @@
-- name: install mailx
+- name: install mailx redhat 8 and above
   package: name=mailx state=latest
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: install mailx for redhat 7 and below
+  ansible.builtin.yum:
+    name: mailx
+    state: latest
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: configure mailx smtp
   lineinfile:

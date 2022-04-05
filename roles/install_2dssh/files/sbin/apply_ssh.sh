@@ -11,7 +11,7 @@ matches="/etc/ssh/matches-enabled"
 echo "generating sshd_config file..."
 
 #build the sshd file
-cat $sshddefault_file $matches/*.address $matches/*.user $matches/*.group > $sshdconfig_file
+cat $sshddefault_file $matches/*.conf $matches/*.address $matches/*.user $matches/*.group > $sshdconfig_file
 
 #make sure permissions are correct
 echo "setting permissions to sshd_config..."

@@ -1,0 +1,9 @@
+---
+# tasks file for configure_upguardaccess
+
+# configure device42
+- include_tasks: configure_snmpd.yml
+
+- include_tasks: firewall.yml
+
+- include_tasks: ssh.yml

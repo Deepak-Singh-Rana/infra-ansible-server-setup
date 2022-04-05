@@ -35,4 +35,6 @@
   ansible.builtin.command: "{{ item }}"
   with_items:
     - rm /home/zeus/.ssh/authorized_keys
+    - "ln -s /etc/ssh/matches-available/ans_zeus.user /etc/ssh/matches-enabled/05_ans_zeus.user"
+    - /usr/local/sbin/apply_ssh.sh
     - rm /etc/sudoers.d/deploy_zeus

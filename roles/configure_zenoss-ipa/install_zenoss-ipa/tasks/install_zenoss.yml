@@ -1,0 +1,39 @@
+---
+# tasks file for install_zenoss user
+- name: copy matches file if it doesn't exist already
+  copy:
+    src: ans_ssh-zenoss.group
+    dest: /etc/ssh/matches-available/ans_ssh-zenoss.group
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create a symbolic link
+  ansible.builtin.file:
+    src: /etc/ssh/matches-available/ans_ssh-zenoss.group
+    dest: /etc/ssh/matches-enabled/05_ans_ssh-zenoss.group
+    owner: root
+    group: root
+    state: link
+
+- name: add zenoss firewall rules
+  copy:
+    src: ans_snmp-zenoss.v4
+    dest: /etc/fw-2d/rules-available/ans_snmp-zenoss.v4
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: apply zenoss firewall rules
+  file:
+    src: /etc/fw-2d/rules-available/ans_snmp-zenoss.v4
+    dest: /etc/fw-2d/rules-enabled/45_ans_snmp-zenoss.v4
+    owner: root
+    group: root
+    state: link
+
+- name: reload sshd
+  shell: /usr/local/sbin/apply_ssh.sh
+
+- name: enable the firewall
+  shell: /usr/local/sbin/firewall-up

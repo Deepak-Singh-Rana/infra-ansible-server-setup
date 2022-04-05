@@ -62,12 +62,12 @@ ListenAddress 0.0.0.0
 HostKey /etc/ssh/ssh_host_rsa_key
 HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key
+HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
 
 # Authentication:
 StrictModes yes
 
 PubkeyAuthentication yes
-AuthorizedKeysFile      %h/.ssh/authorized_keys
 
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
 IgnoreUserKnownHosts no
@@ -109,7 +109,7 @@ MaxAuthTries 4
 PermitUserEnvironment no
 
 #Protection from ssh downgrade attacks
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
 
 Ciphers=aes256-gcm@openssh.com,chacha20-poly1305@openssh.com,aes256-ctr,aes128-gcm@openssh.com,aes128-ctr
 

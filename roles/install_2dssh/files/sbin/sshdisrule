@@ -39,6 +39,6 @@ else
         echo ""
         echo "Removed $RULE from the enabled rules"
         echo ""
-        echo "YOU NOW NEED TO RUN ssh_apply.sh"
+        echo "YOU NOW NEED TO RUN apply_ssh.sh"
 fi
 exit 0

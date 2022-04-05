@@ -14,9 +14,18 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Install systat redhat
+- name: Install systat redhat 8 and above
   dnf:
    name: sysstat
    state: present
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: Install systat redhat 7 and below
+  yum:
+   name: sysstat
+   state: present
+  ignore_errors: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'

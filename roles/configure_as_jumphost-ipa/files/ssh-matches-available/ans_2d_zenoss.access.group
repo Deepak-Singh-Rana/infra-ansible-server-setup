@@ -1,4 +1,0 @@
-Match Group 2d_zenoss.access
-        AuthenticationMethods "publickey"
-        AllowGroups 2d_zenoss.access
-

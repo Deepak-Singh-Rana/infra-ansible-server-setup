@@ -1,0 +1,20 @@
+---
+# tasks file for configure_upguardaccess
+- name: UB copy firewall rule
+  copy:
+    src: ans_ssh-upguard.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-upguard.v4
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: UB Enable firewall rule
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-upguard.v4
+    dest: /etc/fw-2d/rules-enabled/43_ans_ssh-upguard.v4
+    owner: root
+    group: root
+    state: link
+
+- name: UB run the firewallup script
+  shell: /usr/local/sbin/firewall-up

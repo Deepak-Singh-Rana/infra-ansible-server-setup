@@ -1,6 +1,6 @@
 ---
 # tasks file for install_2dsnmpd
-- name: RH Install snmpd packages redhat
+- name: RH8 and above Install snmpd packages redhat
   dnf:
     name:
     - net-snmp
@@ -9,8 +9,20 @@
     - net-snmp-devel
 #   - snmp-mibs????
     state: latest
-  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
-       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: RH7 and below Install snmpd packages redhat
+  yum:
+    name:
+    - net-snmp
+    - net-snmp-utils
+    - net-snmp-libs
+    - net-snmp-devel
+#   - snmp-mibs????
+    state: latest
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: UB Install snmpd packages ubuntu
   apt:
@@ -107,3 +119,12 @@
     enabled: yes
   when: ansible_facts['distribution'] == "Ubuntu"
 
+
+- name: link /snmp to /etc/snmp
+  ansible.builtin.file:
+    src: /etc/snmp
+    dest: /snmp
+    owner: root
+    group: root
+    state: link
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "22")

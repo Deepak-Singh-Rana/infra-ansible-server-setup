@@ -49,13 +49,23 @@
     owner: root
     group: root
     mode: '0700'
-  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
-- name: Install commvault
+  when: (ansible_facts['distribution'] == "RedHat")
+
+- name: Install commvault redhat 8 and above
   ansible.builtin.dnf:
     name: /tmp/commvault.Instance001-11.0.0-80.200.0.2779330.200.3349518.x86_64.rpm
     state: present
     disable_gpg_check: yes
   when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+
+- name: Install commvault redhat 7 and below
+  ansible.builtin.yum:
+    name: /tmp/commvault.Instance001-11.0.0-80.200.0.2779330.200.3349518.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: delete the installer
   ansible.builtin.file:

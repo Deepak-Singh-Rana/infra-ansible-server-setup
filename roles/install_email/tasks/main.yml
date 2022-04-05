@@ -6,11 +6,6 @@
   when: ansible_facts['distribution'] == 'Ubuntu'
 
 - name: install mailx
-  include: ce_install_mailx.yml
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS'
-
-- name: install mailx
-  include: ce_install_mailx.yml
+  include: rh_install_mailx.yml
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'RedHat'

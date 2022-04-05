@@ -6,11 +6,12 @@
 - name: copy over default available rules
   include: copy_available_rules.yml
 
-#- name: enable default rules
-#  include: enable_default_rules.yml
+- name: enable default rules
+  include: enable_default_rules.yml
 
 - name: configure ssh
   include: configure_settings.yml
 
-- name: enable 2d ssh
-  include: enable_2dssh.yml
+#we don't need to enable as we restart later
+#- name: enable 2d ssh
+#  include: enable_2dssh.yml

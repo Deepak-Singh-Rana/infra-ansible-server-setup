@@ -1,0 +1,2 @@
+Match Group 2d_security-cis.access@2dl.nz
+        AuthenticationMethods "publickey"

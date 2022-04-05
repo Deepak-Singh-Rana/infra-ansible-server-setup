@@ -13,3 +13,18 @@
     insertafter: '^\[domain\/'
     line: 'override_shell = /bin/bash'
     state: present
+
+# Set krb options in sssd to allow us to use AD accounts
+- name: setting krb5_use_enterprise_principal option
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[domain\/'
+    line: 'krb5_use_enterprise_principal = True'
+    state: present
+
+- name: krb5_store_password_if_offline
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[domain\/'
+    line: 'krb5_store_password_if_offline = True'
+    state: present

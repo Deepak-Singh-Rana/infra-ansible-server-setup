@@ -1,11 +1,40 @@
-- name: Allow rsync to run as a client
+- name: Allow rsync to run as a client redhat 8 and up
   seboolean:
     name:  rsync_client
     state: yes
     persistent: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
-- name: Allow rsync to export files to another server
+- name: Allow rsync to export files to another server redhat 8 and up
   seboolean:
     name:  rsync_export_all_ro
     state: yes
     persistent: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: install libsemanage-python
+  yum:
+    name:
+    - libsemanage-python
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+
+- name: Allow rsync to run as a client redhat 7 and below
+  seboolean:
+    name:  rsync_client
+    state: yes
+    persistent: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+
+- name: Allow rsync to export files to another server redhat 7 and below
+  seboolean:
+    name:  rsync_export_all_ro
+    state: yes
+    persistent: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'

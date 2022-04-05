@@ -1,0 +1,7 @@
+---
+# tasks file for install_zenoss
+- name: install zenoss
+  include: install_zenoss.yml
+
+- name: install zenoss
+  include: ssh.yml

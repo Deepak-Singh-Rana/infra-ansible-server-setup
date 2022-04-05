@@ -5,7 +5,21 @@
     enabled: no
   when: (ansible_facts['distribution'] == 'CentOS') or
         (ansible_facts['distribution'] == 'RedHat') or
-        (ansible_facts['distribution'] == 'Suse')
+        (ansible_facts['distribution'] == 'SLES')
+
+- name: link iptables for suse
+  ansible.builtin.file:
+    src: /usr/sbin/iptables
+    dest: /sbin/iptables
+    state: link
+  when: ansible_facts['distribution'] == 'SLES'
+
+- name: link ip6tables for suse
+  ansible.builtin.file:
+    src: /usr/sbin/ip6tables
+    dest: /sbin/ip6tables
+    state: link
+  when: ansible_facts['distribution'] == 'SLES'
 
 - name: enable the 2degrees firewall
   shell: /usr/local/sbin/firewall-up

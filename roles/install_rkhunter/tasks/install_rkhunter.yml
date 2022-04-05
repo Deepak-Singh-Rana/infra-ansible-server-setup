@@ -1,10 +1,20 @@
 ---
 # tasks file for tdm-rkhunter
 
-- name: install rkhunter
+- name: install rkhunter ubuntu and redhat 8 and above
   package:
     name: "rkhunter"
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: install rkhunter redhat 7 and below
+  yum:
+    name: "rkhunter"
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: RH create logrotate file if not exist
   copy:
@@ -14,8 +24,7 @@
     group: root
     mode: 0644
     force: no
-  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
-       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+  when: ansible_facts['distribution'] == "RedHat"
 
 - name: UB create logrotate file if not exist
   copy:
@@ -34,8 +43,7 @@
     mode: 02750
     path: /var/log/rkhunter
     state: directory
-  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
-       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+  when: ansible_facts['distribution'] == "RedHat"
 
 - name: UB permissions for rkhunter directory
   file:
@@ -80,8 +88,7 @@
     mode: 0640
     path: /var/log/rkhunter/rkhunter.log
     state: touch
-  when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] >= "8") or
-       (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
+  when: ansible_facts['distribution'] == "RedHat"
 
 - name: UB permissions for rkhunter file
   file:

@@ -9,7 +9,38 @@
 - name: make bash the ovverride shell
   lineinfile:
     path: /etc/sssd/sssd.conf
-#    regexp: '^override_shell ='
     insertafter: '^\[domain\/'
     line: 'override_shell = /bin/bash'
     state: present
+
+- name: set the home dir to be /home/mgt.first.lastname
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[nss\]'
+    line: 'override_homedir = /home/%u'
+    state: present
+
+- name: lower entry cache timeout to 30mins
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[nss\]'
+    line: 'entry_cache_timeout = 1900'
+    state: present
+
+
+# Set krb options in sssd to allow us to use AD accounts
+- name: setting krb5_use_enterprise_principal option
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[domain\/'
+    line: 'krb5_use_enterprise_principal = True'
+    state: present
+  when: ansible_facts['distribution'] == "Ubuntu"
+
+- name: krb5_store_password_if_offline
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[domain\/'
+    line: 'krb5_store_password_if_offline = True'
+    state: present
+  when: ansible_facts['distribution'] == "Ubuntu"

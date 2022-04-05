@@ -1,7 +1,17 @@
-- name: install openssh
+- name: install openssh on redhat 8 and above
   ansible.builtin.package:
     name: openssh-server
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: install openssh on redhat 7 and below
+  ansible.builtin.yum:
+    name: openssh-server
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: create matches-available folder
   ansible.builtin.file:

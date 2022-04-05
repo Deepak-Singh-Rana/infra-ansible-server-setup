@@ -2,9 +2,16 @@
 # tasks file for ipaauth setup
 
 - include_tasks: redhat.yml
-  when: ansible_facts['distribution'] == "RedHat"
+  when: ansible_facts['distribution'] == "RedHat" and ansible_distribution_version >= '8'
+
+- include_tasks: redhat7.yml
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - include_tasks: ubuntu.yml
   when: ansible_facts['distribution'] == "Ubuntu"
 
 - include_tasks: sssdconf.yml
+
+#- include_tasks: nsswitchconf.yml
+#if we change nsswitch here, deployment will fail cause we can't sudo anymore
+#we need to change it at the very end?

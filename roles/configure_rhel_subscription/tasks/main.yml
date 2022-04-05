@@ -1,5 +1,11 @@
 ---
 # tasks file for configure_rhel_subscription
-- name: install apache2
+- name: configure rhel8 subscription
   include: rhel_subscription.yml
   when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
+#  when: ansible_facts['distribution'] == 'RedHat'
+
+- name: configure rhel7 subscription
+  include: rhel7_subscription.yml
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "7"
+#  when: ansible_facts['distribution'] == 'RedHat'

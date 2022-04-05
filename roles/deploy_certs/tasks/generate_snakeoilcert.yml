@@ -15,24 +15,52 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'RedHat'
 
-- name: generated snakeoil key for redhat
+- name: generated snakeoil key for redhat 8 and above
   openssl_privatekey:
    path: /etc/ssl/private/ssl-cert-snakeoil.key
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
-- name: generate snakeoil csr
+- name: generated snakeoil key for redhat 7 and lower
+  openssl_privatekey:
+   path: /etc/ssl/private/ssl-cert-snakeoil.key
+  ignore_errors: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+
+- name: generate snakeoil csr for redhat 8 and above
   openssl_csr:
    path: /tmp/ssl-cert-snakeoil.csr
    privatekey_path: /etc/ssl/private/ssl-cert-snakeoil.key
    common_name: "{{ ansible_hostname }}"
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
-- name: generate snakeoil cert for redhat
+- name: generate snakeoil csr for redhat 7 and below
+  openssl_csr:
+   path: /tmp/ssl-cert-snakeoil.csr
+   privatekey_path: /etc/ssl/private/ssl-cert-snakeoil.key
+   common_name: "{{ ansible_hostname }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+
+- name: generate snakeoil cert for redhat 8 and above
   openssl_certificate:
     path: /etc/ssl/certs/ssl-cert-snakeoil.pem
     privatekey_path: /etc/ssl/private/ssl-cert-snakeoil.key
     csr_path: /tmp/ssl-cert-snakeoil.csr
     provider: selfsigned
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: generate snakeoil cert for redhat 7 and below
+  openssl_certificate:
+    path: /etc/ssl/certs/ssl-cert-snakeoil.pem
+    privatekey_path: /etc/ssl/private/ssl-cert-snakeoil.key
+    csr_path: /tmp/ssl-cert-snakeoil.csr
+    provider: selfsigned
+  ignore_errors: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'

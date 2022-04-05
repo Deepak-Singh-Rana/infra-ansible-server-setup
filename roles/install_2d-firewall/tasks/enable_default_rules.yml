@@ -45,20 +45,3 @@
     owner: root
     group: root
     state: link
-
-- name: enable ans_ssh-device42.v4
-  file:
-    src: /etc/fw-2d/rules-available/ans_ssh-device42.v4
-    dest: /etc/fw-2d/rules-enabled/43_ans_ssh-device42.v4
-    owner: root
-    group: root
-    state: link
-
-- name: enable ans_ssh-zenosss.v4
-  file:
-    src: /etc/fw-2d/rules-available/ans_ssh-zenoss.v4
-    dest: /etc/fw-2d/rules-enabled/44_ans_ssh-zenoss.v4
-    owner: root
-    group: root
-    state: link
-

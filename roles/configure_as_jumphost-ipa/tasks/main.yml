@@ -44,6 +44,22 @@
     group: root
     mode: '0400'
 
+- name: copy the ans_jumphosts-systems.group ssh match rule to the server
+  ansible.builtin.copy:
+    src: ssh-matches-available/ans_jumphosts-systems.group
+    dest: /etc/ssh/matches-available/ans_jumphosts-systems.group
+    owner: root
+    group: root
+    mode: '0400'
+
+- name: copy the ans_jumphosts-networks.group ssh match rule to the server
+  ansible.builtin.copy:
+    src: ssh-matches-available/ans_jumphosts-networks.group
+    dest: /etc/ssh/matches-available/ans_jumphosts-networks.group
+    owner: root
+    group: root
+    mode: '0400'
+
 - name: Enable ender ssh match rule
   file:
     src: /etc/ssh/matches-available/ans_ender.address
@@ -70,19 +86,19 @@
 
 - name: Enable zenoss ssh match rule
   file:
-    src: /etc/ssh/matches-available/ans_2d_zenoss.access.group
-    dest: /etc/ssh/matches-enabled/15_ans_2d_zenoss.access.group
+    src: /etc/ssh/matches-available/ans_jumphosts-networks.group
+    dest: /etc/ssh/matches-enabled/10_ans_jumphosts-networks.group
     owner: root
     group: root
     state: link
 
 - name: Enable autodiscover ssh match rule
   file:
-    src: /etc/ssh/matches-available/ans_2d_autodiscover-unix.access.group
-    dest: /etc/ssh/matches-enabled/15_ans_2d_autodiscover-unix.access.group
+    src: /etc/ssh/matches-available/ans_jumphosts-systems.group
+    dest: /etc/ssh/matches-enabled/10_ans_jumphosts-systems.group
     owner: root
     group: root
     state: link
 
-- name: apply the ssh eabled rules
+- name: apply the ssh enabled rules
   shell: /usr/local/sbin/apply_ssh.sh

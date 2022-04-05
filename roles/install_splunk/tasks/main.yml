@@ -1,9 +1,18 @@
 ---
 # tasks file for deploy_splunkforwarder
 #learn what packages are installed
-- name: Make sure splunk server package is not installed
+- name: Make sure splunk server package is not already installed
   package_facts:
     manager: auto
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: Make sure splunk server package is not installed redhat 7 or below
+  package_facts:
+    manager: auto
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: install extra software
   import_tasks: extra_software.yml

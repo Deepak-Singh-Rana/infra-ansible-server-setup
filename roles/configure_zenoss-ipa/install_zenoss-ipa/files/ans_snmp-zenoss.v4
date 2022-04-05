@@ -1,0 +1,3 @@
+#zenoss monitoring
+Accept: 161/udp from 172.21.200.0/24
+Accept: 161/udp from 172.23.200.0/24

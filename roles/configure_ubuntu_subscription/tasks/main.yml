@@ -50,6 +50,7 @@
     owner: root
     group: root
     mode: '0600'
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version != '22.03'
 
 - name: copied esm_repo.list
   ansible.builtin.template:
@@ -58,6 +59,7 @@
     owner: root
     group: root
     mode: '0600'
+  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version != '22.03'
 
 
 #- name: added apt-key for esm

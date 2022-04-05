@@ -1,5 +1,5 @@
 - name: make sure useful tools are installed redhat and centos
-  yum:
+  dnf:
     name:
     - nmap
     - tree
@@ -16,7 +16,29 @@
     - rsync
     - bind-utils
     state: present
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: make sure useful tools are installed redhat 7 and below
+  yum:
+    name:
+    - nmap
+    - tree
+#    - htop
+    - iotop
+    - mtr
+    - tcpdump
+#    - ipcalc
+    - open-vm-tools
+    - nano
+    - python3
+    - mlocate
+#    - pwgen
+    - rsync
+    - bind-utils
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: make sure useful tools are installed ubuntu
   apt:

@@ -1,6 +1,6 @@
 - name: Install 2d-firewall
-  hosts: newserver
-  remote_user: zeus
+  hosts: singleserver
+  remote_user: mgt.dave.gardner@2degreesmgt.nz
   become: yes
   become_method: sudo
   gather_facts: true

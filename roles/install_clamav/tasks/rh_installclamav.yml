@@ -1,4 +1,13 @@
-- name: rh install clamav
+- name: rh libsemanage-python for redhat7 and below
+  yum:
+   name: "{{ packages }}"
+  vars:
+    packages:
+    - libsemanage-python
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+
+- name: rh install clamav for redhat 8 and above
   yum:
    name: "{{ packages }}"
   vars:
@@ -6,3 +15,15 @@
     - clamav
     - clamd
     - clamav-update
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: rh install clamav for redhat7 and below
+  yum:
+   name: "{{ packages }}"
+  vars:
+    packages:
+    - clamav
+    - clamd
+    - clamav-update
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'

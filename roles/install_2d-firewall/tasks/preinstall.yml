@@ -2,6 +2,16 @@
   package:
     name: perl
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: make sure perl is installed for redhat 7 and below
+  ansible.builtin.yum:
+    name: perl
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 #- name: make sure binutils is installed(to extract the deb pacakge)
 #  package:
@@ -12,11 +22,31 @@
   package:
     name: iptables
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: make sure iptables is installed for redhat7 and below
+  ansible.builtin.yum:
+    name: iptables
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: make sure ipset is installed
   package:
     name: ipset
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: make sure ipset is installed for redhat7 and below
+  ansible.builtin.yum:
+    name: ipset
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: addusrlocalsbin into root $PATH
   lineinfile:

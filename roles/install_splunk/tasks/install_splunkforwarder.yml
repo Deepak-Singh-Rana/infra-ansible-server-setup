@@ -2,6 +2,15 @@
 - name: Make sure splunk server package is not installed
   package_facts:
     manager: auto
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: Make sure splunk server package is not installed redhat 7 or below
+  package_facts:
+    manager: auto
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 #learn if splunk binary exists
 - name: Check if the splunk binary exists
@@ -17,14 +26,14 @@
 
 - name: copy splunk rmp to remote computer for ubuntu
   copy:
-    src: installers/splunkforwarder-8.2.2-87344edfcdb4-linux-2.6-amd64.deb
+    src: installers/splunkforwarder-8.2.5-77015bc7a462-linux-2.6-amd64.deb
     dest: /tmp/splunkforwarder.deb
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: copy splunk rmp to remote computer for redhat
+- name: copy splunk rpm to remote computer for redhat
   copy:
-    src: installers/splunkforwarder-8.2.2-87344edfcdb4-linux-2.6-x86_64.rpm
+    src: installers/splunkforwarder-8.2.5-77015bc7a462-linux-2.6-x86_64.rpm
     dest: /tmp/splunkforwarder.rpm
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
@@ -34,12 +43,23 @@
     deb: /tmp/splunkforwarder.deb
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: Install the latest splunkforwarder package for redhat
+- name: Install the latest splunkforwarder package for redhat 8 or above
   yum:
     name: /tmp/splunkforwarder.rpm
     state: present
+    disable_gpg_check: yes
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+
+- name: Install the latest splunkforwarder package for redhat 7 or below
+  yum:
+    name: /tmp/splunkforwarder.rpm
+    state: present
+    disable_gpg_check: yes
+  ignore_errors: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: Re-Accept the splunk licence
   command: /opt/splunkforwarder/bin/splunk enable boot-start --accept-license --answer-yes --no-prompt -user splunk

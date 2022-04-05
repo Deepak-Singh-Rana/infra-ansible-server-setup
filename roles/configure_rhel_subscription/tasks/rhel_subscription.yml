@@ -47,7 +47,8 @@
     mode: '0644'
 
 - name: move rhclassic systemid
-  command: mv /etc/sysconfig/rhn/systemid /root/systemid.old
+  ansible.builtin.command: mv /etc/sysconfig/rhn/systemid /root/systemid.old
+  ignore_errors: yes
 
 #subscription-manager register --org="Default_Organization" --activationkey="RHEL8_Key"
 - name: register the server

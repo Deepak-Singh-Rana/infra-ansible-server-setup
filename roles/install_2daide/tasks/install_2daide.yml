@@ -1,8 +1,19 @@
-- name: install aide
+- name: install aide ubuntu or redhat 8 and above
   package:
     name:
     - aide
     state: present
+  when: (ansible_facts['distribution'] == "Ubuntu") or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: install aide redhat 7 or below
+  yum:
+    name:
+    - aide
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
 - name: make sure /var/lib/aide exists
   file:
@@ -80,3 +91,12 @@
    group: root
    mode: '0655'
   when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+
+- name: install update-aide.conf onto ubuntu22 which we got from older ubuntu18 release
+  copy:
+   src: sbin/update-aide.conf
+   dest: /usr/sbin/update-aide.conf
+   owner: root
+   group: root
+   mode: '0655'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "22")

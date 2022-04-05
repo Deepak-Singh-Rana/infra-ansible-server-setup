@@ -1,0 +1,20 @@
+---
+# tasks file for configure_autodiscover
+- name: copy firewall rule
+  copy:
+    src: ans_ssh-autodiscover.v4
+    dest: /etc/fw-2d/rules-available/ans_ssh-autodiscover.v4
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Enable firewall rule
+  file:
+    src: /etc/fw-2d/rules-available/ans_ssh-autodiscover.v4
+    dest: /etc/fw-2d/rules-enabled/43_ans_ssh-autodiscover.v4
+    owner: root
+    group: root
+    state: link
+
+- name: run the firewall-up script
+  shell: /usr/local/sbin/firewall-up
