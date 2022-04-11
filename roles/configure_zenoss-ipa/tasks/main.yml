@@ -1,7 +1,10 @@
 ---
-# tasks file for install_zenoss
-- name: install zenoss
-  include: install_zenoss.yml
+# tasks file for configure_zenoss
+- name: configure susr01 snmp user
+  include: configure_susr01.yml
+
+- name: configure firewall
+  include: firewall.yml
 
 - name: install zenoss
   include: ssh.yml

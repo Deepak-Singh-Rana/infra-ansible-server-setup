@@ -1,0 +1,9 @@
+- name: reload systemctl daemon
+  systemd:
+    daemon_reload: yes
+
+- name: start 2dhomecleanup timer
+  service:
+    name: 2d-homecleanup.timer
+    enabled: yes
+    state: started

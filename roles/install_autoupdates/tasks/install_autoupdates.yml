@@ -5,10 +5,3 @@
       - kpatch-dnf
   ignore_errors: yes
   when: (ansible_facts['distribution'] == 'RedHat')
-
-- name: UB install 2dupgrades
-  apt :
-    name:
-      - 2d-upgrades
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'Ubuntu'

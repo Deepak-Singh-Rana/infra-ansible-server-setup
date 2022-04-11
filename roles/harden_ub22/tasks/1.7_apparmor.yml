@@ -1,0 +1,16 @@
+##################################
+#######grub apparmor options#########
+##################################
+
+- name: set grub audit=1 and audit_backlog_limit=10000 if it doesn't exist
+  lineinfile:
+    path: /etc/default/grub
+    state: present
+    regex: '^(GRUB_CMDLINE_LINUX=\")(?:(apparmor=1 security=apparmor ))?(.*\"$)'
+    line: '\1 apparmor=1 security=apparmor \3'
+    backrefs: yes
+
+- name: update grub on ubuntu
+  shell: /usr/sbin/update-grub2
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'Ubuntu'

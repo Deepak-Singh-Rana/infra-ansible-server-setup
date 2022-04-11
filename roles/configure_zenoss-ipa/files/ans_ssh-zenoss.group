@@ -1,2 +1,2 @@
-Match Group 2d_zenoss.access@2dl.nz)
+Match Group 2d_zenoss.access@2dl.nz
         AuthenticationMethods "publickey"

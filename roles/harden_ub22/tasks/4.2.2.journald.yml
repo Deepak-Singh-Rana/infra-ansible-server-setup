@@ -1,0 +1,11 @@
+- name: 4.2.2.2 compress journald logs
+  lineinfile:
+    path: /etc/systemd/journald.conf
+    regex: '^#Compress='
+    line: Compress=yes
+
+- name: 4.2.2.3 write logs to persistent disk
+  lineinfile:
+    path: /etc/systemd/journald.conf
+    regex: '^#Storage='
+    line: Storage=persistent
