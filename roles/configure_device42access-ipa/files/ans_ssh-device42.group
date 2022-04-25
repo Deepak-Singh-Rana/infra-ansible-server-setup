@@ -1,2 +1,2 @@
-Match Group 2d_autodiscover-unix.access@2dl.nz
+Match Group sec_ipa.autodiscover-unix.access@2dl.nz
         AuthenticationMethods "publickey"

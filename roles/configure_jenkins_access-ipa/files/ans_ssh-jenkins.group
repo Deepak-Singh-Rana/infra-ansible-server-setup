@@ -1,2 +1,2 @@
-Match Group sec_ipa.zenoss.access@2dl.nz
+Match Group sec_ipa.jenkins.access@2dl.nz
         AuthenticationMethods "publickey"

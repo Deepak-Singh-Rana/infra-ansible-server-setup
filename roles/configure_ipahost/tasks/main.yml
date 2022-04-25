@@ -1,0 +1,9 @@
+---
+# tasks file for configure_ipahost
+- name: Add details to the host in IPA
+  community.general.ipa_host:
+    name: "{{ vm_shortname }}.2dl.nz"
+    ipa_host: "ipamasterakl.2dl.nz"
+    ipa_user: isvc_ipajoiner
+    ipa_pass: Q7ONaDYFG4wX0DoTNbOgZGy9YwIeQu
+    description: primary security group = {{ primary_securitygroup }} ; {{ description }}

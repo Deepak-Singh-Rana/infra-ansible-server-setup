@@ -116,6 +116,6 @@ env https_proxy="http://frigg.snap.net.nz:3128" python3 generatehosts.py -c file
 
 ### 5. Deploy the servers
 ```
-ansible-playbook playbooks/newservers.yml --vault-password-file tmp/ansible-vault-file -K
+ansible-playbook playbooks/newservers-ipa.yml --vault-password-file tmp/ansible-vault-file
 ```
 

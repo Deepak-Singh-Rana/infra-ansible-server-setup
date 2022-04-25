@@ -1,9 +1,9 @@
 ---
 # tasks file for postinstall_cleanup
 #reboot the server so hardening takes affect
-- name: Unconditionally reboot the machine waiting for 300 seconds - 5mins before testing connection again
+- name: Unconditionally reboot the machine waiting for 120 seconds - 2mins before testing connection again
   reboot:
-    reboot_timeout: 300
+    reboot_timeout: 120
 
 
 

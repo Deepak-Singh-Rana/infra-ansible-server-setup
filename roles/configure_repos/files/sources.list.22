@@ -1,0 +1,13 @@
+##########################################
+#### 2degrees Ubuntu 20.04 jammy repo ####
+##########################################
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy main restricted
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-updates main restricted
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy universe
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-updates universe
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-updates multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-backports main restricted universe multiverse
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-security main restricted
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-security universe
+deb [arch=amd64] https://nido.snap.net.nz/ubuntu jammy-security multiverse

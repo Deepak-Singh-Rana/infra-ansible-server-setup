@@ -66,8 +66,9 @@ HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
 
 # Authentication:
 StrictModes yes
-
 PubkeyAuthentication yes
+AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys
+AuthorizedKeysCommandUser nobody
 
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
 IgnoreUserKnownHosts no
@@ -88,7 +89,7 @@ KerberosOrLocalPasswd yes
 KerberosTicketCleanup yes
 
 # GSSAPI options
-GSSAPIAuthentication no
+GSSAPIAuthentication yes
 GSSAPICleanupCredentials yes
 
 X11DisplayOffset 10
@@ -124,7 +125,6 @@ PubkeyAcceptedKeyTypes=rsa-sha2-256,ecdsa-sha2-nistp256,ecdsa-sha2-nistp256-cert
 
 ClientAliveInterval 300
 ClientAliveCountMax 3
-
 
 
 

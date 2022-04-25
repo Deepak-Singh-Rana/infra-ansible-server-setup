@@ -1,2 +1,2 @@
-Match Group 2d_security-cis.access@2dl.nz
+Match Group sec_ipa.security-cis.access@2dl.nz
         AuthenticationMethods "publickey"

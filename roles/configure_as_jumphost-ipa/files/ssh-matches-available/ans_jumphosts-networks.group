@@ -1,2 +1,2 @@
-Match Group 2d_jumphosts-networks.access@2dl.nz
+Match Group sec_ipa.jumphosts-networks.access@2dl.nz
         AuthenticationMethods "publickey,password"

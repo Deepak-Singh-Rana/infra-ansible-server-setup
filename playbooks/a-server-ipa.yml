@@ -52,13 +52,15 @@
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or
             (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
 #configures the home folder to 2degrees standards
-    - install_2dhome
+    - install_2dhome-ipa
 #configures ssh to 2degrees hardened standard
     - install_2dssh-ipa
 #sets up ntp on the server
     - install_ntp-ipa
 #configure ipa auth
     - configure_ipaauth
+#configure ipa details on the ipa server
+    - configure_ipahost
 #sets up splunk forwarder to send logs to splunk forwarder
     - install_splunk
 #configures the login messages to TASS/PCI/SOX standards
@@ -79,6 +81,9 @@
 #Hardens ubuntu 20 to level2 compliance
     - role: harden_ub20
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "20")
+#Hardens ubuntu 22 to level2 compliance
+    - role: harden_ub22
+      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "22")
 #Hardens redhat8 to level2 compliance
     - role: harden_rhel8
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
