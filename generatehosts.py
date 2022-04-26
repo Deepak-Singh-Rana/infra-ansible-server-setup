@@ -3,7 +3,6 @@
 #cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files,
 # and generates radius secret files
 #--------------------------------------------------------
-
 import yaml,csv
 #pip3 install --user pyyaml pwgen
 import random
