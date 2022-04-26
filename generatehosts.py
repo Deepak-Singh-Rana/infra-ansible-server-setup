@@ -14,6 +14,7 @@ import glob
 from pwgen import pwgen
 import argparse
 import socket
+import ipaddress
 
 ansible_vault_pass = ""
 hosts_list = ""
@@ -115,8 +116,6 @@ hosts_file = open("inventory/autogen-newservers", 'w')
 #this will hold information for us to build an ansible inventory file
 hosts_text = ""
 
-#hosts_text += "[radius]\n"
-#hosts_text += "gary.snap.net.nz ansible_ssh_private_key_file=~/.ssh/id_rsa\n\n"
 hosts_text += "[newservers]\n"
 
 # Loop through each row of the csv
@@ -131,22 +130,20 @@ for row_index, row in enumerate(datareader):
 	dnscheck = ""
 
 	fqdn = row['vm_shortname'].lower()+".2dl.nz"
-#	fqdn = row['vm_shortname'].lower()+"."+row['vm_domain'].lower()
-#	print(fqdn)
-#	try:
-#		socket.gethostbyname(fqdn)
-#	except:
-#		print("Can't resolve: "+fqdn+" Exiting")
-#		exit()
-#	ymlfilepath = "tmp/"+fqdn+".yml"
 	ymlfilepath = "tmp/"+row['vm_ipv4_address']+".yml"
 	print("building "+row['vm_ipv4_address']+".yml")
 #	vm_yaml_file = open("tmp/"+fqdn+".yml", 'w')
 	vm_yaml_file = open("tmp/"+row['vm_ipv4_address']+".yml", 'w')
 	# add the shortname to the lastpass text
 	#grab the shortname for lastpass files
+	shortname = row['vm_shortname']
+	#make sure they don't put silly thing in the vm_shortname column
+	if "." in shortname:
+		print("the server hostname(vm_shortname) cannot contain a fullstop")
+		exit()
 	lp_text += "Hostname: " + row['vm_shortname'].lower() +"\n"
-#	hosts_text += fqdn + "\n"
+	ipv4 = row['vm_ipv4_address']
+	ipaddress.ip_address(ipv4)
 	#us ip instead of fqdn, so we don't need dns already existing as IPA will create it itself
 	hosts_text += row['vm_ipv4_address'] + "\n"
 	hosts_list += fqdn + "\n"
@@ -171,15 +168,13 @@ for row_index, row in enumerate(datareader):
 	if row['vcenter_template'].lower() == "rhel8-template":
 		print(osuser[0])
 		redhat_found = "true"
-#		redhat_hostnames += "  - " + row['vm_shortname'].lower() + "." + row['vm_domain'].lower() +"\n"
-		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
+		redhat_hostnames += " - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: rhel8_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
 		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "rhel7-template":
 		print(osuser[0])
 		redhat_found = "true"
-#		redhat_hostnames += "  - " + row['vm_shortname'].lower() + "." + row['vm_domain'].lower() +"\n"
 		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: rhel7_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
@@ -187,7 +182,6 @@ for row_index, row in enumerate(datareader):
 	elif row['vcenter_template'].lower() == "suse15-template":
 		print(osuser[0])
 		redhat_found = "true"
-#		redhat_hostnames += "  - " + row['vm_shortname'].lower() + "." + row['vm_domain'].lower() +"\n"
 		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: sles15_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
