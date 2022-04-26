@@ -3,6 +3,7 @@
 #cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files,
 # and generates radius secret files
 #--------------------------------------------------------
+#radius generate version
 import yaml,csv
 #pip3 install --user pyyaml pwgen
 import random
@@ -115,8 +116,8 @@ hosts_file = open("inventory/autogen-newservers", 'w')
 #this will hold information for us to build an ansible inventory file
 hosts_text = ""
 
-#hosts_text += "[radius]\n"
-#hosts_text += "gary.snap.net.nz ansible_ssh_private_key_file=~/.ssh/id_rsa\n\n"
+hosts_text += "[radius]\n"
+hosts_text += "gary.snap.net.nz ansible_ssh_private_key_file=~/.ssh/id_rsa\n\n"
 hosts_text += "[newservers]\n"
 
 # Loop through each row of the csv
@@ -130,31 +131,25 @@ for row_index, row in enumerate(datareader):
 	root_data = ""
 	dnscheck = ""
 
-	fqdn = row['vm_shortname'].lower()+".2dl.nz"
-#	fqdn = row['vm_shortname'].lower()+"."+row['vm_domain'].lower()
-#	print(fqdn)
-#	try:
-#		socket.gethostbyname(fqdn)
-#	except:
-#		print("Can't resolve: "+fqdn+" Exiting")
-#		exit()
-#	ymlfilepath = "tmp/"+fqdn+".yml"
-	ymlfilepath = "tmp/"+row['vm_ipv4_address']+".yml"
-	print("building "+row['vm_ipv4_address']+".yml")
-#	vm_yaml_file = open("tmp/"+fqdn+".yml", 'w')
-	vm_yaml_file = open("tmp/"+row['vm_ipv4_address']+".yml", 'w')
+	fqdn = row['vm_shortname']+"."+row['vm_domain']
+	print(fqdn)
+	try:
+		socket.gethostbyname(fqdn)
+	except:
+		print("Can't resolve: "+fqdn+" Exiting")
+		exit()
+	ymlfilepath = "tmp/"+fqdn+".yml"
+	print("building "+fqdn+".yml")
+	vm_yaml_file = open("tmp/"+fqdn+".yml", 'w')
 	# add the shortname to the lastpass text
 	#grab the shortname for lastpass files
-	lp_text += "Hostname: " + row['vm_shortname'].lower() +"\n"
-#	hosts_text += fqdn + "\n"
-	#us ip instead of fqdn, so we don't need dns already existing as IPA will create it itself
-	hosts_text += row['vm_ipv4_address'] + "\n"
+	lp_text += "Hostname: " + row['vm_shortname'] +"\n"
+	hosts_text += fqdn + "\n"
 	hosts_list += fqdn + "\n"
-	yaml_text += "vm_shortname: " + row['vm_shortname'].lower() +'\n'
-	yaml_text += "primary_securitygroup: " + row['primary_securitygroup'].lower() + '\n'
+	yaml_text += "vm_shortname: " + row['vm_shortname'] +'\n'
 #	yaml_text += "vm_domain: " + row['vm_domain'] +'\n'
 	yaml_text += "vcenter_template: " + row['vcenter_template'] +'\n'
-	yaml_text += "vcenter_fqdn: " + row['vcenter_fqdn'].lower() +'\n'
+	yaml_text += "vcenter_fqdn: " + row['vcenter_fqdn'] +'\n'
 	yaml_text += "vcenter_vlan: " + row['vcenter_vlan'] +'\n'
 	yaml_text += "vcenter_datacenter: " + row['vcenter_datacenter'] +'\n'
 	yaml_text += "vcenter_datastore: " + row['vcenter_datastore'] +'\n'
@@ -163,32 +158,28 @@ for row_index, row in enumerate(datareader):
 	yaml_text += "vm_ipv4_address: " + row['vm_ipv4_address'] +'\n'
 	yaml_text += "vm_ipv4_netmask: " + row['vm_ipv4_netmask'] +'\n'
 	yaml_text += "vm_ipv4_gateway: " + row['vm_ipv4_gateway'] +'\n'
-	print("setting dns to ipa servers ips")
-	yaml_text += "vm_ipv4_dns_a: " + '172.21.238.3\n'
-	yaml_text += "vm_ipv4_dns_b: " + '172.23.238.3\n'
-#	print("hi")
+	yaml_text += "vm_ipv4_dns_a: " + row['vm_ipv4_dns_a'] +'\n'
+	yaml_text += "vm_ipv4_dns_b: " + row['vm_ipv4_dns_b'] +'\n'
+	print("hi")
 	print(row['vcenter_template'])
 	if row['vcenter_template'].lower() == "rhel8-template":
 		print(osuser[0])
 		redhat_found = "true"
-#		redhat_hostnames += "  - " + row['vm_shortname'].lower() + "." + row['vm_domain'].lower() +"\n"
-		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
+		redhat_hostnames += "  - " + row['vm_shortname'] + "." + row['vm_domain'] +"\n"
 		yaml_text += "vm_guest_id: rhel8_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
 		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "rhel7-template":
 		print(osuser[0])
 		redhat_found = "true"
-#		redhat_hostnames += "  - " + row['vm_shortname'].lower() + "." + row['vm_domain'].lower() +"\n"
-		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
+		redhat_hostnames += "  - " + row['vm_shortname'] + "." + row['vm_domain'] +"\n"
 		yaml_text += "vm_guest_id: rhel7_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
 		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "suse15-template":
 		print(osuser[0])
 		redhat_found = "true"
-#		redhat_hostnames += "  - " + row['vm_shortname'].lower() + "." + row['vm_domain'].lower() +"\n"
-		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
+		redhat_hostnames += "  - " + row['vm_shortname'] + "." + row['vm_domain'] +"\n"
 		yaml_text += "vm_guest_id: sles15_64Guest\n"
 		yaml_text += "localuser: "+osuser[0]+"\n"
 		yaml_text += "localpassword: "+personal_password+"\n"
@@ -217,7 +208,6 @@ for row_index, row in enumerate(datareader):
 	else:
 		print("ipve6 not found")
 		yaml_text += "ipv6: false\n"
-	yaml_text += "description: " + row['description'] +'\n'
 	# generate a random radius secret
 	yaml_text += "vm_radius_secret: "+get_random_alphanumeric_string(24)+"\n"
 
@@ -359,15 +349,14 @@ if redhat_found:
 #exit(0)
 
 print("")
-print("---------------------------------------------------------------------------------------------------")
-print("--------------====You can now deploy the servers using one of the below commands====---------------")
-print("---------------------------------------------------------------------------------------------------")
+print("You can now deploy the servers using the command...")
 
-print("---===---====---===---===---===---===---for IPA testing only---===---===---===---===---===---===---")
+print("------for systems testing with IPA-stag auth-------")
 print("ansible-playbook playbooks/newservers-ipa-stag.yml --vault-password-file tmp/ansible-vault-file")
-print("")
-print("")
-print("---===---====---===---===---===---===---===--Production--===---===---===---===---===---===---===---")
+
+print("---------for production with IPA auth--------------")
 print("ansible-playbook playbooks/newservers-ipa.yml --vault-password-file tmp/ansible-vault-file")
-print("")
-print("")
+
+print("-----------------for production---------------")
+print("ansible-playbook playbooks/newservers.yml --vault-password-file tmp/ansible-vault-file -K")
+
