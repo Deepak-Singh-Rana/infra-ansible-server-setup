@@ -1,6 +1,6 @@
 - name: Ubuntu Check repo https://odin.snap.net.nz is accessable
   uri:
-    url: https://odin.snap.net.nz
+    url: https://nido.snap.net.nz
     timeout: 10
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'

@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 #---------------what does this script do?----------------
-#cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files,
-# and generates radius secret files
+#cleans up tmp folder, opens csv, generate hosts file, generate yaml files, open yaml files
 #--------------------------------------------------------
 import yaml,csv
 #pip3 install --user pyyaml pwgen
@@ -20,7 +19,6 @@ ansible_vault_pass = ""
 hosts_list = ""
 redhat_found = ""
 redhat_hostnames = ""
-personal_password = ""
 
 ##---parse command line arguments---#
 parser = argparse.ArgumentParser(description='Tell the script what csv to load')
@@ -58,8 +56,8 @@ def get_file_from_lastpass(filename):
 if not os.path.isdir("tmp"):
 	os.makedirs("tmp")
 
-if not os.path.isdir("tmp/radius"):
-	os.makedirs("tmp/radius")
+#if not os.path.isdir("tmp/radius"):
+#	os.makedirs("tmp/radius")
 
 ##----cleanup before our run to make sure we don't have things that we don't want----#
 a=0
@@ -82,10 +80,10 @@ for file in os.listdir("tmp"):
 		print(file+" is a ssh host key file")
 		print("removing old file :"+file_relpath)
 		os.remove(file_relpath)
-
-for file in os.listdir("tmp/radius"):
-	print("removing old file :"+file)
-	os.remove("tmp/radius/"+file)
+if os.path.isdir("/tmp/radius"):
+	for file in os.listdir("tmp/radius"):
+		print("removing old file :"+file)
+		os.remove("tmp/radius/"+file)
 
 ##call the get_file_from_lastpass function to make sure we have needed files
 get_file_from_lastpass("ansible-vault-file")
@@ -97,13 +95,6 @@ get_file_from_lastpass("server_ca.pub")
 ##read in the vault password
 with open("tmp/ansible-vault-file") as f:
 	ansible_vault_pass = f.read().rstrip("\n")
-
-## generate a username and personal password just incase we find any redhat vm's
-###only get's used if we find a redhat vm
-aduser = os.getenv('USER')
-osuser = aduser.split('@')
-personal_password = generate_password(10)
-
 
 ##read in the csv
 csvfile = open(csvtoread, 'r')
@@ -166,26 +157,20 @@ for row_index, row in enumerate(datareader):
 #	print("hi")
 	print(row['vcenter_template'])
 	if row['vcenter_template'].lower() == "rhel8-template":
-		print(osuser[0])
+#		print(osuser[0])
 		redhat_found = "true"
 		redhat_hostnames += " - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: rhel8_64Guest\n"
-		yaml_text += "localuser: "+osuser[0]+"\n"
-		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "rhel7-template":
-		print(osuser[0])
+#		print(osuser[0])
 		redhat_found = "true"
 		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: rhel7_64Guest\n"
-		yaml_text += "localuser: "+osuser[0]+"\n"
-		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "suse15-template":
-		print(osuser[0])
+#		print(osuser[0])
 		redhat_found = "true"
 		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: sles15_64Guest\n"
-		yaml_text += "localuser: "+osuser[0]+"\n"
-		yaml_text += "localpassword: "+personal_password+"\n"
 	elif row['vcenter_template'].lower() == "ubuntu18-template":
 		yaml_text += "vm_guest_id: ubuntu64Guest\n"
 	elif row['vcenter_template'].lower() == "ubuntu20-template":
@@ -213,7 +198,7 @@ for row_index, row in enumerate(datareader):
 		yaml_text += "ipv6: false\n"
 	yaml_text += "description: " + row['description'] +'\n'
 	# generate a random radius secret
-	yaml_text += "vm_radius_secret: "+get_random_alphanumeric_string(24)+"\n"
+#	yaml_text += "vm_radius_secret: "+get_random_alphanumeric_string(24)+"\n"
 
 	# generate a random password for root
 	root_passwd = generate_password(16)
@@ -296,61 +281,14 @@ hosts_file.close()
 # We're done! Close the CSV file.
 csvfile.close()
 #exit()
-##----open all yml files and generate radius secret files from them----##
-print("building radius files...")
+
 for file in os.listdir("tmp"):
-	if file.endswith(".yml"):
-		ymlfilepath="tmp/"+file
-		print("building radius file for "+file+"...")
-		yaml_file = open("tmp/"+ file, "r")
-		parsed_yaml_file = yaml.load(yaml_file, Loader=yaml.FullLoader)
-		radius_secret=(parsed_yaml_file["vm_radius_secret"])
-		shortname=(parsed_yaml_file["vm_shortname"])
-		ipv4_address=(parsed_yaml_file["vm_ipv4_address"])
+        if file.endswith(".yml"):
+                ymlfilepath="tmp/"+file
+                #encrypt the file
+                print("encrypting :"+ymlfilepath)
+                subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=tmp/ansible-vault-file"])
 
-		#write the ipv4 hosts file
-		ipv4_radius_file = open("tmp/radius/"+ipv4_address,"w+")
-		ipv4_radius_file.write("client "+ipv4_address+" {\n\t\tsecret = "+radius_secret+"\n\t\tshortname = "+shortname+"."+ipv4_address+"\n}\n")
-		ipv4_radius_file.close()
-
-		#if we find ipv6 information create an ipv6 secrets file
-		if "vm_ipv6_address_underscores" in parsed_yaml_file:
-			ipv6_address_underscores=(parsed_yaml_file["vm_ipv6_address_underscores"])
-		if "vm_ipv6_address" in parsed_yaml_file:
-			ipv6_address=(parsed_yaml_file["vm_ipv6_address"])
-
-			#write the ipv6 hosts file
-			ipv6_radius_file = open("tmp/radius/"+ipv6_address_underscores,"w+")
-			ipv6_radius_file.write("client "+ipv6_address+" {\n\t\tsecret = "+radius_secret+"\n\t\tshortname = "+shortname+"."+ipv6_address+"\n}\n")
-			ipv6_radius_file.close()
-
-
-		yaml_file.close()
-		#encrypt the file
-		print("encrypting :"+ymlfilepath)
-		subprocess.run(["ansible-vault", "encrypt", ymlfilepath, "--vault-password-file=tmp/ansible-vault-file"])
-
-#we need to get host information for below
-
-##---generate username and password info we can use for initial non ad redhat logins----#
-if redhat_found:
-	print("redhat server found, generating local user information")
-
-	pswdfile = open("personal.yml",'a')
-	#print(osuser[0])
-	personal_text = ""
-	personal_text += "#new server range\n"
-	personal_text += "hosts:\n"
-	personal_text += redhat_hostnames
-	personal_text += "username: "+ osuser[0]+"\n"
-	personal_text += "password: "+personal_password
-	personal_text += "\n"
-	personal_text += "\n"
-
-	#write our hosts string to the hosts_file and close it
-	pswdfile.write(personal_text)
-	pswdfile.close()
-#exit(0)
 
 print("")
 print("---------------------------------------------------------------------------------------------------")
