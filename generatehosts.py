@@ -142,8 +142,15 @@ for row_index, row in enumerate(datareader):
 	yaml_text += "primary_securitygroup: " + row['primary_securitygroup'].lower() + '\n'
 #	yaml_text += "vm_domain: " + row['vm_domain'] +'\n'
 	yaml_text += "vcenter_template: " + row['vcenter_template'] +'\n'
-	yaml_text += "vcenter_fqdn: " + row['vcenter_fqdn'].lower() +'\n'
 	yaml_text += "vcenter_vlan: " + row['vcenter_vlan'] +'\n'
+	if "HamiltonVI" in row['vcenter_datacenter']:
+		yaml_text += "vcenter_fqdn: snzclham860.nzc.co.nz\n"
+	if "KhyberPassVI" in row['vcenter_datacenter']:
+		yaml_text += "vcenter_fqdn: snzclakl660.nzc.co.nz\n"
+	if "HamiltonNFV" in row['vcenter_datacenter']:
+		yaml_text += "vcenter_fqdn: snzclham880.nzc.co.nz\n"
+	if "KhyberPassNFV" in row['vcenter_datacenter']:
+		yaml_text += "vcenter_fqdn: snzclakl680.nzc.co.nz\n"
 	yaml_text += "vcenter_datacenter: " + row['vcenter_datacenter'] +'\n'
 	yaml_text += "vcenter_datastore: " + row['vcenter_datastore'] +'\n'
 	yaml_text += "vcenter_cluster: " + row['vcenter_cluster'] +'\n'
@@ -157,17 +164,14 @@ for row_index, row in enumerate(datareader):
 #	print("hi")
 	print(row['vcenter_template'])
 	if row['vcenter_template'].lower() == "rhel8-template":
-#		print(osuser[0])
 		redhat_found = "true"
 		redhat_hostnames += " - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: rhel8_64Guest\n"
 	elif row['vcenter_template'].lower() == "rhel7-template":
-#		print(osuser[0])
 		redhat_found = "true"
 		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: rhel7_64Guest\n"
 	elif row['vcenter_template'].lower() == "suse15-template":
-#		print(osuser[0])
 		redhat_found = "true"
 		redhat_hostnames += "  - " + row['vm_shortname'].lower() + ".2dl.nz\n"
 		yaml_text += "vm_guest_id: sles15_64Guest\n"
