@@ -13,6 +13,14 @@
     line: 'override_shell = /bin/bash'
     state: present
 
+- name: lower entry cache timeout to 30mins
+  lineinfile:
+    path: /etc/sssd/sssd.conf
+    insertafter: '^\[domain\/'
+    line: 'entry_cache_timeout = 1900'
+    state: present
+
+
 - name: set the home dir to be /home/mgt.first.lastname
   lineinfile:
     path: /etc/sssd/sssd.conf
@@ -20,11 +28,11 @@
     line: 'override_homedir = /home/%u'
     state: present
 
-- name: lower entry cache timeout to 30mins
+- name: disable the local_negative_timeout so we don't lock poeple out accidentally
   lineinfile:
     path: /etc/sssd/sssd.conf
     insertafter: '^\[nss\]'
-    line: 'entry_cache_timeout = 1900'
+    line: 'local_negative_timeout = 0'
     state: present
 
 
