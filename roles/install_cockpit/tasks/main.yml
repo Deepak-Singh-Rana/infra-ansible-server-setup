@@ -1,2 +1,10 @@
 ---
 # tasks file for install_cockpit
+
+- name: Install cockpit
+  ansible.builtin.package:
+    name:
+      - cockpit
+      - cockpit-pcp
+      - cockpit-sosreport
+    state: latest

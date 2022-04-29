@@ -1,5 +1,0 @@
-# ----------------------------------------------------------------------------
-# Please define individual inputs in the deployment directory for each server
-# e.g. for SNZCLAK033 define the inputs.conf, props.conf, transforms.conf etc
-# in /opt/splunk/etc/deployment/snzclakl033/local/
-# --------------------------------------------------------------------------
