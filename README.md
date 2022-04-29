@@ -75,13 +75,10 @@ env https_proxy="http://frigg.snap.net.nz:3128" ansible-galaxy collection instal
 ### 0. Firewall rules
 [Default rule spreadsheet](https://2degreesnz.sharepoint.com/:x:/r/sites/Team-InfrastructureEngineeringAndOperations/Shared%20Documents/General/Linux/Firewall/new-server-default-firewallrules.xlsx?d=w21b307a19781403f86628d1ba5dfcce9&csf=1&web=1&e=NWrKhi)
 
-### 1. DNS for servers
-
-Put all vm dns entries fully into dns else deployment will fail
-[dnsdb link](https://dnsdb.snap.net.nz)
-
+### 1 Update deploy script
 ```
 cd ~/infra-ansible-server-setup
+git pull
 ```
 
 ### 2. LastPass access
@@ -92,12 +89,6 @@ LastPass access for adding zeus and root passwords/retrieving needed passwords a
 env https_proxy="http://frigg.snap.net.nz:3128" lpass login --trust $USER
 
 ```
-### 2.a Update deploy script
-```
-cd ~/infra-ansible-server-setup
-git pull
-```
-
 
 ### 3. Virtual machine/s details
 
@@ -116,6 +107,6 @@ env https_proxy="http://frigg.snap.net.nz:3128" python3 generatehosts.py -c file
 
 ### 5. Deploy the servers
 ```
-ansible-playbook playbooks/newservers-ipa.yml --vault-password-file tmp/ansible-vault-file
+ansible-playbook playbooks/newservers-2dl.nz.yml --vault-password-file tmp/ansible-vault-file
 ```
 
