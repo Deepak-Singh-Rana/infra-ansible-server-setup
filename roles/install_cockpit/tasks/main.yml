@@ -1,10 +1,12 @@
 ---
 # tasks file for install_cockpit
 
-- name: Install cockpit
+- name: Install cockpit base
   ansible.builtin.package:
     name:
       - cockpit
       - cockpit-pcp
       - cockpit-sosreport
     state: latest
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= '22') or
+        (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
