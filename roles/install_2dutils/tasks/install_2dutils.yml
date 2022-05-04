@@ -56,6 +56,7 @@
     - mlocate
     - pwgen
     - rsync
+    - fonts-emojione
     state: present
   when: ansible_facts['distribution'] == 'Ubuntu'
 

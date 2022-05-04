@@ -1,0 +1,19 @@
+
+#if you want to limit how many servers built at once put the serial in the a-sever.yml
+- hosts: localhost
+  gather_facts: false
+
+- name: vcenter playbook
+  import_playbook: a-vcenter.yml
+
+- name: radius playbook
+  import_playbook: a-radius.yml
+
+- name: wait for server to show it's ready
+  import_playbook: a-wait.yml
+
+- name: configure server
+  import_playbook: a-server.yml
+
+- name: cleanup after ourselves
+  import_playbook: a-cleanup.yml

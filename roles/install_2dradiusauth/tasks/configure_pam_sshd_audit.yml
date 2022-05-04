@@ -1,4 +1,0 @@
-- name: add the pam_tty_audit.so to /etc/pam.d/sshd
-  lineinfile:
-   path: /etc/pam.d/sshd
-   line: 'session required pam_tty_audit.so enable=*'

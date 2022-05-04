@@ -1,7 +1,0 @@
-- name: RH install dnf-automatic
-  ansible.builtin.dnf:
-    name:
-      - dnf-automatic
-      - kpatch-dnf
-  ignore_errors: yes
-  when: (ansible_facts['distribution'] == 'RedHat')

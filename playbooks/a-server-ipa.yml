@@ -7,7 +7,7 @@
   become: yes
   become_method: sudo
   gather_facts: true
-  serial: 2
+  serial: 5
   vars:
     - ansible_ssh_private_key_file: "./tmp/ansible-deploy.key"
     - ansible_python_interpreter: /usr/bin/python3
@@ -89,6 +89,8 @@
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 #setup vulnerability scanning
     - configure_upguardaccess-ipa
+#install cockpit
+    - install_cockpit
 #setup cmdb scanning
     - configure_device42access-ipa
 #install aide late so we don't have heaps of changes for the next scan because we are setting up the os

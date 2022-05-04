@@ -1,6 +1,0 @@
-Name: 2d allow user to login if in list of /etc/shells
-Default: yes
-Priority: 268
-Auth-Type: Primary
-Auth:
-        required                pam_shells.so
