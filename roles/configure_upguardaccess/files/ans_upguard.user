@@ -1,3 +1,0 @@
-Match User SVC_fixed.upguard@2degrees.nz
-        AuthenticationMethods "publickey"
-        AllowGroups SEC_fixed.servers.upguard

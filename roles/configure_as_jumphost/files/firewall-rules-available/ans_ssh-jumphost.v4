@@ -1,6 +1,0 @@
-##############################
-#DO NOT MANUALLY EDIT
-#ANY CHANGES WILL BE OVER WRITTEN WHEN THE PACKAGE GETS UPDATED
-##############################
-#allow access from the corp network
-Accept: 22/tcp from 10.192.0.0/10

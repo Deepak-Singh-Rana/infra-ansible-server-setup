@@ -1,3 +1,0 @@
-Match Group SEC_servers.fixed.appops
-        AllowGroups SEC_servers.fixed.appops
-        AuthenticationMethods "publickey" "password"

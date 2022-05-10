@@ -1,3 +1,0 @@
-Match Group SEC_IA_Sysadmin_Jump
-        AllowGroups SEC_IA_Sysadmin_Jump
-        AuthenticationMethods "publickey" "password"

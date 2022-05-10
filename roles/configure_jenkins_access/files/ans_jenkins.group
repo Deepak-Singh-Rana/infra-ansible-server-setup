@@ -1,3 +1,0 @@
-Match Group SEC_JenkinsFixedDevServers
-        AuthenticationMethods "publickey"
-        AllowGroups SEC_JenkinsFixedDevServers

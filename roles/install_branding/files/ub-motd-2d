@@ -1,0 +1,3 @@
+#!/bin/sh
+#this is so we don't have to "echo" every line in a file to have it show
+[ -f /etc/motd.2d ] && cat /etc/motd.2d || true

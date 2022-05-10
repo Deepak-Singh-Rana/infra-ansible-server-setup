@@ -1,6 +1,0 @@
-Accept: 22/tcp from 172.21.200.155/32
-Accept: 22/tcp from 172.21.200.156/32
-Accept: 22/tcp from 172.21.200.157/32
-Accept: 22/tcp from 172.23.200.155/32
-Accept: 22/tcp from 172.23.200.156/32
-Accept: 22/tcp from 172.23.200.157/32
