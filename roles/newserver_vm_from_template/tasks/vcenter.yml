@@ -12,7 +12,7 @@
     datacenter: "{{ vcenter_datacenter }}"
     datastore: "{{ vcenter_datastore }}"
     cluster: "{{ vcenter_cluster }}"
-#    annotation: "{{ vcenter_notes }}"
+    annotation: "{{ description }}"
     #state: present
     state: poweredon
     folder: "{{ vcenter_folder }}"
