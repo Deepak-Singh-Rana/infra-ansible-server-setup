@@ -43,6 +43,9 @@
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18")
 #setups 2degrees standard firewall
     - install_2d-firewall
+#configure automatic rebooting if requested
+    - role: configure_autoreboot
+      when: (vm_autoreboot_time is defined)
 #configures the servers to allow them to email out if need be
     - install_email
 #install and configure auditd for auditing purposes

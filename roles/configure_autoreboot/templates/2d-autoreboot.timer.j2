@@ -1,0 +1,10 @@
+#This file was configured via ansible
+[Unit]
+Description= 2degrees Reboot Scheduling.
+
+[Timer]
+OnCalendar={{ vm_autoreboot_time }}
+Unit=reboot.target
+
+[Install]
+WantedBy=timers.target

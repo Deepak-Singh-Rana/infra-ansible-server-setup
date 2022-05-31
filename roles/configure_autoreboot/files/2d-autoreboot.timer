@@ -1,0 +1,9 @@
+[Unit]
+Description=Reboot Scheduling.
+
+[Timer]
+OnCalendar=REPLACEME
+Unit=reboot.target
+
+[Install]
+WantedBy=timers.target

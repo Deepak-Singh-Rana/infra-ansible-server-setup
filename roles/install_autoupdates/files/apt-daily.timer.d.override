@@ -5,9 +5,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Timer]
-#every tuesday at 6am with a possible delay of 12 hours
-OnCalendar=Tue *-1..12-* 6:00
-RandomizedDelaySec=12h
+#every weekday at 2am with a possible delay of up to 2 hours
+OnCalendar=Mon,Tue,Wed,Thu,Fri *-*-* 2:00
+RandomizedDelaySec="1h 50m"
 AccuracySec=1m
 Persistent=true
 

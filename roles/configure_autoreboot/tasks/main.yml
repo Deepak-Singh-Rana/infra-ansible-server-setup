@@ -1,0 +1,19 @@
+---
+# tasks file for configure_autoreboot
+- name: copied 2d autoreboot timer
+  ansible.builtin.template:
+    src: 2d-autoreboot.timer.j2
+    dest: /etc/systemd/system/2d-autoreboot.timer
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: Enabled a timer unit for 2d-autoreboot.timer
+  ansible.builtin.systemd:
+    name: 2d-autoreboot.timer
+    state: started
+    enabled: yes

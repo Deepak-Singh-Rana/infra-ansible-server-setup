@@ -5,9 +5,9 @@ ConditionPathExists=!/run/ostree-booted
 Wants=network-online.target
 
 [Timer]
-#every tuesday at 6am with a posible 12 hour delay or 12 hours
-OnCalendar=Tue 6:00
-RandomizedDelaySec=12h
+#every weekday at 2am with a posible delay of up to 1hour 50 mins
+OnCalendar=Mon,Tue,Wed,Thu,Fri *-*-* 2:00
+RandomizedDelaySec="1h 50m"
 AccuracySec=1m
 Persustent=true
 
