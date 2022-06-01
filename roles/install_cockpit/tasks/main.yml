@@ -10,3 +10,9 @@
     state: latest
   when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= '22') or
         (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+
+- name: remove the cockpit motd
+  ansible.builtin.file:
+    path: /etc/motd.d/cockpit
+    state: absent
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= '22')
