@@ -1,0 +1,3 @@
+- name: Set timezone to Pacific/Auckland
+  community.general.timezone:
+    name: Pacific/Auckland

@@ -2,3 +2,6 @@
 # tasks file for install_ntp
 - name: install chrony
   include: configure-chrony.yml
+
+- name: set timezone
+  include: configure-timezone.yml

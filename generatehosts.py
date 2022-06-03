@@ -84,6 +84,8 @@ def upload_to_lastpass(user,fqdn):
 
 ##----generate the correct guestid for vmware----##
 def set_guest_id(template):
+	if template == "rhel9-template":
+		guestid = "vm_guest_id: rhel8_64Guest\n"
 	if template == "rhel8-template":
 		guestid = "vm_guest_id: rhel8_64Guest\n"
 	if template == "rhel7-template":

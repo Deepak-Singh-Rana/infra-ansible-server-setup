@@ -1,17 +1,25 @@
 ---
 # tasks file for configure_hostcerts
-- name: Copy ssh_host_ed25519_key-cert
+- name: Copy ssh_host pub and certs
   copy:
-    src: ../../tmp/{{inventory_hostname}}_ssh_host_ed25519_key-cert.pub
-    dest: /etc/ssh/ssh_host_ed25519_key-cert.pub
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: '0644'
+  loop:
+    - { src: '../../tmp/{{ inventory_hostname }}_ssh_host_ed25519_key.pub', dest: '/etc/ssh/ssh_host_ed25519_key.pub' }
+    - { src: '../../tmp/{{ inventory_hostname }}_ssh_host_ed25519_key-cert.pub', dest: '/etc/ssh/ssh_host_ed25519_key-cert.pub' }
+    - { src: '../../tmp/{{ inventory_hostname }}_ssh_host_ecdsa_key.pub', dest: '/etc/ssh/ssh_host_ecdsa_key.pub' }
+    - { src: '../../tmp/{{ inventory_hostname }}_ssh_host_ecdsa_key-cert.pub', dest: '/etc/ssh/ssh_host_ecdsa_key-cert.pub' }
 
-- name: Copy ssh_host_ed25519_key
+- name: Copy ssh_host keys
   copy:
-    src: ../../tmp/{{inventory_hostname}}_ssh_host_ed25519_key
-    dest: /etc/ssh/ssh_host_ed25519_key
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: '0600'
+  loop:
+    - { src: '../../tmp/{{ inventory_hostname }}_ssh_host_ed25519_key', dest: '/etc/ssh/ssh_host_ed25519_key' }
+    - { src: '../../tmp/{{ inventory_hostname }}_ssh_host_ecdsa_key', dest: '/etc/ssh/ssh_host_ecdsa_key' }

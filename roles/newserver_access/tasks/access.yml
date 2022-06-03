@@ -1,43 +1,31 @@
 ---
 # tasks file for setting up access to the server
-#- name: generate the radius secret
-#  delegate_to: 127.0.0.1
-#  command: /usr/bin/pwgen -s -B 16 1
-#  register: radius_secret
-
 - name: remove ssh_host_ed25519_key.pub from ansilbe server now
   delegate_to: 127.0.0.1
-  file:
-    path: ../tmp/{{inventory_hostname}}_ssh_host_ed25519_key.pub
+  file: 
+    path: "{{ item }}"
     state: absent
+  loop:
+    - '../tmp/{{inventory_hostname}}_ssh_host_ed25519_key'
+    - '../tmp/{{inventory_hostname}}_ssh_host_ed25519_key.pub'
+    - '../tmp/{{inventory_hostname}}_ssh_host_ed25519_key-cert.pub'
+    - '../tmp/{{inventory_hostname}}_ssh_host_ecdsa_key'
+    - '../tmp/{{inventory_hostname}}_ssh_host_ecdsa_key.pub'
+    - '../tmp/{{inventory_hostname}}_ssh_host_ecdsa_key-cert.pub'
 
-- name: remove ssh_host_ed25519_key-cert.pub from ansilbe server now
-  delegate_to: 127.0.0.1
-  file:
-#    path: ../files/ssh_host_ed25519_key-cert.pub
-    path: ../tmp/{{inventory_hostname}}_ssh_host_ed25519_key-cert.pub
-    state: absent
 
-- name: remove ssh_host_ed25519_key from ansilbe server now
-  delegate_to: 127.0.0.1
-  file:
-    path: ../tmp/{{inventory_hostname}}_ssh_host_ed25519_key
-    state: absent
-
-- name: generate a server host key
+- name: generate a server ed25519 host key
   delegate_to: 127.0.0.1
   command: /usr/bin/ssh-keygen -t ed25519 -N "" -f ../tmp/{{inventory_hostname}}_ssh_host_ed25519_key
 
-- name: sign the hostkey
+- name: generate a server ecdsa host key
   delegate_to: 127.0.0.1
-  command: /usr/bin/ssh-keygen -s ../tmp/server_ca -I 2degrees-server_{{ vm_shortname }} -h -n {{ vm_shortname }}.snap.net.nz,{{ vm_shortname }}.2degrees.nz,{{ vm_shortname }}.2dl.nz,{{ vm_shortname }}.nzc.co.nz -P {{ ca_passphrase }} -V +300w ../tmp/{{inventory_hostname}}_ssh_host_ed25519_key.pub
+  command: /usr/bin/ssh-keygen -t ed25519 -N "" -f ../tmp/{{inventory_hostname}}_ssh_host_ecdsa_key
 
-#- name: generate root password
-#  delegate_to: 127.0.0.1
-#  command: pwgen -B -N 2
-#  register: root_pass
+- name: sign the ed25519 hostkey
+  delegate_to: 127.0.0.1
+  command: /usr/bin/ssh-keygen -s ../tmp/server_ca -I 2degrees-server_{{ vm_shortname }} -h -n {{ vm_shortname }}.2dl.nz,{{ vm_shortname }}.2degrees.nz,{{ vm_shortname }}.nzc.co.nz -P {{ ca_passphrase }} -V +300w ../tmp/{{inventory_hostname}}_ssh_host_ed25519_key.pub
 
-#- name: generate zeus password
-#  delegate_to: 127.0.0.1
-#  command: pwgen -B -N 2
-#  register: root_pass
+- name: sign the ecdsa hostkey
+  delegate_to: 127.0.0.1
+  command: /usr/bin/ssh-keygen -s ../tmp/server_ca -I 2degrees-server_{{ vm_shortname }} -h -n {{ vm_shortname }}.2dl.nz,{{ vm_shortname }}.2degrees.nz,{{ vm_shortname }}.nzc.co.nz -P {{ ca_passphrase }} -V +300w ../tmp/{{inventory_hostname}}_ssh_host_ecdsa_key.pub
