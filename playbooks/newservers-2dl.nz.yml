@@ -3,14 +3,19 @@
 - hosts: localhost
   gather_facts: false
 
+#deploys the vm to vmware
 - name: vcenter playbook
   import_playbook: a-vcenter.yml
 
+#this is a seperate playbook cause it contains only one task and tha'ts to wait to make sure the vm's are up
 - name: wait for server to show it's ready
   import_playbook: a-wait.yml
 
+#setups the vm
 - name: configure server-stag
   import_playbook: a-server-ipa.yml
 
-- name: cleanup after ourselves
-  import_playbook: a-cleanup.yml
+#cleansup after ourselfs on the ansible server
+#we might not need this
+#- name: cleanup after ourselves
+#  import_playbook: a-cleanup.yml

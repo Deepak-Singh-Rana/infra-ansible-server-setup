@@ -1,4 +1,12 @@
 ---
 # tasks file for install_ntp
+
+#disable systemd-timesyncd.service
+- name: disable systemd-timesyncd.service
+  ansible.builtin.service:
+    name: systemd-timesyncd.service
+    state: stopped
+    enabled: no
+
 - name: install chrony
   include: configure-chrony.yml
