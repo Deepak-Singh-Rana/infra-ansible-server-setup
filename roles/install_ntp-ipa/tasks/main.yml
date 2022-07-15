@@ -7,6 +7,7 @@
     name: systemd-timesyncd.service
     state: stopped
     enabled: no
+  when: ansible_facts['distribution'] == "Ubuntu"
 
 - name: install chrony
   include: configure-chrony.yml

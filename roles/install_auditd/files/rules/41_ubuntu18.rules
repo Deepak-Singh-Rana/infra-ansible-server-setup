@@ -9,10 +9,13 @@
 ###
 ##4.1.4 Ensure events that modify date and time information are collected (Scored)
 ###
--a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change
--a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change
--a always,exit -F arch=b64 -S clock_settime -k time-change
--a always,exit -F arch=b32 -S clock_settime -k time-change
+#-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change
+#-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change
+#-a always,exit -F arch=b64 -S clock_settime -k time-change
+#-a always,exit -F arch=b32 -S clock_settime -k time-change
+-a always,exit -F arch=b64 -S adjtimex -S settimeofday -S clock_settime -k time-change
+-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S clock_settime -S stime -k time-change
+
 -w /etc/localtime -p wa -k time-change
 
 
@@ -60,12 +63,14 @@
 ###
 ##4.1.10 Ensure discretionary access control permission modification events are collected (Scored)
 ###
--a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+#-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+#-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod
+#-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+#-a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod
+#-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+#-a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -S chown -S fchown -S fchownat -S lchown -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -S chown -S fchown -S fchownat -S lchown -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod
 
 ###
 ##4.1.11 Ensure unsuccessful unauthorized file access attempts are collected (Scored)

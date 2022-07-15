@@ -1,0 +1,24 @@
+#########################################################
+####Do not manually change me, I'm managed by ansible####
+####--------Your changes will be overwritten---------####
+#########################################################
+
+# Software Management ---------------------------------------------------------
+
+# RPM (Redhat/CentOS)
+-w /usr/bin/rpm -p x -k software_mgmt
+-w /usr/bin/yum -p x -k software_mgmt
+-w /usr/bin/dnf -p x -k software_mgmt
+
+# Special Software ------------------------------------------------------------
+
+## GDS specific secrets
+-w /etc/puppet/ssl -p wa -k puppet_ssl
+
+## IBM Bigfix BESClient
+-a exit,always -F arch=b64 -S open -F dir=/opt/BESClient -F success=0 -k soft_besclient
+-w /var/opt/BESClient/ -p wa -k soft_besclient
+
+## CHEF https://www.chef.io/chef/
+-w /etc/chef -p wa -k soft_chef
+

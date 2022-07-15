@@ -27,8 +27,16 @@ fixedtest = ""
 parser = argparse.ArgumentParser(description='Tell the script what csv to load')
 #parser.add_argument('--csv', default='vm_list.csv', help='name of file to read (default: vm_list.csv)')
 parser.add_argument('-c', default='vm_list.csv', help='name of file to read (default: vm_list.csv)')
+parser.add_argument('-a', help='run from bash script')
 csvargument=parser.parse_args()
 csvtoread=csvargument.c
+bashfile=csvargument.a
+#make sure people run this script through the generatehosts bash script
+if (bashfile != "generatehosts"):
+	print("Do not run generatehosts.py this file from the command line manually")
+	print("Please use 'generatehosts' instead. this will help you log into lastpass and also select a csv file to read from")
+	print("./generatehosts")
+	exit()
 
 ##----generate random strings on request----##
 def get_random_alphanumeric_string(length):

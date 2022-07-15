@@ -89,16 +89,17 @@
 -a always,exit -F arch=b32 -S sethostname -S setdomainname -k network_modifications
 -a always,exit -F arch=b64 -S sethostname -S setdomainname -k network_modifications
 
+##these are in seperate files now
 ### Changes to other files
 #### Redhat
--w /etc/hosts -p wa -k network_modifications
--w /etc/sysconfig/network -p wa -k network_modifications
--w /etc/network/ -p wa -k network_modifications
--a always,exit -F dir=/etc/NetworkManager/ -F perm=wa -k network_modifications
--w /etc/sysconfig/network -p wa -k network_modifications
+#-w /etc/hosts -p wa -k network_modifications
+#-w /etc/sysconfig/network -p wa -k network_modifications
+#-w /etc/network/ -p wa -k network_modifications
+#-a always,exit -F dir=/etc/NetworkManager/ -F perm=wa -k network_modifications
+#-w /etc/sysconfig/network -p wa -k network_modifications
 #### Ubuntu
--w /etc/netplan/ -p wa -k network_modifications
--w /etc/networkd-dispatcher/ -p wa -k network_modifications
+#-w /etc/netplan/ -p wa -k network_modifications
+#-w /etc/networkd-dispatcher/ -p wa -k network_modifications
 
 ### Changes to issue
 -w /etc/issue -p wa -k etcissue
@@ -160,30 +161,6 @@
 -w /var/log/wtmp -p wa -k session
 
 ## Discretionary Access Control (DAC) modifications
--a always,exit -F arch=b32 -S chmod -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S chown -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S fchmod -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S fchown -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S fchownat -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S fremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S fsetxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S lchown -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S lremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S lsetxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S removexattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b32 -S setxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S chmod  -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S chown -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S fchmod -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S fchmodat -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S fchown -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S fchownat -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S fremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S fsetxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S lchown -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S lremovexattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S lsetxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S removexattr -F auid>=500 -F auid!=4294967295 -k perm_mod
--a always,exit -F arch=b64 -S setxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b32 -S chmod -S chown -S fchmod -S fchmodat -S fchown -S fchownat -S fremovexattr -S fsetxattr -S lchown -S lremovexattr -S lsetxattr -S removexattr -S setxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
+-a always,exit -F arch=b64 -S chmod -S chown -S fchmod -S fchmodat -S fchown -S fchownat -S fremovexttr -S fsetxattr -S lchown -S lremovexattr -S lsetxattr -S removexattr -S setxattr -F auid>=500 -F auid!=4294967295 -k perm_mod
 

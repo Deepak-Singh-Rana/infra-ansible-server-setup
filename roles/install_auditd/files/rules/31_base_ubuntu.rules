@@ -1,0 +1,4 @@
+### Changes to other files
+#### Ubuntu
+-w /etc/netplan/ -p wa -k network_modifications
+-w /etc/networkd-dispatcher/ -p wa -k network_modifications

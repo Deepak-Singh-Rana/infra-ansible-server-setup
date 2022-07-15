@@ -1,0 +1,33 @@
+#!/bin/bash
+
+BASEDIR=$(pwd)
+
+
+#Make sure we are running as root
+if [ "$EUID" == "0" ]
+  then echo "do not run this as root"
+  exit
+fi
+#make sure we are logged into lastpass
+LPSTATUS=`lpass status`
+if [ "$LPSTATUS" == "Not logged in." ]; then
+  env https_proxy="http://frigg.snap.net.nz:3128" lpass login --trust $USER
+fi
+
+
+echo "---------------------"
+echo "---Available CSV's---"
+echo "---------------------"
+echo ""
+#pushd to the rules available dir so we can autocomplete the read command using "-e"
+#pushd $RULESAVAILABLE
+ls $BASEDIR | grep ".csv"
+echo ""
+echo "----------------------"
+#complete -f -X '!*.data' myprogram
+read -e -r -p $'Type the name of the rule you want to enable : ' csvchoice
+csvchoice=${csvchoice,,}
+CHOICE=$csvchoice
+
+env https_proxy="http://frigg.snap.net.nz:3128" python3 generatehosts.py -a generatehosts -c $CHOICE
+exit 0

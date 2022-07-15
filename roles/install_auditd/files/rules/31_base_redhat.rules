@@ -1,0 +1,7 @@
+### Changes to other files
+#### Redhat
+-w /etc/hosts -p wa -k network_modifications
+-w /etc/sysconfig/network -p wa -k network_modifications
+-w /etc/network/ -p wa -k network_modifications
+-a always,exit -F dir=/etc/NetworkManager/ -F perm=wa -k network_modifications
+-w /etc/sysconfig/network -p wa -k network_modifications
