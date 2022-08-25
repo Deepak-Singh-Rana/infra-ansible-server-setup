@@ -2,7 +2,7 @@
 # tasks file for configure_ubuntu_subscription
 
 #https://butwt.wordpress.com/2020/01/24/anisble-apt-proxies/
-- name: Add esm Repo Key
+- name: Add esm Repo Key for the initial install, we use our own later
   command:
    argv:
     - /usr/bin/apt-key
@@ -25,12 +25,6 @@
 - name: registered to canonical landscape onprem
   shell: /usr/bin/landscape-config --silent -t "{{ vm_shortname }}" -a standalone -u https://landscape.2degrees.nz/message-system --ping-url http://landscape.2degrees.nz/ping
 
-#- name: added http proxy server so UA can talk to licensing server
-#  shell: /usr/bin/ua config set http_proxy=http://frigg.snap.net.nz:3128
-
-#- name: added https proxy server so UA can talk to licensing server
-#  shell: /usr/bin/ua config set https_proxy=http://frigg.snap.net.nz:3128
-
 - name: Ensure http proxy is set for ua
   ansible.builtin.lineinfile:
     path: /etc/ubuntu-advantage/uaclient.conf
@@ -42,6 +36,20 @@
     path: /etc/ubuntu-advantage/uaclient.conf
     regexp: '^  https_proxy:'
     line: '  https_proxy: http://frigg.snap.net.nz:3128'
+
+- name: Create  /etc/apt/keyrings/ if it does not exist
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/
+    state: directory
+    mode: '0755'
+
+- name: copied esm pub file
+  copy:
+    src: esm.pub
+    dest: /etc/apt/keyrings/esm.pub
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: copied esm conf proxy file
   copy:
@@ -61,9 +69,6 @@
     mode: '0600'
   when: ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version != '22.03'
 
-
-#- name: added apt-key for esm
-#  shell: /usr/bin/apt-key adv --keyserver keyserver.ubuntu.com --recv-key 56F7650A24C9E9ECF87C4D8D4067E40313CB4B13
 
 - name: attach the ua
   shell: env https_proxy="http://frigg.snap.net.nz:3128" /usr/bin/ua attach "{{ advantageregistrationkey }}"

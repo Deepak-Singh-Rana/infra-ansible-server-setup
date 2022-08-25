@@ -81,32 +81,22 @@ cd ~/infra-ansible-server-setup
 git pull
 ```
 
-### 2. LastPass access
-
-LastPass access for adding zeus and root passwords/retrieving needed passwords automatically to/from lastpass
-
-```
-env https_proxy="http://frigg.snap.net.nz:3128" lpass login --trust $USER
-
-```
-
-### 3. Virtual machine/s details
+### 2. Virtual machine/s details
 
 * export the spreadsheet as a .csv
 
 * place the csv in the `infra-ansible-server-setup` folder
 
-### 4. Generate Hosts script
+### 3. Generate Hosts script
 
 This creates all the needed files/variables/passwords for the ansible script
 
 ```
-env https_proxy="http://frigg.snap.net.nz:3128" python3 generatehosts.py -c filename.csv
+./generatehosts
 ```
 
 
-### 5. Deploy the servers
+### 4. Deploy the servers
 ```
 ansible-playbook playbooks/newservers-2dl.nz.yml --vault-password-file tmp/ansible-vault-file
 ```
-
