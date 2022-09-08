@@ -100,3 +100,6 @@ This creates all the needed files/variables/passwords for the ansible script
 ```
 ansible-playbook playbooks/newservers-2dl.nz.yml --vault-password-file tmp/ansible-vault-file
 ```
+
+### 5. Ubuntu join landscape
+If it's an ubuntu server browse to "https://landscape.2degrees.nz" and accept your recently deployed servers request to join landscape
