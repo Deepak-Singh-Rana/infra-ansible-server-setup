@@ -88,13 +88,35 @@
   ignore_errors: yes
   when: (ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8")
 
-- name: copy 60_software.rules
+#redhat software rules
+- name: copy 60_software_redhat.rules
   copy:
-   src: rules/60_software.rules
-   dest: /etc/audit/rules.d/60_software.rules
+   src: rules/60_software_redhat.rules
+   dest: /etc/audit/rules.d/60_software_redhat.rules
    owner: root
    group: root
    mode: 0640
+  when: (ansible_facts['distribution'] == 'RedHat')
+
+#ubuntu software rules
+- name: copy 60_software_ubuntu.rules
+  copy:
+   src: rules/60_software_ubuntu.rules
+   dest: /etc/audit/rules.d/60_software_ubuntu.rules
+   owner: root
+   group: root
+   mode: 0640
+  when: (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_major_version'] >= "18")
+
+#suse software rules
+- name: copy 60_software_suse.rules
+  copy:
+   src: rules/60_software_suse.rules
+   dest: /etc/audit/rules.d/60_software_suse.rules
+   owner: root
+   group: root
+   mode: 0640
+  when: (ansible_facts['distribution'] == 'SLES' and ansible_facts['distribution_major_version'] >= "15")
 
 - name: copy 65_customisable_highvolume.rules
   copy:
