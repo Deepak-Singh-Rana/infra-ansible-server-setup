@@ -235,12 +235,21 @@ for row_index, row in enumerate(datareader):
 		yaml_text += "vcenter_vlan: " + row['vcenter_vlan'] +'\n'
 		if "HamiltonVI" in row['vcenter_datacenter']:
 			yaml_text += "vcenter_fqdn: snzclham860.nzc.co.nz\n"
-		if "KhyberPassVI" in row['vcenter_datacenter']:
+		elif "KhyberPassVI" in row['vcenter_datacenter']:
 			yaml_text += "vcenter_fqdn: snzclakl660.nzc.co.nz\n"
-		if "HamiltonNFV" in row['vcenter_datacenter']:
+		elif "HamiltonNFV" in row['vcenter_datacenter']:
 			yaml_text += "vcenter_fqdn: snzclham880.nzc.co.nz\n"
-		if "KhyberPassNFV" in row['vcenter_datacenter']:
+		elif "KhyberPassNFV" in row['vcenter_datacenter']:
 			yaml_text += "vcenter_fqdn: snzclakl680.nzc.co.nz\n"
+		else:
+			print("")
+			print("")
+			print("===============================")
+			print("⚠️Warning! something is incorrect with the Vcenter Datacentre you have chosen, please double check the Datacentre name and try again")
+			print("for the vm: "+row['vm_shortname'])
+			print("The problem word: "+row['vcenter_datacenter'])
+			print("===============================")
+			exit()
 		yaml_text += "vcenter_datacenter: " + row['vcenter_datacenter'] +'\n'
 		yaml_text += "vcenter_datastore: " + row['vcenter_datastore'] +'\n'
 		yaml_text += "vcenter_cluster: " + row['vcenter_cluster'] +'\n'
