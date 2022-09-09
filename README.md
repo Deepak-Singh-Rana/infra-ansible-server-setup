@@ -41,16 +41,6 @@ Make sure you have access to the folders
 2) `Shared-infra-ansible-server-setup`
 
 
-### User ssh keys
-
-Make sure you have a rsa ssh key generated and put onto `gary.snap.net.nz:~/.ssh/authorized_keys` so you can authenticate to `gary.snap.net.nz` without a password from the ansible server, else pam_radius config will fail.
-```
-ssh-keygen -t rsa
-```
-```
-ssh-copy-id -i ~/.ssh/id_rsa.pub gary.snap.net.nz
-```
-
 ### Required software
 
 ```
