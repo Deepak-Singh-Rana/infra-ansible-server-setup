@@ -7,10 +7,14 @@ if [[ $EUID -ne 0 ]]; then
 	#below is done as the current user
 	#update pip
 	python3 -m pip install -U pip
-	#isntall require package
+	#install require package
 	python3 -m pip install --user setuptools_rust
-	#isntall ansible
+	#install ansible
 	python3 -m pip install --user ansible
+        #install pwgen
+        python3 -m pip install --ignore-installed --user PyYAML pwgen
+        #install pyvmomi
+        python3 -m pip install "pyvmomi>=6.7.1.2018.12"
 
 	#set execuatble permissions on ansible files
 	chmod 700 ~/.local/bin/ansible*
