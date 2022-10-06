@@ -29,6 +29,14 @@
     group: root
     mode: '0600'
 
+- name: copy the 2d-NetworkDriveMap-Stop.sh file to the usrlocalbin dir
+  ansible.builtin.copy:
+    src: bin/2d-NetworkDriveMap-Stop.sh
+    dest: /usr/local/bin/2d-NetworkDriveMap-Stop.sh
+    owner: root
+    group: root
+    mode: '0600'
+
 - name: copy the smb.conf file to the skel dir
   ansible.builtin.copy:
     src: skel/smb.conf

@@ -8,8 +8,8 @@
   import_playbook: a-vcenter.yml
 
 #this is a seperate playbook cause it contains only one task and tha'ts to wait to make sure the vm's are up
-- name: wait for server to show it's ready
-  import_playbook: a-wait.yml
+#- name: wait for server to show it's ready
+#  import_playbook: a-wait.yml
 
 #setups the vm
 - name: configure server-stag

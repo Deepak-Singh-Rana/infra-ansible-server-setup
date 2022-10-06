@@ -40,6 +40,7 @@
 #        - "2406:e000:300::16"
 #        - "2406:e000:300::17"
       dns_suffix:
+        - 2dl.nz
         - snap.net.nz
         - 2degrees.nz
         - nzc.co.nz

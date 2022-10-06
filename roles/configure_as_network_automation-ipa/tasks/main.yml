@@ -6,6 +6,22 @@
    name:
    - python3-venv
    - python3-virtualenv
+   - make
+   - build-essential
+   - git
+   - libssl-dev
+   - zlib1g-dev
+   - libbz2-dev
+   - libreadline-dev
+   - libsqlite3-dev
+   - wget
+   - curl
+   - llvm
+   - libncurses5-dev
+   - libncursesw5-dev
+   - xz-utils
+   - tk-dev
+   - acl
    state: latest
 
 - name: created reporting group
@@ -20,17 +36,17 @@
     shell: /bin/bash
     comment: user to automate networking scripts
 
-#- name: Insert networking su to reporting allowing in pamd us
-#  blockinfile:
-#    path: /etc/pam.d/su
-#    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-#    insertafter: "auth       sufficient pam_rootok.so"
-#    block: |
-#      
-#      # Allow users in SEC_fixed_networking_rwx to su to reporting user without password.
-#      auth  [success=ignore default=1] pam_succeed_if.so user = reporting
-#      auth sufficient pam_succeed_if.so use_uid user ingroup SEC_fixed_networking_rwx
-#      auth sufficient pam_succeed_if.so use_uid user ingroup SEC_fixed_managedservices_rwx
+- name: Insert networking su to reporting allowing in pamd us
+  blockinfile:
+    path: /etc/pam.d/su
+    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    insertafter: "auth       sufficient pam_rootok.so"
+    block: |
+      
+      # Allow users in SEC_fixed_networking_rwx to su to reporting user without password.
+      auth  [success=ignore default=1] pam_succeed_if.so user = reporting
+      auth sufficient pam_succeed_if.so use_uid user ingroup sec_ipa.network.limitedsudo
+      auth sufficient pam_succeed_if.so use_uid user ingroup sec_ipa.managed-services.limitedsudo
 
 - name: created /usr/local/bin/reporting
   ansible.builtin.file:
@@ -51,7 +67,7 @@
 - name: Set default ACL for fixed_networking engineers on /usr/local/bin/reporting
   ansible.posix.acl:
     path: /usr/local/bin/reporting
-    entity: SEC_fixed_networking_rwx
+    entity: sec_ipa.network.rw
     etype: group
     permissions: rwX
     default: yes
@@ -60,7 +76,7 @@
 - name: Set default ACL for fixed_managed services on /usr/local/bin/reporting
   ansible.posix.acl:
     path: /usr/local/bin/reporting
-    entity: SEC_fixed_managedservices_rwx
+    entity: sec_ipa.managed-services.rw
     etype: group
     permissions: rwX
     default: yes
@@ -71,7 +87,7 @@
     path: /opt/virtualenv
     state: directory
     owner: root
-    group: servers.monitoring@staff.snap.net.nz
+    group: sec_ipa.network.access
     mode: '0775'
 
 - name: created /opt/bin
@@ -79,14 +95,5 @@
     path: /opt/bin
     state: directory
     owner: root
-    group: servers.monitoring@staff.snap.net.nz
+    group: sec_ipa.network.access
     mode: '0775'
-
-- name: copied networking suoders file
-  ansible.builtin.copy:
-    src: ans_network
-    dest: /etc/sudoers.d/ans_network
-    owner: root
-    group: root
-    mode: '0440'
-
