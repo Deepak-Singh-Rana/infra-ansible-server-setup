@@ -1,5 +1,10 @@
 ---
 # tasks file for allow_smb-mount
+- name: install smbnetfs
+  apt:
+   name:
+   - smbnetfs
+   state: latest
 
 - name: create smb file in skel folder
   ansible.builtin.file:
@@ -23,19 +28,19 @@
 
 - name: copy the 2d-networksharmap-start file to the usrlocalbin dir
   ansible.builtin.copy:
-    src: bin/2d-networkShareMap-start.sh
-    dest: /usr/local/bin/2d-networkShareMap-start.sh
+    src: bin/2d-NetworkShareMap-Start.sh
+    dest: /usr/local/bin/2d-NetworkShareMap-Start.sh
     owner: root
     group: root
-    mode: '0600'
+    mode: '0755'
 
 - name: copy the 2d-NetworkDriveMap-Stop.sh file to the usrlocalbin dir
   ansible.builtin.copy:
-    src: bin/2d-NetworkDriveMap-Stop.sh
-    dest: /usr/local/bin/2d-NetworkDriveMap-Stop.sh
+    src: bin/2d-NetworkShareMap-Stop.sh
+    dest: /usr/local/bin/2d-NetworkShareMap-Stop.sh
     owner: root
     group: root
-    mode: '0600'
+    mode: '0755'
 
 - name: copy the smb.conf file to the skel dir
   ansible.builtin.copy:
