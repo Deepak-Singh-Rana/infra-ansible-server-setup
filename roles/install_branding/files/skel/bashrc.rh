@@ -111,3 +111,11 @@ fi
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
+
+# let user know when the server will automatically reboot
+echo ""
+echo "This server will REBOOT automatically on:"
+tput setaf 11
+reboottime=`systemctl list-timers -all | grep 2d-autoreboot | sed 's/\(.*left\).*/\1/'`
+echo "⭯ ${reboottime} ⭯"
+tput setaf 7

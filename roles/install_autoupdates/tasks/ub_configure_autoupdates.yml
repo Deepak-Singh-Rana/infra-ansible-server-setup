@@ -1,4 +1,4 @@
-- name: copy ub-10_ans_periodic  ub-50_ans_unattended-upgrades
+- name: copy ub-90_ans_periodic  ub-90_ans_unattended-upgrades
   ansible.builtin.copy:
     src: ub-90_ans_periodic
     dest: /etc/apt/apt.conf.d/90_ans_periodic
@@ -8,7 +8,7 @@
 
 - name: copy ub-90_ans_unattended-upgrades
   ansible.builtin.copy:
-    src: ub-50_ans_unattended-upgrades
+    src: ub-90_ans_unattended-upgrades
     dest: /etc/apt/apt.conf.d/90_ans_unattended-upgrades
     owner: root
     group: root

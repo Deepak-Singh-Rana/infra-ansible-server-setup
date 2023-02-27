@@ -13,6 +13,8 @@ if [[ $EUID -ne 0 ]]; then
 	python3 -m pip install --user ansible
         #install pwgen
         python3 -m pip install --ignore-installed --user PyYAML pwgen
+	#install cryptography library
+        python3 -m pip install --ignore-installed --user cryptography
         #install pyvmomi
         python3 -m pip install "pyvmomi>=6.7.1.2018.12"
 

@@ -44,7 +44,7 @@ Make sure you have access to the folders
 ### Required software
 
 ```
-pip3 install --ignore-installed --user PyYAML pwgen
+pip3 install --ignore-installed --user PyYAML pwgen onepasswordconnectsdk
 pip3 install "pyvmomi>=6.7.1.2018.12"
 ```
 

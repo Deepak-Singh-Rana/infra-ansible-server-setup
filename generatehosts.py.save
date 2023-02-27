@@ -12,6 +12,7 @@ import glob
 #from ansible_vault import Vault
 from pwgen import pwgen
 import argparse
+import onepasswordconnectsdk
 import socket
 import ipaddress
 
@@ -19,8 +20,6 @@ ansible_vault_pass = ""
 hosts_list = ""
 #redhat_found = ""
 #redhat_hostnames = ""
-
-no1password="true"
 
 fixeddev = ""
 fixedtest = ""
@@ -41,18 +40,14 @@ if (bashfile != "generatehosts"):
 	exit()
 
 ##--sign into onepassword--##
-if "true" in no1password:
-        print("selected to not talk to 1password, skipping getting keys and certs")
+command1 = ["op", "signin", "--raw"]
+session_token = subprocess.check_output(command1).strip()
+print(f"session_token: {session_token}")
 
-else:
-	command1 = ["op", "signin", "--raw"]
-	session_token = subprocess.check_output(command1).strip()
-	print(f"session_token: {session_token}")
+two_factor = subprocess.check_output(["op", "user", "get", "t3inz.1password.com", "--session", session_token]).strip()
+print(two_factor)
 
-	two_factor = subprocess.check_output(["op", "user", "get", "t3inz.1password.com", "--session", session_token]).strip()
-	print(two_factor)
-
-	print("hi")
+print("hi")
 ##----generate random strings on request----##
 def get_random_alphanumeric_string(length):
 	letters_and_digits = string.ascii_letters + string.digits
@@ -186,16 +181,12 @@ if os.path.isdir("/tmp/radius"):
 
 ##call the get_file_from_lastpass function to make sure we have needed files
 print("")
-if "true" in no1password:
-	print("selected to not talk to 1password, skipping getting keys and certs")
-
-else:
-	print("--Getting required files from onepassword--")
-	get_file_from_1password("ansible-vault-file")
-	get_file_from_1password("ansible-deploy.key")
-	get_file_from_1password("ansible-deploy.key.pub")
-	get_file_from_1password("server_ca")
-	get_file_from_1password("server_ca.pub")
+print("--Getting required files from onepassword--")
+get_file_from_1password("ansible-vault-file")
+get_file_from_1password("ansible-deploy.key")
+get_file_from_1password("ansible-deploy.key.pub")
+get_file_from_1password("server_ca")
+get_file_from_1password("server_ca.pub")
 
 ##read in the vault password
 with open("tmp/ansible-vault-file") as f:
@@ -373,11 +364,8 @@ for row_index, row in enumerate(datareader):
 	write_password_file("root",root_passwd,fqdn)
 	write_password_file("zeus",zeus_passwd,fqdn)
 	#upload breakglass files to lastpass
-	if "true" in no1password:
-        	print("selected to not talk to 1password, not uploading passwords")
-	else:
-		upload_to_lastpass("root",fqdn)
-		upload_to_lastpass("zeus",fqdn)
+	upload_to_lastpass("root",fqdn)
+	upload_to_lastpass("zeus",fqdn)
 
 
 #generate the variables for the hosts

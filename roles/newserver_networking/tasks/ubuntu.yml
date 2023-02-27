@@ -49,3 +49,11 @@
 #  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04'
 #  notify: netplan generate config
 #  notify: netplan apply config
+
+- name: removed wpasupplicant
+  ansible.builtin.apt:
+    name: wpasupplicant
+    state: absent
+
+- name: turn off networkmanger wifi
+  ansible.builtin.command: nmcli radio wifi off

@@ -20,8 +20,6 @@ hosts_list = ""
 #redhat_found = ""
 #redhat_hostnames = ""
 
-no1password="true"
-
 fixeddev = ""
 fixedtest = ""
 
@@ -40,19 +38,6 @@ if (bashfile != "generatehosts"):
 	print("./generatehosts")
 	exit()
 
-##--sign into onepassword--##
-if "true" in no1password:
-        print("selected to not talk to 1password, skipping getting keys and certs")
-
-else:
-	command1 = ["op", "signin", "--raw"]
-	session_token = subprocess.check_output(command1).strip()
-	print(f"session_token: {session_token}")
-
-	two_factor = subprocess.check_output(["op", "user", "get", "t3inz.1password.com", "--session", session_token]).strip()
-	print(two_factor)
-
-	print("hi")
 ##----generate random strings on request----##
 def get_random_alphanumeric_string(length):
 	letters_and_digits = string.ascii_letters + string.digits
@@ -64,23 +49,6 @@ def get_random_alphanumeric_string(length):
 def generate_password(characters):
 	password = pwgen(characters, no_ambiguous=True)
 	return password
-
-
-##----get any files that we need from 1password----##
-def get_file_from_1password(filename):
-#	filename="ansible-deploy.key"
-	print(filename)
-	try:
-		f = open("tmp/"+filename)
-		print(f)
-		f.close()
-	except FileNotFoundError:
-		print(filename+" not found, downloading from 1password")
-#		op document get $filename --output=tmp/$filename"
-#                f = open("tmp/"+filename, "w")
-		subprocess.run(["op", "document", "get", filename, "--output=tmp/"+filename])
-		os.chmod("tmp/"+filename, 0o400)
-#        finally:
 
 ##----get any files that we need from lastpass----##
 def get_file_from_lastpass(filename):
@@ -150,8 +118,6 @@ def config_devserver(type,vlan):
 	config += "vcenter_folder: app-development_team\n"
 	return config
 
-print("hello there")
-
 ##----mk dirs exist if they don't already----#
 if not os.path.isdir("tmp"):
 	os.makedirs("tmp")
@@ -186,16 +152,12 @@ if os.path.isdir("/tmp/radius"):
 
 ##call the get_file_from_lastpass function to make sure we have needed files
 print("")
-if "true" in no1password:
-	print("selected to not talk to 1password, skipping getting keys and certs")
-
-else:
-	print("--Getting required files from onepassword--")
-	get_file_from_1password("ansible-vault-file")
-	get_file_from_1password("ansible-deploy.key")
-	get_file_from_1password("ansible-deploy.key.pub")
-	get_file_from_1password("server_ca")
-	get_file_from_1password("server_ca.pub")
+print("--Getting required files from lastpass--")
+get_file_from_lastpass("ansible-vault-file")
+get_file_from_lastpass("ansible-deploy.key")
+get_file_from_lastpass("ansible-deploy.key.pub")
+get_file_from_lastpass("server_ca")
+get_file_from_lastpass("server_ca.pub")
 
 ##read in the vault password
 with open("tmp/ansible-vault-file") as f:
@@ -373,11 +335,8 @@ for row_index, row in enumerate(datareader):
 	write_password_file("root",root_passwd,fqdn)
 	write_password_file("zeus",zeus_passwd,fqdn)
 	#upload breakglass files to lastpass
-	if "true" in no1password:
-        	print("selected to not talk to 1password, not uploading passwords")
-	else:
-		upload_to_lastpass("root",fqdn)
-		upload_to_lastpass("zeus",fqdn)
+	upload_to_lastpass("root",fqdn)
+	upload_to_lastpass("zeus",fqdn)
 
 
 #generate the variables for the hosts

@@ -116,3 +116,11 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# let user know when the server will automatically reboot
+echo ""
+echo "This server will REBOOT automatically on:"
+tput setaf 11
+reboottime=`systemctl list-timers -all | grep 2d-autoreboot | sed 's/\(.*left\).*/\1/'`
+echo "⭯ ${reboottime} ⭯"
+tput setaf 7

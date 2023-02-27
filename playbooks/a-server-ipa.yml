@@ -50,10 +50,14 @@
     - install_email
 #install and configure auditd for auditing purposes
     - install_auditd
+#install crowdstrike agent
+    - install_crowdstrike
+#install tennable agent
+    - install_tenable
 #install linux virus scanner
-    - role: install_clamav
-      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or
-            (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+#    - role: install_clamav
+#      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or
+#            (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
 #configures the home folder to 2degrees standards
     - install_2dhome-ipa
 #configures ssh to 2degrees hardened standard
@@ -65,15 +69,15 @@
 #configure ipa details on the ipa server
     - configure_ipahost
 #sets up splunk forwarder to send logs to splunk forwarder
-    - install_splunk
+#    - install_splunk
 #configures the login messages to TASS/PCI/SOX standards
     - install_branding
 #installs usefull sysadmin tools
     - install_2dutils
 #installs rootkit detection
-    - role: install_rkhunter
-      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or
-            (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
+#    - role: install_rkhunter
+#      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or
+#            (ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8')
 #configurs snmpd to allow thigns to send traps to zenoss
     - install_2dsnmpd
 #setups zenoss user for zenoss management
@@ -91,7 +95,7 @@
     - role: harden_rhel8
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 #setup vulnerability scanning
-    - configure_upguardaccess-ipa
+#    - configure_upguardaccess-ipa
 #install cockpit
     - install_cockpit
 #setup cmdb scanning

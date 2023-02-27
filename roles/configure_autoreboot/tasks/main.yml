@@ -16,26 +16,26 @@
     group: root
     mode: '0755'
 
-#setup motd to display the autoreboot file
+#setup motd to display the autoreboot file ######we now ave listtimers in bashrc
 #redhat links the file
-- name: RH link /etc/2d_motd_autoreboot to /etc/motd redhat 8 and up
-  file:
-    src: /etc/2d_motd_autoreboot
-    dest: /etc/motd.d/9a_2d_autoreboot
-    state: link
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+#- name: RH link /etc/2d_motd_autoreboot to /etc/motd redhat 8 and up
+#  file:
+#    src: /etc/2d_motd_autoreboot
+#    dest: /etc/motd.d/9a_2d_autoreboot
+#    state: link
+#  ignore_errors: yes
+#  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
-#ubuntu needs a script that echos the file
-- name: UB 2d branding of the day script ubuntu 18 and up
-  copy:
-    src: ub-2d-autoreboot-script
-    dest: /etc/update-motd.d/9a-2d-autoreboot-script
-    owner: root
-    group: root
-    mode: '0755'
-  ignore_errors: yes
-  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= '18'
+#ubuntu needs a script that echos the file ######we now have listtimers in bashrc
+#- name: UB 2d branding of the day script ubuntu 18 and up
+#  copy:
+#    src: ub-2d-autoreboot-script
+#    dest: /etc/update-motd.d/9a-2d-autoreboot-script
+#    owner: root
+#    group: root
+#    mode: '0755'
+#  ignore_errors: yes
+#  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= '18'
 
 - name: Just force systemd to reread configs (2.4 and above)
   ansible.builtin.systemd:
