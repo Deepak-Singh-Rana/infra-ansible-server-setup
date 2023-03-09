@@ -1,6 +1,10 @@
+- name: install s-nail redhat 9 and above
+  package: name=s-nail state=latest
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '9'
+
 - name: install mailx redhat 8 and above
   package: name=mailx state=latest
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version == '8'
 
 - name: install mailx for redhat 7 and below
   ansible.builtin.yum:
@@ -10,15 +14,32 @@
     ansible_python_interpreter: /usr/bin/python2
   when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
 
-- name: configure mailx smtp
+#- name: configure s-nail smtp redhat 9 and above
+#  lineinfile:
+#   path: /etc/s-nail.rc
+#   regexp: '^set smtp=smtp://smtp.snap.net.nz:'
+#   line: set smtp=smtp://smtp.snap.net.nz:25
+#   create: yes
+#  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '9'
+
+#- name: configure s-nail ssl-verify redhat 9 and above
+#  lineinfile:
+#   path: /etc/s-nail.rc
+#   line: set ssl-verify=ignore
+#   create: yes
+#  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '9'
+
+- name: configure mailx smtp redhat
   lineinfile:
    path: /etc/mail.rc
    regexp: '^set smtp=smtp://smtp.snap.net.nz:'
    line: set smtp=smtp://smtp.snap.net.nz:25
    create: yes
+#  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version <= '8'
 
-- name: configure mailx ssl-verify
+- name: configure mailx ssl-verify redhat
   lineinfile:
    path: /etc/mail.rc
    line: set ssl-verify=ignore
    create: yes
+#  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version <= '8'

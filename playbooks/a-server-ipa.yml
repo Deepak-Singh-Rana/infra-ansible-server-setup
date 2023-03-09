@@ -53,7 +53,7 @@
 #install crowdstrike agent
     - install_crowdstrike
 #install tennable agent
-    - install_tenable
+    - install_tennable
 #install linux virus scanner
 #    - role: install_clamav
 #      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or

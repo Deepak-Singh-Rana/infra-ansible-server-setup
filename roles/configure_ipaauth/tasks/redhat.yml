@@ -5,11 +5,13 @@
   dnf:
     name: '@idm:client'
     state: absent
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 
 - name: Install a modularity appstream with defined stream
   dnf:
     name: '@idm:DL1/client'
     state: present
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
 
 - name: Upgrade all packages
   dnf:
@@ -28,7 +30,7 @@
       - realmd
     state: latest
     update_cache: yes
-  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] >= "8")
 
 - name: ipaclientinstall join
   ansible.builtin.command:
@@ -50,4 +52,4 @@
       - -W
     stdin: "{{ ipapassword }}"
   # you don't want to show passwords in your logs
-  no_log: true
+#  no_log: true

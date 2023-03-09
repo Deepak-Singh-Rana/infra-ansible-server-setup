@@ -121,6 +121,6 @@ fi
 echo ""
 echo "This server will REBOOT automatically on:"
 tput setaf 11
-reboottime=`systemctl list-timers -all | grep 2d-autoreboot | sed 's/\(.*left\).*/\1/'`
+reboottime=`systemctl list-timers -all | grep 2d-autoreboot | sed 's/\(.*left\).*/\1/' | sed 's/\([^ ]*\s[^ ]*\s[^ ]*\s[^ ]*\s\)\(.*\)/\1- \2/'`
 echo "⭯ ${reboottime} ⭯"
 tput setaf 7

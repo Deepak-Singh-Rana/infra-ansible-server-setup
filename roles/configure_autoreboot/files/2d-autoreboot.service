@@ -1,0 +1,9 @@
+[Unit]
+Description=2d autoreboot Service
+
+[Service]
+Type=simple
+ExecStart=shutdown -r +10 "Server will auto-Reboot in 10 minutes for kernel updates"
+
+[Install]
+WantedBy=multi-user.target

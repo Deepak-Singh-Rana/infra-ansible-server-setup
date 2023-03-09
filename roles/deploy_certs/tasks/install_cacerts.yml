@@ -6,7 +6,17 @@
   ignore_errors: yes
   when: ansible_facts['distribution'] == 'Ubuntu'
 
-- name: install openssl
+- name: install openssl for redhat 9
+  ansible.builtin.dnf:
+   name:
+    - openssl
+    - python3-cryptography
+    - ca-certificates
+   state: latest
+  ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "9"
+
+- name: install openssl for redhat 8
   ansible.builtin.dnf:
    name:
     - openssl
@@ -14,9 +24,10 @@
     - ca-certificates
    state: latest
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
 
-- name: install openssl
+
+- name: install openssl for redhat 7
   ansible.builtin.yum:
    name:
     - openssl
@@ -26,4 +37,4 @@
   ignore_errors: yes
   vars:
     ansible_python_interpreter: /usr/bin/python2
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version < '8'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "7"

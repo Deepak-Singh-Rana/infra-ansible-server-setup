@@ -6,7 +6,7 @@
 
 - name: configure rhel8 subscription
   include: rhel_subscription.yml
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] >= "8"
 #  when: ansible_facts['distribution'] == 'RedHat'
 
 - name: configure rhel7 subscription

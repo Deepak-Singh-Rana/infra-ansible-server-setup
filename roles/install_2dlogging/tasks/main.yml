@@ -1,4 +1,4 @@
 - name: configure rsyslog rhel8
   include: rh8_configure_syslog.yml
   ignore_errors: yes
-  when: ansible_facts['distribution'] == 'CentOS' or ansible_facts['distribution'] == 'RedHat'
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] <= "8"

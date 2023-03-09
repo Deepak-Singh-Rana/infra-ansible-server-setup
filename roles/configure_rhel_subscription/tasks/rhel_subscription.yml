@@ -49,6 +49,7 @@
 - name: move rhclassic systemid
   ansible.builtin.command: mv /etc/sysconfig/rhn/systemid /root/systemid.old
   ignore_errors: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
 
 #subscription-manager register --org="Default_Organization" --activationkey="RHEL8_Key"
 - name: register the server
@@ -60,19 +61,28 @@
     force_register: yes
   when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
 
+#subscription-manager register --org="Default_Organization" --activationkey="RHEL9_Key"
+- name: register the server
+  community.general.redhat_subscription:
+    state: present
+    activationkey: RHEL9_Key
+#    auto_attach: yes
+    org_id: Default_Organization
+    force_register: yes
+
 - name : Enable all repos
   ansible.builtin.command: 'subscription-manager repos --enable=*'
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "9"
 
 #- name: Enable all repositories
 #  community.general.rhsm_repository:
 #    name: 'rhel-8-*'
 #    state: enabled
-#  when: ansible_distribution == "RedHat" and ansible_distribution_major_version == "8"
+#  when: ansible_distribution == "RedHat" and ansible_distribution_major_version >= "8"
 
 - name: refresh dnf
   ansible.builtin.command: dnf clean all
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] >= "8"
 
 - name: DNF update the system
   dnf:

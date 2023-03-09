@@ -26,16 +26,14 @@
 #  ignore_errors: yes
 #  when: ansible_facts['distribution'] == 'RedHat' and ansible_distribution_version >= '8'
 
-#ubuntu needs a script that echos the file ######we now have listtimers in bashrc
-#- name: UB 2d branding of the day script ubuntu 18 and up
-#  copy:
-#    src: ub-2d-autoreboot-script
-#    dest: /etc/update-motd.d/9a-2d-autoreboot-script
-#    owner: root
-#    group: root
-#    mode: '0755'
-#  ignore_errors: yes
-#  when: ansible_facts['distribution'] == 'Ubuntu' and ansible_distribution_version >= '18'
+- name: copied over autoreboot service
+  copy:
+    src: 2d-autoreboot.service
+    dest: /etc/systemd/system/2d-autoreboot.service
+    owner: root
+    group: root
+    mode: '0755'
+  ignore_errors: yes
 
 - name: Just force systemd to reread configs (2.4 and above)
   ansible.builtin.systemd:
