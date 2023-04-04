@@ -1,0 +1,8 @@
+#ensure sudo commands user pty
+- name: 1.3 sudo cis hardening
+  copy:
+   src: sudoers.d/cis_1_3
+   dest: /etc/sudoers.d/cis_1_3
+   owner: root
+   group: root
+   mode: '0440'

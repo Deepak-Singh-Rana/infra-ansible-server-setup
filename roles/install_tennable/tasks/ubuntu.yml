@@ -1,0 +1,41 @@
+---
+#install for ubuntu
+- name: copy over the deb file
+  ansible.builtin.copy:
+    src: NessusAgent-10.3.1-ubuntu1404_amd64.deb
+    dest: /tmp/NessusAgent-10.3.1-ubuntu1404_amd64.deb
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")
+- name: Install tennable on ubuntu
+  apt:
+    deb: /tmp/NessusAgent-10.3.1-ubuntu1404_amd64.deb
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")
+
+- name: delete the tennable installer
+  ansible.builtin.file:
+    path: /tmp/NessusAgent-10.3.1-ubuntu1404_amd64.deb
+    state: absent
+  when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "16")
+
+- name: configure crowdstrike
+#2degrees proxy
+  ansible.builtin.command: /opt/nessus_agent/sbin/nessuscli agent link --key=942f06980439fba9eda1b14fc3dd83b9972b288a75c055a68f74c4fa207b67ba --groups="Linux" --cloud --proxy-host=2dproxy.2degrees.nz --proxy-port=8080
+#frigg proxy
+#  ansible.builtin.command: /opt/nessus_agent/sbin/nessuscli agent link --key=942f06980439fba9eda1b14fc3dd83b9972b288a75c055a68f74c4fa207b67ba --groups="Linux" --cloud --proxy-host=frigg.2degrees.nz --proxy-port=3128
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable service nessusagetn nad make sure i'ts not masked
+  ansible.builtin.systemd:
+    name: nessusagent.service
+    enabled: true
+    masked: no
+
+- name: restarted nessus
+  ansible.builtin.systemd:
+    name: nessusagent.service
+    state: restarted

@@ -1,0 +1,69 @@
+---
+#isntall for redhat
+- name: copy over the crowdstrike rpm file for redhat 8
+  ansible.builtin.copy:
+    src: falcon-sensor-6.50.0-14713.el8.x86_64.rpm
+    dest: /tmp/falcon-sensor-6.50.0-14713.el8.x86_64.rpm
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: copy over the crowdstrike rpm file for redhat 9
+  ansible.builtin.copy:
+    src: falcon-sensor-6.50.0-14713.el9.x86_64.rpm
+    dest: /tmp/falcon-sensor-6.50.0-14713.el9.x86_64.rpm
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+
+- name: Install crowdstrike redhat 8
+  ansible.builtin.dnf:
+    name: /tmp/falcon-sensor-6.50.0-14713.el8.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: Install crowdstrike redhat 9
+  ansible.builtin.dnf:
+    name: /tmp/falcon-sensor-6.50.0-14713.el9.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+
+- name: delete the installer on redhat 8
+  ansible.builtin.file:
+    path: /tmp/falcon-sensor-6.50.0-14713.el8.x86_64.rpm
+    state: absent
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: delete the installer on redhat 9
+  ansible.builtin.file:
+    path: /tmp/falcon-sensor-6.50.0-14713.el9.x86_64.rpm
+    state: absent
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+
+- name: configure falconsensor
+#2degrees proxy
+  ansible.builtin.command: /opt/CrowdStrike/falconctl -s --aph=2dproxy.2degrees.nz --app=8080 --apd=FALSE --cid=8DF946AEEA7B4D35B6C822853CD822B0-94
+#frigg proxy
+#  ansible.builtin.command: /opt/CrowdStrike/falconctl -s --aph=frigg.2degrees.nz --app=3128 --apd=FALSE --cid=8DF946AEEA7B4D35B6C822853CD822B0-94
+
+#- name: configure falconsensor
+#  ansible.builtin.command: /opt/CrowdStrike/falconctl -s --cid=8DF946AEEA7B4D35B6C822853CD822B0-94
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable service falconsensor and ensure it is not masked
+  ansible.builtin.systemd:
+    name: falcon-sensor
+    enabled: true
+    masked: no
+
+- name: restarted falconsensor
+  ansible.builtin.systemd:
+    name: falcon-sensor
+    state: restarted

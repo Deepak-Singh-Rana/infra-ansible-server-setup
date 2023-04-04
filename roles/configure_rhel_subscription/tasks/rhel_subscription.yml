@@ -69,6 +69,7 @@
 #    auto_attach: yes
     org_id: Default_Organization
     force_register: yes
+  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "9"
 
 - name : Enable all repos
   ansible.builtin.command: 'subscription-manager repos --enable=*'
@@ -90,10 +91,10 @@
     state: latest
   when: ansible_facts['distribution'] == 'RedHat' and ansible_facts  ['distribution_major_version'] >= '8'
 
-- name: install katello packages
-  dnf:
-    name:
-      - katello-host-tools
-      - katello-agent
-    state: latest
-  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"
+#- name: install katello packages
+#  dnf:
+#    name:
+#      - katello-host-tools
+#      - katello-agent
+#    state: latest
+#  when: ansible_facts['distribution'] == 'RedHat' and ansible_facts['distribution_major_version'] == "8"

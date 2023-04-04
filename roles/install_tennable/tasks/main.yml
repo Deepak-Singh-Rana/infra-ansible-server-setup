@@ -1,0 +1,8 @@
+---
+# tasks file for crowdstrike setup
+
+- include_tasks: redhat.yml
+  when: ansible_facts['distribution'] == "RedHat" and ansible_distribution_version >= '8'
+
+- include_tasks: ubuntu.yml
+  when: ansible_facts['distribution'] == "Ubuntu"

@@ -1,0 +1,67 @@
+---
+#isntall for redhat
+- name: copy over the nessus rpm file for redhat 8
+  ansible.builtin.copy:
+    src: NessusAgent-10.3.1-es8.x86_64.rpm
+    dest: /tmp/NessusAgent-10.3.1-es8.x86_64.rpm
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: copy over the nessus rpm file for redhat 9
+  ansible.builtin.copy:
+    src: NessusAgent-10.3.1-es8.x86_64.rpm
+    dest: /tmp/NessusAgent-10.3.1-es8.x86_64.rpm
+    owner: root
+    group: root
+    mode: '0700'
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+
+
+- name: Install nessus agent redhat 8
+  ansible.builtin.dnf:
+    name: /tmp/NessusAgent-10.3.1-es8.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: Install nessus agent redhat 9
+  ansible.builtin.dnf:
+    name: /tmp/NessusAgent-10.3.1-es8.x86_64.rpm
+    state: present
+    disable_gpg_check: yes
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+
+- name: delete the installer on redhat 8
+  ansible.builtin.file:
+    path: /tmp/NessusAgent-10.3.1-es8.x86_64.rpm
+    state: absent
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+
+- name: delete the installer on redhat 9
+  ansible.builtin.file:
+    path: /tmp/NessusAgent-10.3.1-es8.x86_64.rpm
+    state: absent
+  when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
+
+- name: configure nessus
+#2degrees proxy
+  ansible.builtin.command: /opt/nessus_agent/sbin/nessuscli agent link --key=942f06980439fba9eda1b14fc3dd83b9972b288a75c055a68f74c4fa207b67ba --groups="Linux" --cloud --proxy-host=2dproxy.2degrees.nz --proxy-port=8080
+#frigg proxy
+#  ansible.builtin.command: /opt/nessus_agent/sbin/nessuscli agent link --key=942f06980439fba9eda1b14fc3dd83b9972b288a75c055a68f74c4fa207b67ba --groups="Linux" --cloud --proxy-host=frigg.2degrees.nz --proxy-port=3128
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Enable service nessusd and make sure it's not masked
+  ansible.builtin.systemd:
+    name: nessusagent.service
+    enabled: true
+    masked: no
+
+- name: restarted nessusd
+  ansible.builtin.systemd:
+    name: nessusagent.service
+    state: restarted

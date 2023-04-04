@@ -48,12 +48,12 @@
       when: (vm_autoreboot_time is defined)
 #configures the servers to allow them to email out if need be
     - install_email
+#install elastic-agent logging
+    - install_elastic-agent
 #install and configure auditd for auditing purposes
     - install_auditd
-#install crowdstrike agent
-    - install_crowdstrike
-#install tennable agent
-    - install_tennable
+#install cockpit
+    - install_cockpit
 #install linux virus scanner
 #    - role: install_clamav
 #      when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] >= "18") or
@@ -82,6 +82,8 @@
     - install_2dsnmpd
 #setups zenoss user for zenoss management
     - configure_zenoss-ipa
+#setup cmdb scanning ======(must come after install_2dsnmpd)=======
+    - configure_device42access-ipa
 #Hardens ubuntu 18 to level2 compliance
     - role: harden_ub18
       when: (ansible_facts['distribution'] == "Ubuntu" and ansible_facts['distribution_major_version'] == "18")
@@ -94,18 +96,21 @@
 #Hardens redhat8 to level2 compliance
     - role: harden_rhel8
       when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "8")
+#Hardens redhat9 to level2 compliance
+    - role: harden_rhel9
+      when: (ansible_facts['distribution'] == "RedHat" and ansible_facts['distribution_major_version'] == "9")
 #setup vulnerability scanning
 #    - configure_upguardaccess-ipa
-#install cockpit
-    - install_cockpit
-#setup cmdb scanning
-    - configure_device42access-ipa
+#install tennable agent
+    - install_tennable
 #install aide late so we don't have heaps of changes for the next scan because we are setting up the os
     - install_2daide
 #Auto updates come at the end so it doens't start updating while we are setting up the vm
     - install_autoupdates
 #install backups
     - install_commvault
+#install crowdstrike agent
+    - install_crowdstrike
 #setups breakglass utils/permissions
     - configure_bgaccounts
 #disable unneded services
