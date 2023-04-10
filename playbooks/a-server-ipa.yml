@@ -49,7 +49,7 @@
 #configures the servers to allow them to email out if need be
     - install_email
 #install elastic-agent logging
-    - install_elastic-agent
+#    - install_elastic-agent
 #install and configure auditd for auditing purposes
     - install_auditd
 #install cockpit
@@ -69,7 +69,7 @@
 #configure ipa details on the ipa server
     - configure_ipahost
 #sets up splunk forwarder to send logs to splunk forwarder
-#    - install_splunk
+    - install_splunk
 #configures the login messages to TASS/PCI/SOX standards
     - install_branding
 #installs usefull sysadmin tools
