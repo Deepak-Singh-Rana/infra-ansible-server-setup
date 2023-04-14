@@ -28,3 +28,6 @@ tmp/*
 !tmp/README.md
 roles/install_commvault/files/*
 roles/install_elastic-agent/files/*
+roles/install_crowdstrike/files/*
+roles/install_splunk/files/installers/*
+roles/install_tennable/files/*
