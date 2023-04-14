@@ -26,3 +26,5 @@ files/*
 #don't include anytinhg from the tmp folder
 tmp/*
 !tmp/README.md
+roles/install_commvault/files/*
+roles/install_elastic-agent/files/*
